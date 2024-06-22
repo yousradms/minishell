@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/22 14:36:24 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/22 20:16:31 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,15 @@ typedef struct s_node
     t_type type;
     t_state state;
     struct s_node *next;
+    struct s_node *prev;
 } t_node;
 
 typedef struct s_command {
     char **arg;
     struct s_command *next;
 } t_command;
+
+
 
 int	ft_strlen(char *str);
 char	**ft_split(char *s);
@@ -78,7 +81,7 @@ char *add_delimiter(char *s);
 void tokenize(char *s,t_node **head,t_state state);
 int just_spaces(char *s);
 char* replace_env_variables(char* input, char **env);
-void expanding(t_node *head);
+void expanding(t_node *list, char **env);
 char *remove_quotes(char *s);
 int contain_env(char *s);
 t_state get_state(char *s);

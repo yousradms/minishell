@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/22 15:11:11 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/22 20:24:26 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void set_env(char **line,char ***env)
     }  
 }
 
-void parsing_command(char **line)
+void parsing_command(char **line,char **env)
 {
     char **result;
     char *new_line;
@@ -48,10 +48,10 @@ void parsing_command(char **line)
     }
     //print_list(head);
     parsing(&head);
-    expanding(head);
+    expanding(head,env);
     command = ft_split2(&head);
     //print_list2(command);
-    execute(&command);
+    //execute(&command);
     free(result);
     free_precedent_nodes(head);  
 }
@@ -64,7 +64,7 @@ int main(int ac,char **av,char **env)
     while(1)
     {
         char *line;
-        line = readline("minishell~>");
+        line = readline("minishell==");
         if(!line)
             exit(1);
         set_env(&line, &env);
@@ -76,7 +76,7 @@ int main(int ac,char **av,char **env)
         if(ft_strlen(line) > 0)
         {
             add_history(line);
-            parsing_command(&line);
+            parsing_command(&line,env);
         }
         free(line);
     }

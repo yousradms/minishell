@@ -5,13 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/22 18:18:10 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/22 20:26:01 by ksellami         ###   ########.fr       */
+/*   Created: 2024/06/13 20:36:35 by ksellami          #+#    #+#             */
+/*   Updated: 2024/06/22 17:54:00 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+//$aaaa
 char *remove_quotes(char *s)
 {
     char *token;
@@ -46,18 +46,15 @@ int contain_env(char *s)
     return(0);
 }
 
-char *get_env_value(char *var_name, char **env)
+char *get_env_value(char *var_name)
 {
-    int i;
+    char *value;
 
-    i = 0;
-    while (env[i])
-    {
-        if (strncmp(env[i], var_name, strlen(var_name)) == 0 && env[i][strlen(var_name)] == '=')
-            return strdup(env[i] + strlen(var_name) + 1);
-        i++;
-    }
-    return (NULL);
+    value = getenv(var_name);
+    if (value)
+        return strdup(value);
+    else
+        return (NULL);
 }
 
 char *replace_variable(char *str, char *value, int start, int end)
@@ -73,12 +70,12 @@ char *replace_variable(char *str, char *value, int start, int end)
     return (new_expanded);
 }
 
-void set_value(int *i, int *j, char **var_name, char **expanded, char **env)
+void set_value(int *i,int *j,char **var_name,char **expanded)
 {
     char *value;
     char *new_expanded;
 
-    value = get_env_value(*var_name, env);
+    value = get_env_value(*var_name);
     if (value != NULL)
     {
         new_expanded = replace_variable(*expanded, value, *i, *j);
@@ -87,16 +84,9 @@ void set_value(int *i, int *j, char **var_name, char **expanded, char **env)
         (*i) += strlen(value);
         free(value);
     }
-    else
-    {
-        // If the environment variable is not found,  set it to an empty string
-        *expanded = strdup("");
-        (*i) += 1; // Add the length of the default value
-        
-    }
 }
 
-void set_expanded(char **str, char **content, char **env)
+void set_expanded(char **str, char **content)
 {
     char *expanded;
     int i;
@@ -117,7 +107,7 @@ void set_expanded(char **str, char **content, char **env)
             var_name = malloc(var_length + 1);
             strncpy(var_name, expanded + i + 1, var_length);
             var_name[var_length] = '\0';
-            set_value(&i, &j, &var_name, &expanded, env);
+            set_value(&i, &j, &var_name, &expanded);
             free(var_name);
             i = j;
         }
@@ -128,35 +118,33 @@ void set_expanded(char **str, char **content, char **env)
     *content = expanded;
 }
 
-void expanding(t_node *list, char **env)
+void expanding(t_node *list)
 {
     t_node *current;
     char *str;
     int enter = 0;
     
     current = list;
-    while (current != NULL) 
+    while (current!= NULL) 
     {
         if (current->type == 9 && contain_env(current->content))
         {
-            if(current->prev && current->prev->type != 6 )
+            str = NULL;
+            if (current->state == 2)
+                str = remove_quotes(current->content);
+            else if (current->state == 1)
+                str = current->content;
+            else if (current->state == 3)
             {
-                str = NULL;
-                if (current->state == 2)
-                    str = remove_quotes(current->content);
-                else if (current->state == 1)
-                    str = current->content;
-                else if (current->state == 3)
-                {
-                    current->content = remove_quotes(current->content);
-                    //printf("%s", current->content); 
-                    break;
-                }
-                set_expanded(&str, &(current->content), env);
-                printf("%s", current->content);
-                enter++;
+                current->content = remove_quotes(current->content);
+                printf("%s",current->content); 
+                break;
             }
+            set_expanded(&str,&(current->content));
+            printf("%s", current->content);
+            enter++;
         }
+        
         current = current->next;
     }
     if(enter > 0)

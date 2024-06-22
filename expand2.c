@@ -5,10 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/22 18:18:10 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/22 20:26:01 by ksellami         ###   ########.fr       */
+/*   Created: 2024/06/22 18:04:53 by ksellami          #+#    #+#             */
+/*   Updated: 2024/06/22 18:17:56 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
+
 
 #include "minishell.h"
 
@@ -87,13 +90,6 @@ void set_value(int *i, int *j, char **var_name, char **expanded, char **env)
         (*i) += strlen(value);
         free(value);
     }
-    else
-    {
-        // If the environment variable is not found,  set it to an empty string
-        *expanded = strdup("");
-        (*i) += 1; // Add the length of the default value
-        
-    }
 }
 
 void set_expanded(char **str, char **content, char **env)
@@ -139,26 +135,24 @@ void expanding(t_node *list, char **env)
     {
         if (current->type == 9 && contain_env(current->content))
         {
-            if(current->prev && current->prev->type != 6 )
+            str = NULL;
+            if (current->state == 2)
+                str = remove_quotes(current->content);
+            else if (current->state == 1)
+                str = current->content;
+            else if (current->state == 3)
             {
-                str = NULL;
-                if (current->state == 2)
-                    str = remove_quotes(current->content);
-                else if (current->state == 1)
-                    str = current->content;
-                else if (current->state == 3)
-                {
-                    current->content = remove_quotes(current->content);
-                    //printf("%s", current->content); 
-                    break;
-                }
-                set_expanded(&str, &(current->content), env);
-                printf("%s", current->content);
-                enter++;
+                current->content = remove_quotes(current->content);
+                //printf("%s", current->content); 
+                break;
             }
+            set_expanded(&str, &(current->content), env);
+            printf("%s", current->content);
+            enter++;
         }
         current = current->next;
     }
     if(enter > 0)
         printf("\n");
 }
+

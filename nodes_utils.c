@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/22 14:31:05 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/22 20:20:21 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,27 @@ t_node *create_node(char *content, int type,int state)
     node->type = type;
     node->state = state;
     node->next = NULL;
+    node->prev = NULL;
     return (node);
 }
 
 void add_node(t_node **head, t_node *node)
 {
     if (*head == NULL)
+    {
         *head = node;
+        node->prev = NULL;
+    }
     else
     {
         t_node *current = *head;
-        while (current->next!= NULL)
+        while (current->next != NULL)
             current = current->next;
-        current->next = node; 
+        current->next = node;
+        node->prev = current;
     }
 }
+
 
 void print_list(t_node *head)
 {

@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 14:25:24 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/22 16:21:13 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/22 19:25:19 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void execute_one_command(t_command **command)
         //==handle signals==//
         //==handle redirections==//
         // Child process
-        if (execvp((*command)->arg[0], (*command)->arg) == -1) {
+        if (execvp((*command)->arg[0], (*command)->arg) == -1)
+        {
             perror("execvp");
             exit(EXIT_FAILURE);
         }
