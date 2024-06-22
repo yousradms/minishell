@@ -1,0 +1,55 @@
+The `execvp` function is used to execute a new process by replacing the current process image with a new one. It is similar to the `execve` function, but it is more convenient to use because it automatically sets the `argv` to the name of the executable.
+
+### Syntax
+
+```c
+#include <unistd.h>
+
+int execvp(const char *path, char *const argv[]);
+```
+
+### Parameters
+
+1. **path**: The path to the executable.
+2. **argv**: An array of pointers to the arguments.
+
+### Description
+
+The `execvp` function replaces the current process image with a new one. It is used to execute a new process by replacing the current process image with a new one. The new process is created by loading the executable at the specified path and executing it.
+
+### Example
+
+Here is an example of how to use `execvp` to execute a new process:
+
+```c
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    char *args[] = {"ls", "-l", NULL};
+    execvp("ls", args);
+    perror("execvp failed");
+    return 1;
+}
+```
+
+In this example, the `execvp` function is used to execute the `ls` command with the `-l` option. The `args` array contains the arguments to be passed to the executable. The `execvp` function replaces the current process image with a new one, and the new process executes the `ls` command with the specified arguments.
+
+### Return Value
+
+The `execvp` function returns 0 if the new process is successfully executed. If the function fails, it returns -1 and sets the `errno` variable to indicate the error.
+
+### Errors
+
+The `execvp` function can fail for several reasons, such as:
+
+1. **ENOENT**: The executable does not exist.
+2. **EACCES**: The executable is not accessible.
+3. **ELOOP**: A symbolic link was encountered during the resolution of the path.
+4. **ENAMETOOLONG**: The path to the executable is too long.
+
+### Conclusion
+
+The `execvp` function is used to execute a new process by replacing the current process image with a new one. It is a convenient function to use because it automatically sets the `argv` to the name of the executable. The function returns 0 if the new process is successfully executed, and -1 if it fails.
+
