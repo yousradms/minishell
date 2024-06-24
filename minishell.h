@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/24 14:38:29 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/24 17:54:58 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,10 @@ typedef struct s_node
 typedef struct s_command {
     char *cmd;
     char **arg;
+    char **red;
     struct s_command *next;
 } t_command;
+
 
 
 

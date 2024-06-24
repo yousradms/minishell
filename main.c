@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/24 17:16:34 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/24 17:59:19 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,12 @@ void parsing_command(char **line,char **env)
 t_command *cmd = commands;
 while (cmd) {
     printf("Command: %s\n", cmd->cmd);
-    // int l = 0;
-    // while (cmd->arg[l]) {
-    //     printf("Arguments are :\n");
-    //     printf("%s\n", cmd->arg[l]);
-    //     l++;
-    // }
+    int l = 0;
+    while (cmd->arg[l]) {
+        printf("Arguments are :\n");
+        printf("%s\n", cmd->arg[l]);
+        l++;
+    }
     cmd = cmd->next;
 }
     //print_list2(command);
