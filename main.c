@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/24 17:59:19 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:55:07 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,21 @@ void set_env(char **line,char ***env)
         exit(0);
     }  
 }
-
+void free_commands(t_command *commands) {
+    t_command *temp;
+    while (commands != NULL) {
+        temp = commands;
+        commands = commands->next;
+        free(temp->cmd);
+        if (temp->arg) {
+            for (int i = 0; temp->arg[i] != NULL; i++) {
+                free(temp->arg[i]);
+            }
+            free(temp->arg);
+        }
+        free(temp);
+    }
+}
 void parsing_command(char **line,char **env)
 {
     (void)env;
@@ -78,24 +92,25 @@ void parsing_command(char **line,char **env)
     parsing(&head);
     expanding(head, env);
     //Split t_node linked list into t_command linked list
-    t_command *commands = ft_split2(&head);
-
+    t_command *commands = ft_split2(&head);//leaks here
+    (void)commands;
     //Print and free the resulting t_command linked list
     // t_command *cmd = commands;
     // int l;
-t_command *cmd = commands;
-while (cmd) {
-    printf("Command: %s\n", cmd->cmd);
-    int l = 0;
-    while (cmd->arg[l]) {
-        printf("Arguments are :\n");
-        printf("%s\n", cmd->arg[l]);
-        l++;
-    }
-    cmd = cmd->next;
-}
+// t_command *cmd = commands;
+// while (cmd) {
+//     printf("Command: %s\n", cmd->cmd);
+//     int l = 0;
+//     while (cmd->arg[l]) {
+//         printf("Arguments are :\n");
+//         printf("%s\n", cmd->arg[l]);
+//         l++;
+//     }
+//     cmd = cmd->next;
+// }
     //print_list2(command);
     //execute(&command);
+    free_commands(commands);
     free(result);
     free_precedent_nodes(head);  
 }
@@ -120,7 +135,7 @@ int main(int ac,char **av,char **env)
         if(ft_strlen(line) > 0)
         {
             add_history(line);
-            parsing_command(&line,env);
+            parsing_command(&line,env);//leaks here
         }
         free(line);
     }
