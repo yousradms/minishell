@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/23 15:37:49 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:38:29 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ typedef struct s_node
 } t_node;
 
 typedef struct s_command {
+    char *cmd;
     char **arg;
-    //
     struct s_command *next;
 } t_command;
 
@@ -94,5 +94,8 @@ int count_elem_command(t_command *command);
 void handle_herddoc(t_node *temp,t_node *nexte);
 int double_dquote_before(char *s,int i);
 int simple_squote_after(char *s,int i);
+char	*ft_strjoin(char *s1, char	*s2);
+char **fill_arg(char *str);
+char    **ft_split3(char *str);
 
 #endif

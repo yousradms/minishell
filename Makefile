@@ -6,14 +6,14 @@
 #    By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/08 13:48:45 by ksellami          #+#    #+#              #
-#    Updated: 2024/06/24 10:00:47 by ksellami         ###   ########.fr        #
+#    Updated: 2024/06/24 14:37:01 by ksellami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME = minishell
 HEADER = minishell.h
-FILES =   main.c libft_utils.c ft_split.c nodes_utils.c  parsing.c fixdelimiters.c tokenize.c  expand.c ft_splite2.c  herdoc.c 
+FILES =   main.c libft_utils.c ft_split.c nodes_utils.c  parsing.c fixdelimiters.c tokenize.c  expand.c ft_splite2.c  herdoc.c ft_split3.c
 OBJS = ${FILES:%.c=%.o}
 CC = cc 
 CFLAGS = -Wall -Wextra -Werror

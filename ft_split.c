@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:25 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/24 10:08:34 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:24:28 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,25 @@ char **ft_split(char *str)
             tab[i2][i3] = '\0';
             i2++;
         }
-        //
         else if (str[i] == ' ' || str[i] == '\t' || str[i] == '\n')
         {
-            i++;
-            while ((str[i] == ' ' || str[i] == '\t' || str[i] == '\n') && str[i] != '\0')
+            // Skip over spaces marked by delimiters
+            if (i > 0 && str[i - 1] == '\x1F')
             {
-                tab[i2] = malloc(sizeof(char) * 2);
-                tab[i2][0] = str[i];
-                tab[i2][1] = '\0';
-                i2++;
-                i++;
+                i++; // Skip the space
+            }
+            else
+            {
+                while ((str[i] == ' ' || str[i] == '\t' || str[i] == '\n') && str[i] != '\0')
+                {
+                    tab[i2] = malloc(sizeof(char) * 2);
+                    tab[i2][0] = str[i];
+                    tab[i2][1] = '\0';
+                    i2++;
+                    i++;
+                }
             }
         }
-        //
         else
         {
             i++;

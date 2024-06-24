@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 16:45:33 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/24 10:03:41 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:23:02 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,57 +17,62 @@ void add_single_quote_delimiters(char *s, int *i, int *len)
     int j;
 
     j = *len;
-    while(j > *i)
+    while (j > *i)
     {
-        s[j + 1] = s[j];
+        s[j + 2] = s[j];
         j--;
     }
-    s[*i] = ' ';
-    s[*i + 1] = '\'';
-    *i += 2;
-    *len += 1;
+    s[*i] = '\x1F';
+    s[*i + 1] = ' ';
+    s[*i + 2] = '\'';
+    *i += 3;
+    *len += 2;
     (*i)++;
-    while(s[*i]!= '\'')
+    while (s[*i] != '\'')
         (*i)++;
     j = *len;
-    while(j > *i)
+    while (j > *i)
     {
-        s[j + 1] = s[j];
+        s[j + 2] = s[j];
         j--;
     }
     s[*i] = '\'';
     s[*i + 1] = ' ';
-    *i += 2;
-    *len += 1;
+    s[*i + 2] = '\x1F';
+    *i += 3;
+    *len += 2;
 }
+
 
 void add_double_quote_delimiters(char *s, int *i, int *len)
 {
     int j;
 
     j = *len;
-    while(j > *i)
+    while (j > *i)
     {
-        s[j + 1] = s[j];
+        s[j + 2] = s[j];
         j--;
     }
-    s[*i] = ' ';
-    s[*i + 1] = '\"';
-    *i += 2;
-    *len += 1;
+    s[*i] = '\x1F';
+    s[*i + 1] = ' ';
+    s[*i + 2] = '\"';
+    *i += 3;
+    *len += 2;
     (*i)++;
-    while(s[*i]!= '\"')
+    while (s[*i] != '\"')
         (*i)++;
     j = *len;
-    while(j > *i)
+    while (j > *i)
     {
-        s[j + 1] = s[j];
+        s[j + 2] = s[j];
         j--;
     }
     s[*i] = '\"';
     s[*i + 1] = ' ';
-    *i += 2;
-    *len += 1;
+    s[*i + 2] = '\x1F';
+    *i += 3;
+    *len += 2;
 }
 
 void add_one_delimiters(char *s, int *i, int *len, char c)
@@ -75,16 +80,18 @@ void add_one_delimiters(char *s, int *i, int *len, char c)
     int j;
 
     j = *len;
-    while(j > *i)
+    while (j > *i)
     {
-        s[j + 2] = s[j];
+        s[j + 3] = s[j];
         j--;
     }
-    s[*i] = ' ';
-    s[*i + 1] = c;
-    s[*i + 2] = ' ';
-    *i += 3;
-    *len += 2;
+    s[*i] = '\x1F';
+    s[*i + 1] = ' ';
+    s[*i + 2] = c;
+    s[*i + 3] = ' ';
+    s[*i + 4] = '\x1F';
+    *i += 5;
+    *len += 4;
 }
 
 void add_one_delimiters_before(char *s, int *i, int *len, char c)
@@ -92,33 +99,36 @@ void add_one_delimiters_before(char *s, int *i, int *len, char c)
     int j;
 
     j = *len;
-    while(j > *i)
-    {
-        s[j + 1] = s[j];
-        j--;
-    }
-    s[*i] = ' ';
-    s[*i + 1] = c;
-    *i += 2;
-    *len += 1;
-}
-
-void add_double_delimiters(char *s, int *i, int *len,char c1,char c2)
-{
-    int j;
-
-    j = *len;
-    while(j > *i)
+    while (j > *i)
     {
         s[j + 2] = s[j];
         j--;
     }
-    s[*i] = ' ';
-    s[*i + 1] = c1;
-    s[*i + 2] = c2;
-    s[*i + 3] = ' ';
-    *i += 4;
+    s[*i] = '\x1F';
+    s[*i + 1] = ' ';
+    s[*i + 2] = c;
+    *i += 3;
     *len += 2;
+}
+
+void add_double_delimiters(char *s, int *i, int *len, char c1, char c2)
+{
+    int j;
+
+    j = *len;
+    while (j > *i)
+    {
+        s[j + 4] = s[j];
+        j--;
+    }
+    s[*i] = '\x1F';
+    s[*i + 1] = ' ';
+    s[*i + 2] = c1;
+    s[*i + 3] = c2;
+    s[*i + 4] = ' ';
+    s[*i + 5] = '\x1F';
+    *i += 6;
+    *len += 4;
 }
 int double_dquote_before(char *s,int i)
 {

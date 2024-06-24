@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/24 10:00:34 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/24 17:16:34 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void parsing_command(char **line,char **env)
     (void)env;
     char **result;
     char *new_line;
-    t_command *command;
+    //t_command *command;
     int i;
     if (!check_quot(*line,'\'', '\"'))
 	{
@@ -74,10 +74,26 @@ void parsing_command(char **line,char **env)
         tokenize(result[i], &head, get_state(result[i]));
         i++;
     }
-    print_list(head);
+    //print_list(head);
     parsing(&head);
-    expanding(head,env);
-    command = ft_split2(&head);
+    expanding(head, env);
+    //Split t_node linked list into t_command linked list
+    t_command *commands = ft_split2(&head);
+
+    //Print and free the resulting t_command linked list
+    // t_command *cmd = commands;
+    // int l;
+t_command *cmd = commands;
+while (cmd) {
+    printf("Command: %s\n", cmd->cmd);
+    // int l = 0;
+    // while (cmd->arg[l]) {
+    //     printf("Arguments are :\n");
+    //     printf("%s\n", cmd->arg[l]);
+    //     l++;
+    // }
+    cmd = cmd->next;
+}
     //print_list2(command);
     //execute(&command);
     free(result);

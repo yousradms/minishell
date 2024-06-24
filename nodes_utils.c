@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/22 20:20:21 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/24 13:13:24 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,19 @@ void print_list(t_node *head)
     }
 }
 
-void print_list2(t_command *command)
-{
-    t_command *first = command;
-    while (first != NULL) {
-        int i = 0;
-        while (first->arg[i]) {
-            printf("%s  ", first->arg[i]);
-            i++;
-        }
-        printf("\n");
-        first = first->next;
-    }
-}
+// void print_list2(t_command *command)
+// {
+//     t_command *first = command;
+//     while (first != NULL) {
+//         int i = 0;
+//         while (first->arg[i]) {
+//             printf("%s  ", first->arg[i]);
+//             i++;
+//         }
+//         printf("\n");
+//         first = first->next;
+//     }
+// }
 
 void free_precedent_nodes(t_node *head)
 {

@@ -6,77 +6,91 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 13:32:32 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/22 17:42:45 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/24 17:28:01 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
 
+// char **fill_arg(char *str)
+// {
+//     char **tab;
+
+//     tab = NULL;
+//     tab = ft_split3(str);
+//     return (tab);
+// }
+
+// Function to add a command node to the back of the list
+void add_back(t_command **head, t_command *new_node)
+{
+    if (!head || !new_node) {
+        return;
+    }
+
+    if (*head == NULL) {
+        *head = new_node;
+    } else {
+        t_command *current = *head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = new_node;
+    }
+}
 t_command *ft_split2(t_node **head)
 {
-    t_command *result = NULL;
-    t_command *current_command = NULL;
+    if (!head || !*head) {
+        return NULL;
+    }
+
     t_node *current_node = *head;
+    t_command *result = NULL;
+    t_command *new_command = NULL;
+    char *line = strdup("");
+    if (!line) {
+        return NULL;
+    }
 
     while (current_node != NULL) {
-        if (current_node->type == PIPE || current_command == NULL) {
-            t_command *new_command = (t_command *)malloc(sizeof(t_command));
-            if (!new_command)
-            {
-                while (result)
-                {
-                    t_command *temp = result;
-                    result = result->next;
-                    free(temp->arg);
-                    free(temp);
-                }
+        if (current_node->type == PIPE && current_node->state == 1) {
+            new_command = (t_command *)malloc(sizeof(t_command));
+            if (!new_command) {
+                free(line);
                 return NULL;
             }
-            new_command->arg = (char **)malloc(2 * sizeof(char *));
-            if (!new_command->arg)
-            {
-                free(new_command);
-                while (result)
-                {
-                    t_command *temp = result;
-                    result = result->next;
-                    free(temp->arg);
-                    free(temp);
-                }
-                return (NULL);
-            }
-            new_command->arg[0] = NULL;
+            new_command->cmd = line;
+            //check redirections
+            //fill arg
+            new_command->arg = ft_split3(line);
             new_command->next = NULL;
+            add_back(&result, new_command);
 
-            if (current_command) 
-                current_command->next = new_command;
-             else 
-                result = new_command;
-            current_command = new_command;
-        }
-
-        if (current_node->type != PIPE && current_node->type != WSPACE)
-        {
-            int i = 0;
-            while (current_command->arg[i] != NULL)
-                i++;
-            current_command->arg = (char **)realloc(current_command->arg, (i + 2) * sizeof(char *));
-            if (!current_command->arg)
-            {
-                while (result)
-                {
-                    t_command *temp = result;
-                    result = result->next;
-                    free(temp->arg);
-                    free(temp);
-                }
+            line = strdup("");
+            if (!line) {
                 return NULL;
             }
-            current_command->arg[i] = current_node->content;
-            current_command->arg[i + 1] = NULL;
+        } else {
+            char *temp = line;
+            line = ft_strjoin(line, current_node->content);
+            free(temp);
         }
         current_node = current_node->next;
     }
-    return (result);
+
+    if (*line != '\0') {
+        new_command = (t_command *)malloc(sizeof(t_command));
+        if (!new_command) {
+            free(line);
+            return NULL;
+        }
+        new_command->cmd = line;
+        new_command->next = NULL;
+        add_back(&result, new_command);
+    } 
+    else {
+        free(line);
+    }
+
+    return result;
 }

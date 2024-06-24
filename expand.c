@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 18:18:10 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/23 14:20:42 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/24 12:23:10 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,17 @@ void set_value(int *i, int *j, char **var_name, char **expanded, char **env)
     }
     else
     {
-        // If the environment variable is not found,  set it to an empty string
+        
         *expanded = strdup("");
-        (*i) += 1; // Add the length of the default value
+        (*i) += 1;
         
     }
 }
-
+int is_valid_char(char c)
+{
+    return(c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+    
+}
 void set_expanded(char **str, char **content, char **env)
 {
     char *expanded;
@@ -111,7 +115,7 @@ void set_expanded(char **str, char **content, char **env)
         if (expanded[i] == '$')
         {
             j = i + 1;
-            while (expanded[j] != '\0' && expanded[j] != ' ' && expanded[j] != '$') 
+            while (expanded[j] != '\0' && expanded[j] != ' ' && expanded[j] != '$' && is_valid_char(expanded[j])) 
                 j++;
             var_length = j - i - 1;
             var_name = malloc(var_length + 1);
@@ -138,32 +142,21 @@ void expanding(t_node *list, char **env)
     current = list;
     while (current != NULL) 
     {
-        
         if(current->type == 6)
             in_herdoc = 1;
         if(in_herdoc && current->next)
             current = current->next;
-        
         if (current->type == 9 && contain_env(current->content) && !in_herdoc)
         {
-            // if(current->next)
-            // {
-            //     if(current->next->type == 10 || current->next->type == 11)
-            //     {
-            //         printf("Error\n");
-            //         current = current->next;
-            //     }
-            // }
-
             str = NULL;
             if (current->state == 2)
                 str = remove_quotes(current->content);
             else if (current->state == 1)
                 str = current->content;
             else if (current->state == 3)
-                {
+            {
                 current->content = remove_quotes(current->content);
-                    //printf("%s", current->content); 
+                printf("%s", current->content); 
                 break;
             }
             set_expanded(&str, &(current->content), env);
@@ -173,7 +166,7 @@ void expanding(t_node *list, char **env)
         
         current = current->next;
         in_herdoc = 0;
-    }
+    } 
     if(enter > 0)
         printf("\n");
 }
