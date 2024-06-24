@@ -22,8 +22,11 @@ void tokenize(char *s,t_node **head,t_state state)
         add_node(head, create_node(s, EXIT_STATUS,state));
     else if (strcmp(s, "\"") == 0) 
         add_node(head, create_node(s, DQUOTE,state));
-    else if (strcmp(s, "\'") == 0)  
+    else if (strcmp(s, "\'") == 0)
+    {
         add_node(head, create_node(s, SQUOTE,state));
+    }
+        
     else if (s && *s) 
         add_node(head, create_node(s, WORD,state));
     else

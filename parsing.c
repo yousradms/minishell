@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:57:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/14 16:50:29 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/22 21:21:17 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ void parsing(t_node **head)
     }   
     while(temp != NULL)
     {
+        if(temp->type == 6 && temp->state == 1)
+        {
+            if(temp->next)
+                handle_herddoc(temp,temp->next);
+        }
         if((temp->type == 3 || temp->type == 4 || temp->type == 5 || temp->type == 6) && temp->next->type != 9)
         {
             if(temp->state == 1)

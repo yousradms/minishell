@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 18:18:10 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/22 20:26:01 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/23 14:20:42 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,31 +133,46 @@ void expanding(t_node *list, char **env)
     t_node *current;
     char *str;
     int enter = 0;
+    int in_herdoc = 0;
     
     current = list;
     while (current != NULL) 
     {
-        if (current->type == 9 && contain_env(current->content))
+        
+        if(current->type == 6)
+            in_herdoc = 1;
+        if(in_herdoc && current->next)
+            current = current->next;
+        
+        if (current->type == 9 && contain_env(current->content) && !in_herdoc)
         {
-            if(current->prev && current->prev->type != 6 )
-            {
-                str = NULL;
-                if (current->state == 2)
-                    str = remove_quotes(current->content);
-                else if (current->state == 1)
-                    str = current->content;
-                else if (current->state == 3)
+            // if(current->next)
+            // {
+            //     if(current->next->type == 10 || current->next->type == 11)
+            //     {
+            //         printf("Error\n");
+            //         current = current->next;
+            //     }
+            // }
+
+            str = NULL;
+            if (current->state == 2)
+                str = remove_quotes(current->content);
+            else if (current->state == 1)
+                str = current->content;
+            else if (current->state == 3)
                 {
-                    current->content = remove_quotes(current->content);
+                current->content = remove_quotes(current->content);
                     //printf("%s", current->content); 
-                    break;
-                }
-                set_expanded(&str, &(current->content), env);
-                printf("%s", current->content);
-                enter++;
+                break;
             }
+            set_expanded(&str, &(current->content), env);
+            printf("%s", current->content);    
+            enter++;
         }
+        
         current = current->next;
+        in_herdoc = 0;
     }
     if(enter > 0)
         printf("\n");

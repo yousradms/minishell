@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:30 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/14 16:56:00 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/23 14:45:05 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,11 @@ int just_spaces(char *s)
 
 t_state get_state(char *s)
 {
-    if (s[0] == '"')
+    if (s[0] == '"')//and closed
+    {
+        //s[1] not space
         return (DQ);
+    }
     else if (s[0] == '\'')
         return (SQ);
     else

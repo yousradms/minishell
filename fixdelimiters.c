@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 16:45:33 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/14 15:40:59 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/24 10:03:41 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,33 @@ void add_double_delimiters(char *s, int *i, int *len,char c1,char c2)
     *i += 4;
     *len += 2;
 }
+int double_dquote_before(char *s,int i)
+{
+    int len = 0;
+    while(len < i)
+    {
+        if(s[len] == '\"')
+            return(1);
+        len++;
+    }
+    return(0);
+}
 
+int simple_squote_after(char *s,int i)
+{
+    int len = ft_strlen(s);
+    i++;
+    while(i < len)
+    {
+        if(s[i] == '\'')
+            return(1);
+        i++;
+    }
+    return(0);
+}
+//i = 5
+//6
+//len = 11
 char *add_delimiter(char *s)
 {
     int i;
@@ -131,7 +157,16 @@ char *add_delimiter(char *s)
     while (i < len)
     {
         if(s[i] == '\'')
-            add_single_quote_delimiters(s, &i, &len);
+        {
+            if(!double_dquote_before(s,i) && !simple_squote_after(s,i))
+            {
+                add_one_delimiters(s, &i, &len, s[i]);
+            }
+            else
+            {
+                add_single_quote_delimiters(s, &i, &len);
+            }
+        }
         else if(s[i] == '\"')
             add_double_quote_delimiters(s, &i, &len);
         else if (s[i] == '|') 

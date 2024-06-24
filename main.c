@@ -6,12 +6,33 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/22 20:24:26 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/24 10:00:34 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	check_quot(char *line, char a, char b)
+{
+	int	i;
+
+	i = -1;
+	while (line[++i])
+	{
+		if (line[i] == b)
+			while (line[++i] != b)
+				if (!line[i])
+					return (0);
+		if (line[i] == a)
+		{
+			while (line[++i] != a && line[i])
+				;
+			if (line[i] != a)
+				return (0);
+		}
+	}
+	return (1);
+}
 void set_env(char **line,char ***env)
 {
     if (strcmp(*line, "env") == 0)
@@ -32,21 +53,28 @@ void set_env(char **line,char ***env)
 
 void parsing_command(char **line,char **env)
 {
+    (void)env;
     char **result;
     char *new_line;
     t_command *command;
     int i;
-    
-    new_line = add_delimiter(*line);                                                                                                                                                                                                                                                                              
+    if (!check_quot(*line,'\'', '\"'))
+	{
+		write(2, "UNCLOSED QUOT\n", 14);
+		return ;
+	}
+    new_line = add_delimiter(*line);
+    //printf("line is : %s\n",new_line);                                                                                                                                                                                                                                                                            
     result = ft_split(*line);
     i = 0;
     t_node *head = NULL;
     while (result[i])
     {
+        //printf("##after split result is %s##\n",result[i]);
         tokenize(result[i], &head, get_state(result[i]));
         i++;
     }
-    //print_list(head);
+    print_list(head);
     parsing(&head);
     expanding(head,env);
     command = ft_split2(&head);
@@ -64,7 +92,7 @@ int main(int ac,char **av,char **env)
     while(1)
     {
         char *line;
-        line = readline("minishell==");
+        line = readline("minishell🥶😁");
         if(!line)
             exit(1);
         set_env(&line, &env);
