@@ -1,5 +1,5 @@
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void tokenize(char *s,t_node **head,t_state state)
 {

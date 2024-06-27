@@ -1,0 +1,4 @@
+/////parsing
+//for the parsing task : stocke < > << >> in the start t_command
+//task : remove quotes from the word 
+/////execution

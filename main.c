@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/24 19:55:07 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/27 15:54:06 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void set_env(char **line,char ***env)
         exit(0);
     }  
 }
-void free_commands(t_command *commands) {
+void free_commands(t_command *commands)
+{
     t_command *temp;
     while (commands != NULL) {
         temp = commands;
@@ -65,7 +66,7 @@ void free_commands(t_command *commands) {
         free(temp);
     }
 }
-void parsing_command(char **line,char **env)
+void parsing_execute_command(char **line,char **env)
 {
     (void)env;
     char **result;
@@ -90,10 +91,12 @@ void parsing_command(char **line,char **env)
     }
     //print_list(head);
     parsing(&head);
+    //
     expanding(head, env);
+    //handle_herdoc(head);
     //Split t_node linked list into t_command linked list
     t_command *commands = ft_split2(&head);//leaks here
-    (void)commands;
+    
     //Print and free the resulting t_command linked list
     // t_command *cmd = commands;
     // int l;
@@ -109,8 +112,8 @@ void parsing_command(char **line,char **env)
 //     cmd = cmd->next;
 // }
     //print_list2(command);
-    //execute(&command);
-    free_commands(commands);
+    execute(&commands,env);
+    //free_commands(commands);
     free(result);
     free_precedent_nodes(head);  
 }
@@ -126,7 +129,7 @@ int main(int ac,char **av,char **env)
         line = readline("minishell🥶😁");
         if(!line)
             exit(1);
-        set_env(&line, &env);
+        //set_env(&line, &env);
         if(line[0] == '\0' || just_spaces(line))
         {
             free(line);
@@ -135,7 +138,7 @@ int main(int ac,char **av,char **env)
         if(ft_strlen(line) > 0)
         {
             add_history(line);
-            parsing_command(&line,env);//leaks here
+            parsing_execute_command(&line,env);
         }
         free(line);
     }

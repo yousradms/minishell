@@ -6,11 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:25 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/24 15:24:28 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/26 18:05:05 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 char **ft_split(char *str)
 {
@@ -73,5 +73,5 @@ char **ft_split(char *str)
         }
     }
     tab[i2] = NULL;
-    return tab;
+    return (tab);
 }

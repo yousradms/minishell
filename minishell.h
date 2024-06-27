@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/24 17:54:58 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/26 20:50:11 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <fcntl.h>
 #define w_count 1000
 #define L_count 1000
 
@@ -56,16 +57,16 @@ typedef struct s_node
     struct s_node *prev;
 } t_node;
 
-typedef struct s_command {
+typedef struct s_command
+{
     char *cmd;
     char **arg;
-    char **red;
+    char **red;//< > append file.txt
+    //heredoc
     struct s_command *next;
 } t_command;
 
-
-
-
+//parsing
 int	ft_strlen(char *str);
 char	**ft_split(char *s);
 t_node *create_node(char *content, int type,int state);
@@ -91,13 +92,31 @@ t_state get_state(char *s);
 void free_arg(char **result);
 t_command *ft_split2(t_node **head);
 void print_list2(t_command *command);
-void execute(t_command **command);
+void execute(t_command **command,char **env);
 int count_elem_command(t_command *command);
-void handle_herddoc(t_node *temp,t_node *nexte);
+
+void handle_herdoc(t_node *head);
 int double_dquote_before(char *s,int i);
 int simple_squote_after(char *s,int i);
 char	*ft_strjoin(char *s1, char	*s2);
 char **fill_arg(char *str);
 char    **ft_split3(char *str);
+//execution
+int count_nbr_command(t_command *command);
+void execute(t_command **commande,char **env);
+void execute_one_command(t_command **command,char **env);
+void handle_concatenated_args(char **arg);
+void ft_cd(t_command **command);
+int is_builtin(char *cmd);
+void execute_builtin(t_command **command);
+void ft_echo(t_command **command);
+void ft_env(t_command **command);
+void ft_exit(t_command **command);
+void ft_export(t_command **command);
+void ft_pwd(t_command **command);
+void ft_unset(t_command **command);
+char *search_command(const char *command, char **env);
+char	**ft_split4( char *s, char c);
+char	*strndup1( char *s, size_t n);
 
 #endif

@@ -6,11 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 16:45:33 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/24 15:23:02 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/26 18:03:12 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void add_single_quote_delimiters(char *s, int *i, int *len)
 {
@@ -154,9 +154,7 @@ int simple_squote_after(char *s,int i)
     }
     return(0);
 }
-//i = 5
-//6
-//len = 11
+
 char *add_delimiter(char *s)
 {
     int i;

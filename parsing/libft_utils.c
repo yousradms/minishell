@@ -6,11 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:30 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/24 13:39:08 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/26 18:08:47 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int ft_strlen(char *s)
 {
@@ -64,8 +64,10 @@ void free_arg(char **result)
         free(result);
     }
 }
-char *ft_strjoin(char *s1, char *s2) {
-    if (!s1 || !s2) return NULL;
+char *ft_strjoin(char *s1, char *s2)
+{
+    if (!s1 || !s2)
+        return NULL;
     size_t len1 = strlen(s1);
     size_t len2 = strlen(s2);
     char *result = (char *)malloc(len1 + len2 + 1);

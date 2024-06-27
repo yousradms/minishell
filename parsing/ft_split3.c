@@ -1,12 +1,15 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 #define MAX_WORDS 1000
 #define MAX_LENGTH 1000
-int is_whitespace(char c) {
+
+int is_whitespace(char c)
+{
     return (c == ' ' || c == '\t' || c == '\n');
 }
 
-char **ft_split3(char *str) {
+char **ft_split3(char *str)
+{
     int i = 0;
     int i2 = 0;
     int i3 = 0;
@@ -21,17 +24,18 @@ char **ft_split3(char *str) {
         i++;
 
     while (str[i]) {
-        if (!is_whitespace(str[i])) { 
+        if (!is_whitespace(str[i]))
+        { 
             i3 = 0;
             tab[i2] = malloc(sizeof(char) * (MAX_LENGTH + 1)); 
-
-            
-            if (str[i] == '\'' || str[i] == '"') {
+            if (str[i] == '\'' || str[i] == '"')
+            {
                 char quote_char = str[i];
                 tab[i2][i3++] = quote_char;
                 i++; 
 
-                while (str[i] && str[i] != quote_char) {
+                while (str[i] && str[i] != quote_char)
+                {
                     tab[i2][i3++] = str[i];
                     i++;
                 }
@@ -41,35 +45,22 @@ char **ft_split3(char *str) {
 
                 if (str[i] == quote_char)
                     i++; 
-            } else {
-                
-                while (str[i] && !is_whitespace(str[i])) {
+            }
+            else
+            {
+                while (str[i] && !is_whitespace(str[i]))
+                {
                     tab[i2][i3++] = str[i];
                     i++;
                 }
             }
-
             tab[i2][i3] = '\0'; 
             i2++;
-        } else {
-            i++;
         }
+        else
+            i++;
     }
-
     tab[i2] = NULL; 
-    return tab;
+    return (tab);
 }
-// int main(void)
-// {
-//     char *str = "ls -l | wc-l 'jjjjjj  sjkdjd dsjjj nshs'  dhhsh";
 
-//     int i =0;
-
-//     char **str2 = ft_split(str);
-
-//     while(str2[i])
-//     {
-//         printf("%s\n", str2[i]);
-//         i++;
-//     }
-// }

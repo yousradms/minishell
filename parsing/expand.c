@@ -1,6 +1,7 @@
-#include "minishell.h"
+#include "../minishell.h"
 
-char *remove_quotes(char *s) {
+char *remove_quotes(char *s)
+{
     char *token;
     int i;
     int j;
@@ -8,42 +9,46 @@ char *remove_quotes(char *s) {
     token = malloc(strlen(s) + 1);
     i = 0;
     j = 0;
-    while (s[i]) {
+    while (s[i])
+    {
         if (s[i] == '"' || s[i] == '\'')
             i++;
         else
             token[j++] = s[i++];
     }
     token[j] = '\0';
-    return token;
+    return (token);
 }
 
-int contain_env(char *s) {
+int contain_env(char *s)
+{
     int i;
     
     i = 0;
     while(s[i]) {
         if(s[i] == '$' && s[i+1] != ' ')
-            return 1;
+            return (1);
         i++;
     }
-    return 0;
+    return (0);
 }
 
-char *get_env_value(char *var_name, char **env) {
+char *get_env_value(char *var_name, char **env)
+{
     int i;
 
     i = 0;
-    while (env[i]) {
-        if (strncmp(env[i], var_name, strlen(var_name)) == 0 && env[i][strlen(var_name)] == '=') {
+    while (env[i])
+    {
+        if (strncmp(env[i], var_name, strlen(var_name)) == 0 && env[i][strlen(var_name)] == '=')
             return strdup(env[i] + strlen(var_name) + 1);
-        }
         i++;
     }
-    return NULL;
+    return (NULL);
 }
 
-char *replace_variable(char *str, char *value, int start, int end) {
+char *replace_variable(char *str, char *value, int start, int end)
+{
     int new_expanded_len;
     char *new_expanded;
 
@@ -52,21 +57,25 @@ char *replace_variable(char *str, char *value, int start, int end) {
     strncpy(new_expanded, str, start);
     strcpy(new_expanded + start, value);
     strcpy(new_expanded + start + strlen(value), str + end);
-    return new_expanded;
+    return (new_expanded);
 }
 
-void set_value(int *i, int *j, char **var_name, char **expanded, char **env) {
+void set_value(int *i, int *j, char **var_name, char **expanded, char **env)
+{
     char *value;
     char *new_expanded;
 
     value = get_env_value(*var_name, env);
-    if (value != NULL) {
+    if (value != NULL)
+    {
         new_expanded = replace_variable(*expanded, value, *i, *j);
         free(*expanded);
         *expanded = new_expanded;
         *i += strlen(value);
         free(value);
-    } else {
+    }
+    else
+    {
         new_expanded = replace_variable(*expanded, "", *i, *j);
         free(*expanded);
         *expanded = new_expanded;
@@ -74,11 +83,13 @@ void set_value(int *i, int *j, char **var_name, char **expanded, char **env) {
     }
 }
 
-int is_valid_char(char c) {
+int is_valid_char(char c)
+{
     return (c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
 }
 
-void set_expanded(char **str, char **content, char **env) {
+void set_expanded(char **str, char **content, char **env)
+{
     char *expanded;
     int i;
     int j;
@@ -87,8 +98,10 @@ void set_expanded(char **str, char **content, char **env) {
 
     expanded = strdup(*str);
     i = 0;
-    while (expanded[i] != '\0') {
-        if (expanded[i] == '$') {
+    while (expanded[i] != '\0')
+    {
+        if (expanded[i] == '$')
+        {
             j = i + 1;
             while (expanded[j] != '\0' && expanded[j] != ' ' && expanded[j] != '$' && is_valid_char(expanded[j])) 
                 j++;
@@ -106,25 +119,29 @@ void set_expanded(char **str, char **content, char **env) {
     *content = expanded;
 }
 
-void expanding(t_node *list, char **env) {
+void expanding(t_node *list, char **env)
+{
     t_node *current;
     char *str;
     int enter = 0;
     int in_herdoc = 0;
     
     current = list;
-    while (current != NULL) {
+    while (current != NULL)
+    {
         if (current->type == 6)
             in_herdoc = 1;
         if (in_herdoc && current->next)
             current = current->next;
-        if (current->type == 9 && contain_env(current->content) && !in_herdoc) {
+        if (current->type == 9 && contain_env(current->content) && !in_herdoc)
+        {
             str = NULL;
-            if (current->state == 2) {
+            if (current->state == 2)
                 str = remove_quotes(current->content);
-            } else if (current->state == 1) {
+            else if (current->state == 1)
                 str = strdup(current->content);  // Allocate a copy of content
-            } else if (current->state == 3) {
+            else if (current->state == 3)
+            {
                 char *temp = remove_quotes(current->content);
                 free(current->content);
                 current->content = temp;

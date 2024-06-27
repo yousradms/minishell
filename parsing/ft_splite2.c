@@ -6,20 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 13:32:32 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/24 17:58:51 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/26 18:08:01 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-// char **fill_arg(char *str)
-// {
-//     char **tab;
-
-//     tab = NULL;
-//     tab = ft_split3(str);
-//     return (tab);
-// }
+#include "../minishell.h"
 
 // Function to add a command node to the back of the list
 void add_back(t_command **head, t_command *new_node)
@@ -38,24 +29,26 @@ void add_back(t_command **head, t_command *new_node)
         current->next = new_node;
     }
 }
+
 t_command *ft_split2(t_node **head)
 {
-    if (!head || !*head) {
-        return NULL;
-    }
+    if (!head || !*head)
+        return (NULL);
 
     t_node *current_node = *head;
     t_command *result = NULL;
     t_command *new_command = NULL;
     char *line = strdup("");
-    if (!line) {
-        return NULL;
-    }
+    if (!line)
+        return (NULL);
 
-    while (current_node != NULL) {
-        if (current_node->type == PIPE && current_node->state == 1) {
+    while (current_node != NULL)
+    {
+        if (current_node->type == PIPE && current_node->state == 1)
+        {
             new_command = (t_command *)malloc(sizeof(t_command));
-            if (!new_command) {
+            if (!new_command)
+            {
                 free(line);
                 return NULL;
             }
@@ -67,10 +60,11 @@ t_command *ft_split2(t_node **head)
             add_back(&result, new_command);
 
             line = strdup("");
-            if (!line) {
-                return NULL;
-            }
-        } else {
+            if (!line)
+                return (NULL);
+        }
+        else
+        {
             char *temp = line;
             line = ft_strjoin(line, current_node->content);
             free(temp);
@@ -78,9 +72,11 @@ t_command *ft_split2(t_node **head)
         current_node = current_node->next;
     }
 
-    if (*line != '\0') {
+    if (*line != '\0')
+    {
         new_command = (t_command *)malloc(sizeof(t_command));
-        if (!new_command) {
+        if (!new_command)
+        {
             free(line);
             return NULL;
         }
@@ -89,9 +85,7 @@ t_command *ft_split2(t_node **head)
         new_command->next = NULL;
         add_back(&result, new_command);
     } 
-    else {
+    else
         free(line);
-    }
-
-    return result;
+    return (result);
 }
