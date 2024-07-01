@@ -1,24 +1,14 @@
-#include "../minishell.h"
-// Function to check if the command is a built-in command
-int is_builtin(char *cmd)
-{
-    if (strcmp(cmd, "cd") == 0)
-        return 1;
-    else if (strcmp(cmd, "unset") == 0)
-        return 1;
-    else if (strcmp(cmd, "exit") == 0)
-        return 1;
-    else if (strcmp(cmd, "echo") == 0)
-        return 1;
-    else if (strcmp(cmd, "env") == 0)
-        return 1;
-    else if (strcmp(cmd, "pwd") == 0)
-        return 1;
-    else
-        return 0;
-}
+#include <stdlib.h>
+#include <string.h>
 
-//Function li kat7ewel lina char **env l linked list
+typedef struct s_env
+{
+    char *var;
+    char *value;
+    struct s_env *next;
+    struct s_env *prev;
+} t_env;
+
 void env_list(t_env **env, char **envp)
 {
     // Initialize pointers
@@ -75,35 +65,4 @@ void env_list(t_env **env, char **envp)
     
     // Update the pointer to the head of the list
     *env = head;
-}
-
-void execute_builtin(t_command **command, char **envp) {
-    t_env *env = NULL; // Initialize linked list head for environment variables
-    env_list(&env, envp); // Populate the linked list with environment variables
-
-    if (strcmp((*command)->arg[0], "echo") == 0) {
-        ft_echo(command);
-    }
-    else if (strcmp((*command)->arg[0], "cd") == 0) {
-        ft_cd(command);
-    }
-    else if (strcmp((*command)->arg[0], "pwd") == 0) {
-        ft_pwd(command,&env);
-    }
-    else if (strcmp((*command)->arg[0], "export") == 0) {
-        ft_export(command);
-    }
-    else if (strcmp((*command)->arg[0], "unset") == 0) {
-        ft_unset(command);
-    }
-    else if (strcmp((*command)->arg[0], "env") == 0) {
-        
-        ft_env(command, &env); // Pass the command and the linked list of environment variables
-    }
-    else if (strcmp((*command)->arg[0], "exit") == 0) {
-        ft_exit(command);
-    }
-    else {
-        fprintf(stderr, "Unknown built-in command\n");
-    }
 }

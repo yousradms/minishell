@@ -141,9 +141,9 @@ char *find_commande(char *cmd, char **envp)
 }
 void execute_one_command(t_command **command,char **env)
 {
-    pid_t pid;
-    int status;
-    
+    // pid_t pid;
+    // int status;
+    (void)env;
     if (command == NULL || *command == NULL)
     {
         fprintf(stderr, "No command to execute\n");
@@ -152,36 +152,37 @@ void execute_one_command(t_command **command,char **env)
     //handle builtins
     if (is_builtin((*command)->arg[0]))
     {
-        execute_builtin(command);
+        //printf("7777");
+        execute_builtin(command,env);
         return;
     }
     ////Task : handle redirections////
     //Step 1: Fork a Child Process
-    pid = fork();//<0-->error =0-->child process
-    //>0 parent process
-    if (pid < 0)
-    { 
-        perror("fork");
-        exit(1);
-    }
-    else if (pid == 0)
-    {
-        // Check if the command path is valid
-        char *full_command = find_commande((*command)->arg[0],env);
-        // Child process
-        //printf("%s", full_command);
-        if (execve(full_command, (*command)->arg, env) == -1)
-        {
-            //printf("######");
-            perror("execve");
-            exit(EXIT_FAILURE);
-        }
-    }
-    else
-    { 
-        // Parent process
-        waitpid(pid, &status, WUNTRACED);
-    }
+    // pid = fork();//<0-->error =0-->child process
+    // //>0 parent process
+    // if (pid < 0)
+    // { 
+    //     perror("fork");
+    //     exit(1);
+    // }
+    // else if (pid == 0)
+    // {
+    //     // Check if the command path is valid
+    //     char *full_command = find_commande((*command)->arg[0],env);
+    //     // Child process
+    //     //printf("%s", full_command);
+    //     if (execve(full_command, (*command)->arg, env) == -1)
+    //     {
+    //         //printf("######");
+    //         perror("execve");
+    //         exit(EXIT_FAILURE);
+    //     }
+    // }
+    // else
+    // { 
+    //     // Parent process
+    //     waitpid(pid, &status, WUNTRACED);
+    // }
 }
 void print_command(t_command **commande)
 {

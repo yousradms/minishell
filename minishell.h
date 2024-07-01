@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/26 20:50:11 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/28 17:53:05 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,13 @@ typedef struct s_command
     //heredoc
     struct s_command *next;
 } t_command;
+typedef struct s_env
+{
+    char *var;
+    char *value;
+    struct s_env *next;
+    struct s_env *prev;
+} t_env;
 
 //parsing
 int	ft_strlen(char *str);
@@ -108,15 +115,17 @@ void execute_one_command(t_command **command,char **env);
 void handle_concatenated_args(char **arg);
 void ft_cd(t_command **command);
 int is_builtin(char *cmd);
-void execute_builtin(t_command **command);
-void ft_echo(t_command **command);
-void ft_env(t_command **command);
+void execute_builtin(t_command **command,char **envp);
+void ft_echo(t_command **cmd);
+void ft_env(t_command **command, t_env **envp);
 void ft_exit(t_command **command);
 void ft_export(t_command **command);
-void ft_pwd(t_command **command);
+// void ft_pwd(t_command **command);
+void ft_pwd(t_command **command, t_env **envp);
 void ft_unset(t_command **command);
 char *search_command(const char *command, char **env);
 char	**ft_split4( char *s, char c);
 char	*strndup1( char *s, size_t n);
+void set_ennv(t_env **envp, const char *var, const char *value);
 
 #endif

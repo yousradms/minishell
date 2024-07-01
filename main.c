@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/27 15:54:06 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/27 20:16:06 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,23 @@ int	check_quot(char *line, char a, char b)
 	}
 	return (1);
 }
-void set_env(char **line,char ***env)
+char **set_env(char **env)
 {
-    if (strcmp(*line, "env") == 0)
+    int i =0;
+    int num_strings = 0;
+    while (env[num_strings] != NULL)
+        num_strings++;
+
+    char **envp = (char **)malloc(sizeof(char *) * (num_strings + 1));
+    if (envp == NULL)
+        return NULL;
+    while(i < num_strings)
     {
-        char **envp = *env;
-        while (*envp != NULL)
-        {
-            printf("%s\n", *envp);
-            envp++;
-        }
+        envp[i] = strdup(env[i]);
+        i++;
     }
-    else if (strcmp(*line, "exit") == 0)
-    {
-        printf("Exiting minishell\n");
-        exit(0);
-    }  
+    envp[num_strings] = NULL;
+    return envp;
 }
 void free_commands(t_command *commands)
 {
@@ -89,7 +90,7 @@ void parsing_execute_command(char **line,char **env)
         tokenize(result[i], &head, get_state(result[i]));
         i++;
     }
-    //print_list(head);
+    // print_list(head);
     parsing(&head);
     //
     expanding(head, env);
@@ -122,23 +123,24 @@ int main(int ac,char **av,char **env)
 { 
     (void)ac;
     (void)av;
-    
+    char **envp = set_env(env);//allocate + copy
+
     while(1)
     {
         char *line;
         line = readline("minishell🥶😁");
         if(!line)
             exit(1);
-        //set_env(&line, &env);
+        ;
         if(line[0] == '\0' || just_spaces(line))
         {
             free(line);
             continue;
         }
-        if(ft_strlen(line) > 0)
+        if(strlen(line) > 0)
         {
             add_history(line);
-            parsing_execute_command(&line,env);
+            parsing_execute_command(&line,envp);
         }
         free(line);
     }
