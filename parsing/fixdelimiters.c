@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fixdelimiters.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 16:45:33 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/30 09:18:17 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/01 18:29:01 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void add_single_quote_delimiters(char *s, char *new_s, int *i, int *j)
     (*i)++;
 }
 
-static void add_double_quote_delimiters(char *s, char *new_s, int *i, int *j)
+static void add_double_quote_delimiters(char *s, char *new_s, int *i, int *j)//hadi
 {
     new_s[(*j)++] = '\x1F';
     new_s[(*j)++] = ' ';

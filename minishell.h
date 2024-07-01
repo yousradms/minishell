@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/30 17:34:01 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/01 17:06:53 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,15 @@ typedef struct s_command
     struct s_command *next;
     struct s_command *prev;
 } t_command;
-
+typedef struct s_env
+{
+    char *var;
+    char *value;
+    struct s_env *next;
+    struct s_env *prev;
+} t_env;
 //parsing
+char **set_env(char **env);
 int	ft_strlen(char *str);
 char	**ft_split(char *s);
 t_node *create_node(char *content, int type,int state);
@@ -81,7 +88,7 @@ void print_list(t_node *head);
 int parsing(t_node *head);
 int ft_error(t_node **head);
 t_node	*ft_lstlast(t_node *lst);
-void count_quotes(char *s);
+
 
 char *add_delimiter(char *s);
 void tokenize(char *s,t_node **head,t_state state);
@@ -97,7 +104,7 @@ void print_list2(t_command *command);
 void execute(t_command **command,char **env);
 int count_elem_command(t_command *command);
 
-void handle_herdoc(t_node *head);
+int handle_herdoc(char *delimiter);
 int double_dquote_before(char *s,int i);
 int simple_squote_after(char *s,int i);
 char	*ft_strjoin(char *s1, char	*s2);
@@ -111,9 +118,9 @@ void execute_one_command(t_command **command,char **env);
 void handle_concatenated_args(char **arg);
 void ft_cd(t_command **command);
 int is_builtin(char *cmd);
-void execute_builtin(t_command **command);
+void execute_builtin(t_command **command, char **envp);
 void ft_echo(t_command **cmd);
-void ft_env(t_command **command);
+void ft_env(t_command **command, t_env **envp);
 void ft_exit(t_command **command);
 void ft_export(t_command **command);
 void ft_pwd(t_command **command);
@@ -126,5 +133,6 @@ void handle_redirect_out(t_command *cmd, char *filename, int append);
 void handle_redirections(t_command **command);
 void handle_multiple_command(t_command **commande,char **env);
 char *find_commande(char *cmd, char **envp);
+void handle_herddoce(t_command **command);
 
 #endif

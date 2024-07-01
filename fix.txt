@@ -1,0 +1,15 @@
+'ls'-'la'
+echo "s's's"
+echo "''''"
+cat << 'l'sl   > lsl
+cat << 'll'  >> when no quotse expand 
+------------
+	bash-3.2$ cat << 'll'
+	> $USER
+	> ll
+	$USER
+	bash-3.2$ cat << ll
+	> $USER
+	> ll
+	ydoumas
+------------

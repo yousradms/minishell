@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/30 20:34:18 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/01 18:28:12 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,7 @@ int	check_quot(char *line, char a, char b)
 	}
 	return (1);
 }
-void set_env(char **line,char ***env)
-{
-    if (strcmp(*line, "env") == 0)
-    {
-        char **envp = *env;
-        while (*envp != NULL)
-        {
-            printf("%s\n", *envp);
-            envp++;
-        }
-    }
-    else if (strcmp(*line, "exit") == 0)
-    {
-        printf("Exiting minishell\n");
-        exit(0);
-    }  
-}
+
 void free_commands(t_command *commands)
 {
     t_command *temp;
@@ -118,59 +102,151 @@ void parsing_execute_command(char **line,char **env)
 		write(2, "UNCLOSED QUOT\n", 14);
 		return ;
 	}
-    new_line = add_delimiter(*line);
-    //printf("line is : %s\n",new_line);
+    new_line = add_delimiter(*line);//problem here
+    printf("line is : %s\n",new_line);
     char *s = ft_strtrim(new_line," ");                                                                                                                                                                                                                                                                            
     result = ft_split(s);
     //print_darg(result);
     i = 0;
     t_node *head = NULL;
-    while (result[i])
+    while (result[i])//tokenize
     {
         tokenize(result[i], &head, get_state(result[i]));
         i++;
     }
     //print_list(head);
-    //parsing(&head);
-    
     expanding(head, env);
-    //handle_herdoc(head);
     if (parsing(head) == -1)
 	{
-
 		free_precedent_nodes(head);
 		return ;
 	}
-    t_command *commands = ft_split2(&head);
+    t_command *commands = ft_split2(&head);//splut pipe-->t_command
     //print_list2(commands);
-    handle_multiple_command(&commands,env);
+    handle_herddoce(&commands);
+    handle_multiple_command(&commands,env);//execution
     free_commands(commands);
     free(result);
     free_precedent_nodes(head);
     free(s); 
 }
+int handle_herdoc(char *delimiter) 
+{
+    char *line;
+    int temp_fd;
 
+    // Open or create "temp.txt" for appending
+    temp_fd = open("temp.txt", O_RDWR | O_CREAT | O_TRUNC, 0644);
+    if (temp_fd == -1) {
+        perror("Error creating temporary file");
+        exit(0);
+    }
+
+    while (1) {
+        line = readline("heredoc> ");
+        if (line == NULL)
+            break;
+
+        // Check for the delimiter at the start of the line
+        if (strncmp(line, delimiter, strlen(delimiter)) == 0 && line[strlen(delimiter)] == '\0') {
+            free(line);
+            break; // Exit loop when delimiter is found
+        }
+
+        // Write the line and newline character to the temporary file
+        if (write(temp_fd, line, strlen(line)) == -1) {
+            perror("Error writing to temporary file");
+            free(line);
+            close(temp_fd);
+            exit(0);
+        }
+        if (write(temp_fd, "\n", 1) == -1) {
+            perror("Error writing to temporary file");
+            free(line);
+            close(temp_fd);
+            exit(0);
+        }
+
+        free(line);
+    }
+
+    // Close the temporary file after writing
+    close(temp_fd);
+
+    // Read from "temp.txt" and write to stdout
+    // char buffer[BUFFER_SIZE];
+    // ssize_t bytes_read;
+
+    temp_fd = open("temp.txt", O_RDONLY, 0644);
+    if (temp_fd == -1) {
+        perror("Error opening temporary file for reading");
+        exit(0);
+    }
+    int my_fd = temp_fd;
+    // while ((bytes_read = read(temp_fd, buffer, sizeof(buffer))) > 0) {
+    //     if (write(STDOUT_FILENO, buffer, bytes_read) == -1) {
+    //         perror("Error writing to stdout");
+    //         close(temp_fd);
+    //         return;
+    //     }
+    // }
+
+    // if (bytes_read == -1) {
+    //     perror("Error reading from temporary file");
+    //     close(temp_fd);
+    //     return;
+    // }
+
+    // Close and remove "temp.txt"
+    close(temp_fd);
+    if (unlink("temp.txt") == -1) {
+        perror("Error removing temporary file");
+        exit(0);
+    }
+    return(my_fd);
+}
+void handle_herddoce(t_command **command)
+{
+    t_command *first = *command;
+    while(first != NULL)
+    {
+        int i = 0;
+        while(first->arg[i])
+        {
+            if(strcmp(first->arg[i],"<<") == 0)
+            {
+                //printf("#%s#\n",first->arg[i + 1]);
+                if(first->arg[i + 1])
+                    first->my_fd = handle_herdoc(first->arg[i + 1]);
+                    
+            }
+            i++;
+        } 
+        first = first->next;
+    }
+}
 int main(int ac,char **av,char **env)
 { 
     (void)ac;
     (void)av;
+    char **envp;
+    char *line;
     
+    envp = set_env(env);//allocate + copy
     while(1)
     {
-        char *line;
         line = readline("minishell🥶😁");
         if(!line)
             exit(1);
-        //set_env(&line, &env);
         if(line[0] == '\0' || just_spaces(line))
         {
             free(line);
             continue;
         }
-        if(ft_strlen(line) > 0)
+        if(strlen(line) > 0)
         {
             add_history(line);
-            parsing_execute_command(&line,env);
+            parsing_execute_command(&line,envp);
         }
         free(line);
     }

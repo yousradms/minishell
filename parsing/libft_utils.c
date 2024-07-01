@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   libft_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:30 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/26 18:08:47 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/01 17:07:44 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int ft_strlen(char *s)
-{
-    int i;
-
-    i = 0;
-    while(*s)
-    {
-        i++;
-        s++;
-    }
-    return(i);
-}
 
 int just_spaces(char *s)
 {
