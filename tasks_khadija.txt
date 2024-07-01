@@ -1,0 +1,21 @@
+
+//when we must print result of expanding expanding vs execution 
+
+//check quotes in command after parsing the command try to remove quotes for the command and also for the builtins
+
+//in builtins something work as lower and upper and something not 
+
+//handle expanding
+
+//handle pipe ==>> done
+
+//handle_redirections : > < append ==>> done
+
+//handle cd 
+//handle pwd
+//handle exit
+
+
+
+
+

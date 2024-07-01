@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/27 20:16:06 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/06/30 20:34:18 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,22 @@ int	check_quot(char *line, char a, char b)
 	}
 	return (1);
 }
-char **set_env(char **env)
+void set_env(char **line,char ***env)
 {
-    int i =0;
-    int num_strings = 0;
-    while (env[num_strings] != NULL)
-        num_strings++;
-
-    char **envp = (char **)malloc(sizeof(char *) * (num_strings + 1));
-    if (envp == NULL)
-        return NULL;
-    while(i < num_strings)
+    if (strcmp(*line, "env") == 0)
     {
-        envp[i] = strdup(env[i]);
-        i++;
+        char **envp = *env;
+        while (*envp != NULL)
+        {
+            printf("%s\n", *envp);
+            envp++;
+        }
     }
-    envp[num_strings] = NULL;
-    return envp;
+    else if (strcmp(*line, "exit") == 0)
+    {
+        printf("Exiting minishell\n");
+        exit(0);
+    }  
 }
 void free_commands(t_command *commands)
 {
@@ -67,12 +66,52 @@ void free_commands(t_command *commands)
         free(temp);
     }
 }
+static char	*extrat_word(int debut, int fin, char *newstr, char *s1)
+{
+	int	k;
+
+	if (debut > fin)
+	{
+		newstr = (char *)malloc(1);
+		if (newstr == NULL)
+			return (NULL);
+		newstr[0] = '\0';
+		return (newstr);
+	}
+	newstr = (char *)malloc(sizeof(char) * (fin - debut + 2));
+	if (newstr == NULL)
+		return (NULL);
+	k = 0;
+	while (debut <= fin)
+		newstr[k++] = s1[debut++];
+	newstr[k] = '\0';
+	return (newstr);
+}
+
+static char	*ft_strtrim(char  *s1, char  *set)
+{
+	int		debut;
+	int		fin;
+	char	*newstr;
+
+	newstr = NULL;
+	if (s1 == NULL || set == NULL)
+		return (NULL);
+	debut = 0;
+	fin = strlen(s1) - 1;
+	while (s1[debut] != '\0' && strchr(set, s1[debut]))
+		debut++;
+	while (fin >= 0 && strchr(set, s1[fin]))
+		fin--;
+	return (extrat_word(debut, fin, newstr, s1));
+}
+
 void parsing_execute_command(char **line,char **env)
 {
+    
     (void)env;
     char **result;
     char *new_line;
-    //t_command *command;
     int i;
     if (!check_quot(*line,'\'', '\"'))
 	{
@@ -80,67 +119,58 @@ void parsing_execute_command(char **line,char **env)
 		return ;
 	}
     new_line = add_delimiter(*line);
-    //printf("line is : %s\n",new_line);                                                                                                                                                                                                                                                                            
-    result = ft_split(*line);
+    //printf("line is : %s\n",new_line);
+    char *s = ft_strtrim(new_line," ");                                                                                                                                                                                                                                                                            
+    result = ft_split(s);
+    //print_darg(result);
     i = 0;
     t_node *head = NULL;
     while (result[i])
     {
-        //printf("##after split result is %s##\n",result[i]);
         tokenize(result[i], &head, get_state(result[i]));
         i++;
     }
-    // print_list(head);
-    parsing(&head);
-    //
+    //print_list(head);
+    //parsing(&head);
+    
     expanding(head, env);
     //handle_herdoc(head);
-    //Split t_node linked list into t_command linked list
-    t_command *commands = ft_split2(&head);//leaks here
-    
-    //Print and free the resulting t_command linked list
-    // t_command *cmd = commands;
-    // int l;
-// t_command *cmd = commands;
-// while (cmd) {
-//     printf("Command: %s\n", cmd->cmd);
-//     int l = 0;
-//     while (cmd->arg[l]) {
-//         printf("Arguments are :\n");
-//         printf("%s\n", cmd->arg[l]);
-//         l++;
-//     }
-//     cmd = cmd->next;
-// }
-    //print_list2(command);
-    execute(&commands,env);
-    //free_commands(commands);
+    if (parsing(head) == -1)
+	{
+
+		free_precedent_nodes(head);
+		return ;
+	}
+    t_command *commands = ft_split2(&head);
+    //print_list2(commands);
+    handle_multiple_command(&commands,env);
+    free_commands(commands);
     free(result);
-    free_precedent_nodes(head);  
+    free_precedent_nodes(head);
+    free(s); 
 }
 
 int main(int ac,char **av,char **env)
 { 
     (void)ac;
     (void)av;
-    char **envp = set_env(env);//allocate + copy
-
+    
     while(1)
     {
         char *line;
         line = readline("minishell🥶😁");
         if(!line)
             exit(1);
-        ;
+        //set_env(&line, &env);
         if(line[0] == '\0' || just_spaces(line))
         {
             free(line);
             continue;
         }
-        if(strlen(line) > 0)
+        if(ft_strlen(line) > 0)
         {
             add_history(line);
-            parsing_execute_command(&line,envp);
+            parsing_execute_command(&line,env);
         }
         free(line);
     }

@@ -6,191 +6,129 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 16:45:33 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/26 18:03:12 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/30 09:18:17 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../minishell.h"
-
-void add_single_quote_delimiters(char *s, int *i, int *len)
+// #\x1F
+static void add_single_quote_delimiters(char *s, char *new_s, int *i, int *j)
 {
-    int j;
-
-    j = *len;
-    while (j > *i)
-    {
-        s[j + 2] = s[j];
-        j--;
-    }
-    s[*i] = '\x1F';
-    s[*i + 1] = ' ';
-    s[*i + 2] = '\'';
-    *i += 3;
-    *len += 2;
+    new_s[(*j)++] = '\x1F';
+    new_s[(*j)++] = ' ';
+    new_s[(*j)++] = '\'';
     (*i)++;
-    while (s[*i] != '\'')
-        (*i)++;
-    j = *len;
-    while (j > *i)
-    {
-        s[j + 2] = s[j];
-        j--;
+    while (s[*i] != '\'') {
+        new_s[(*j)++] = s[(*i)++];
     }
-    s[*i] = '\'';
-    s[*i + 1] = ' ';
-    s[*i + 2] = '\x1F';
-    *i += 3;
-    *len += 2;
-}
-
-
-void add_double_quote_delimiters(char *s, int *i, int *len)
-{
-    int j;
-
-    j = *len;
-    while (j > *i)
-    {
-        s[j + 2] = s[j];
-        j--;
-    }
-    s[*i] = '\x1F';
-    s[*i + 1] = ' ';
-    s[*i + 2] = '\"';
-    *i += 3;
-    *len += 2;
+    new_s[(*j)++] = '\'';
+    new_s[(*j)++] = '\x1F';
+    new_s[(*j)++] = ' ';
     (*i)++;
-    while (s[*i] != '\"')
-        (*i)++;
-    j = *len;
-    while (j > *i)
-    {
-        s[j + 2] = s[j];
-        j--;
-    }
-    s[*i] = '\"';
-    s[*i + 1] = ' ';
-    s[*i + 2] = '\x1F';
-    *i += 3;
-    *len += 2;
 }
 
-void add_one_delimiters(char *s, int *i, int *len, char c)
+static void add_double_quote_delimiters(char *s, char *new_s, int *i, int *j)
 {
-    int j;
-
-    j = *len;
-    while (j > *i)
-    {
-        s[j + 3] = s[j];
-        j--;
+    new_s[(*j)++] = '\x1F';
+    new_s[(*j)++] = ' ';
+    new_s[(*j)++] = '\"';
+    (*i)++;
+    while (s[*i] != '\"') {
+        new_s[(*j)++] = s[(*i)++];
     }
-    s[*i] = '\x1F';
-    s[*i + 1] = ' ';
-    s[*i + 2] = c;
-    s[*i + 3] = ' ';
-    s[*i + 4] = '\x1F';
-    *i += 5;
-    *len += 4;
+    new_s[(*j)++] = '\"';
+    new_s[(*j)++] = '\x1F';
+    new_s[(*j)++] = ' ';
+    (*i)++;
 }
 
-void add_one_delimiters_before(char *s, int *i, int *len, char c)
+static void add_one_delimiters(char *s, char *new_s, int *i, int *j, char c)
 {
-    int j;
-
-    j = *len;
-    while (j > *i)
-    {
-        s[j + 2] = s[j];
-        j--;
-    }
-    s[*i] = '\x1F';
-    s[*i + 1] = ' ';
-    s[*i + 2] = c;
-    *i += 3;
-    *len += 2;
+    (void)s;
+    new_s[(*j)++] = ' ';
+    new_s[(*j)++] = c;
+    new_s[(*j)++] = ' ';
+    (*i)++;
 }
 
-void add_double_delimiters(char *s, int *i, int *len, char c1, char c2)
+static void add_one_delimiters_before(char *s, char *new_s, int *i, int *j, char c)
 {
-    int j;
-
-    j = *len;
-    while (j > *i)
-    {
-        s[j + 4] = s[j];
-        j--;
-    }
-    s[*i] = '\x1F';
-    s[*i + 1] = ' ';
-    s[*i + 2] = c1;
-    s[*i + 3] = c2;
-    s[*i + 4] = ' ';
-    s[*i + 5] = '\x1F';
-    *i += 6;
-    *len += 4;
+    (void)s;
+    new_s[(*j)++] = '\x1F';
+    new_s[(*j)++] = ' ';
+    new_s[(*j)++] = c;
+    (*i)++;
 }
-int double_dquote_before(char *s,int i)
+
+static void add_double_delimiters(char *s, char *new_s, int *i, int *j, char c1, char c2)
 {
-    int len = 0;
-    while(len < i)
-    {
-        if(s[len] == '\"')
-            return(1);
-        len++;
-    }
-    return(0);
+    (void)s;
+    new_s[(*j)++] = ' ';
+    new_s[(*j)++] = c1;
+    new_s[(*j)++] = c2;
+    new_s[(*j)++] = ' ';
+    (*i) += 2;
 }
-
-int simple_squote_after(char *s,int i)
-{
-    int len = ft_strlen(s);
-    i++;
-    while(i < len)
-    {
-        if(s[i] == '\'')
-            return(1);
-        i++;
-    }
-    return(0);
-}
-
+//handle correctly delimiters when we have double quotes inside double quotes
 char *add_delimiter(char *s)
 {
-    int i;
-    int len;
+    int len = strlen(s);
+    int new_len = len;
 
-    i = 0;
-    len = strlen(s);
+    // Calculate the new length
+    for (int i = 0; i < len; i++) {
+        if (s[i] == '\'') {
+            new_len += 4;
+        } else if (s[i] == '\"') {
+
+            new_len += 4 ;
+        } else if (s[i] == '|' || s[i] == '<' || s[i] == '>') {
+            new_len += 2;
+        } else if (s[i] == '>' && i + 1 < len && s[i + 1] == '>') {
+            new_len += 2;
+            i++;
+        } else if (s[i] == '<' && i + 1 < len && s[i + 1] == '<') {
+            new_len += 2;
+            i++;
+        } else if (s[i] == '$' && i + 1 < len && s[i + 1] == '?') {
+            new_len += 2;
+            i++;
+        } else if (s[i] == '$') {
+            new_len += 1;
+        }
+    }
+
+    // Allocate new string with enough space
+    char *new_s = (char *)malloc(new_len + 1);
+    if (!new_s) {
+        perror("Failed to allocate memory");
+        exit(EXIT_FAILURE);
+    }
+
+    int i = 0, j = 0;
     while (i < len)
     {
-        if(s[i] == '\'')
-        {
-            if(!double_dquote_before(s,i) && !simple_squote_after(s,i))
-            {
-                add_one_delimiters(s, &i, &len, s[i]);
-            }
-            else
-            {
-                add_single_quote_delimiters(s, &i, &len);
-            }
+        if (s[i] == '\'') {
+            add_single_quote_delimiters(s, new_s, &i, &j);
+        } else if (s[i] == '\"') {
+            add_double_quote_delimiters(s, new_s, &i, &j);
+        } else if (s[i] == '|') {
+            add_one_delimiters(s, new_s, &i, &j, s[i]);
+        } else if (s[i] == '>' && i + 1 < len && s[i + 1] == '>') {
+            add_double_delimiters(s, new_s, &i, &j, s[i], s[i + 1]);
+        } else if (s[i] == '<' && i + 1 < len && s[i + 1] == '<') {
+            add_double_delimiters(s, new_s, &i, &j, s[i], s[i + 1]);
+        } else if (s[i] == '<' || s[i] == '>') {
+            add_one_delimiters(s, new_s, &i, &j, s[i]);
+        } else if (s[i] == '$' && s[i + 1] == '?') {
+            add_double_delimiters(s, new_s, &i, &j, s[i], s[i + 1]);
+        } else if (s[i] == '$') {
+            add_one_delimiters_before(s, new_s, &i, &j, s[i]);
+        } else {
+            new_s[j++] = s[i++];
         }
-        else if(s[i] == '\"')
-            add_double_quote_delimiters(s, &i, &len);
-        else if (s[i] == '|') 
-            add_one_delimiters(s, &i, &len, s[i]);
-        else if (s[i] == '>' && i + 1 < len && s[i + 1] == '>')
-            add_double_delimiters(s,&i,&len,s[i],s[i + 1]);
-        else if (s[i] == '<' && i + 1 < len && s[i + 1] == '<')
-            add_double_delimiters(s, &i, &len,s[i],s[i+1]);
-        else if (s[i] == '<' || s[i] == '>') 
-            add_one_delimiters(s,&i,&len,s[i]);
-        else if (s[i] == '$'  && s[i + 1] == '?')
-            add_double_delimiters(s,&i,&len,s[i],s[i+1]);
-        else if (s[i] == '$')
-            add_one_delimiters_before(s,&i,&len,s[i]);
-        else
-            i++;
     }
-    return(s);
+    new_s[j] = '\0';
+    return new_s;
 }

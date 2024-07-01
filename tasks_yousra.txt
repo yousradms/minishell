@@ -1,0 +1,46 @@
+
+///fix_delimiters.c///
+//in the file fix_delimiters we have a problem to add space before and after 
+//double quotes when we have double quotes inside double quotes like that : ""a""
+
+///herddoc///
+<< + space ==>> bash: syntax error near unexpected token `newline'
+<< $       ===>> stop with delimiter $
+<< $?      ===>> stop with delimiter $?
+<< WORD    ===>> stop with delimiter WORD
+
+<< $USER  ===>> not expanding 
+
+bash-3.2$ << "$USER"
+> $USER
+
+bash-3.2$ << '$USER'
+> $USER
+
+bash-3.2$ << $USER
+> $PWD
+> "$PWD"
+> '$PWD'
+> $USER
+
+bash-3.2$ << "$USER"
+> $PWD
+> "$PWD"
+> '$PWD'
+> $USER
+
+bash-3.2$ << '$USER'
+> $PWD
+> "$PWD"
+> '$PWD'
+> '$USER'
+> $USER
+
+//| << a--> in this case the herddoc must not be opened
+
+ADD HERDOOC TO THE PART EXECUTION IN THIS FUNCTION : handle_redirections
+ADD ALSO PART OF : echo and env in THIS CODE 
+ft_echo.c and ft_env.c 
+
+TEST THE PARSING 
+

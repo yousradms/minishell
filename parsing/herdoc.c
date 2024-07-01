@@ -4,7 +4,7 @@
 
 void handle_herdoc(t_node *head)
 {
-    t_node *temp=head;
+    t_node *temp = head;
     while(temp != NULL)
     {
         if(temp->type == 6 && temp->state == 1)

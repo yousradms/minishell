@@ -19,6 +19,44 @@ char *remove_quotes(char *s)
     token[j] = '\0';
     return (token);
 }
+char *remove_dquotes(char *s)
+{
+    char *token;
+    int i;
+    int j;
+
+    token = malloc(strlen(s) + 1);
+    i = 0;
+    j = 0;
+    while (s[i])
+    {
+        if (s[i] == '"')
+            i++;
+        else
+            token[j++] = s[i++];
+    }
+    token[j] = '\0';
+    return (token);
+}
+char *remove_squotes(char *s)
+{
+    char *token;
+    int i;
+    int j;
+
+    token = malloc(strlen(s) + 1);
+    i = 0;
+    j = 0;
+    while (s[i])
+    {
+        if (s[i] == '\'')
+            i++;
+        else
+            token[j++] = s[i++];
+    }
+    token[j] = '\0';
+    return (token);
+}
 
 int contain_env(char *s)
 {
@@ -85,7 +123,7 @@ void set_value(int *i, int *j, char **var_name, char **expanded, char **env)
 
 int is_valid_char(char c)
 {
-    return (c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+    return (c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') );
 }
 
 void set_expanded(char **str, char **content, char **env)
@@ -103,15 +141,25 @@ void set_expanded(char **str, char **content, char **env)
         if (expanded[i] == '$')
         {
             j = i + 1;
-            while (expanded[j] != '\0' && expanded[j] != ' ' && expanded[j] != '$' && is_valid_char(expanded[j])) 
-                j++;
-            var_length = j - i - 1;
-            var_name = malloc(var_length + 1);
-            strncpy(var_name, expanded + i + 1, var_length);
-            var_name[var_length] = '\0';
-            set_value(&i, &j, &var_name, &expanded, env);
-            free(var_name);
-        } else {
+            if (expanded[j] >= '0' && expanded[j] <= '9' && expanded[j - 1] == '$')
+            {
+                expanded = replace_variable(expanded, "", i, j + 1);
+                i += 1;
+            }
+            else
+            {
+                while (expanded[j] != '\0' && expanded[j] != ' ' && expanded[j] != '$' && is_valid_char(expanded[j]))
+                    j++;
+                var_length = j - i - 1;
+                var_name = malloc(var_length + 1);
+                strncpy(var_name, expanded + i + 1, var_length);
+                var_name[var_length] = '\0';
+                set_value(&i, &j, &var_name, &expanded, env);
+                free(var_name);
+            }
+        }
+        else
+        {
             i++;
         }
     }
@@ -119,6 +167,20 @@ void set_expanded(char **str, char **content, char **env)
     *content = expanded;
 }
 
+int contain_home_after_quote(char *s)
+{
+    int i = 0;
+
+    while(s[i] && s[i] == ' ')
+        i++;
+    while(s[i] && (s[i] == '\"' || s[i] == '\''))
+        i++;
+    while(s[i] && s[i] == ' ')
+        i++;
+    if(s[i] && s[i] == '~')
+        return(1);
+    return(0);
+}
 void expanding(t_node *list, char **env)
 {
     t_node *current;
@@ -137,12 +199,12 @@ void expanding(t_node *list, char **env)
         {
             str = NULL;
             if (current->state == 2)
-                str = remove_quotes(current->content);
+                str = remove_dquotes(current->content);
             else if (current->state == 1)
                 str = strdup(current->content);  // Allocate a copy of content
             else if (current->state == 3)
             {
-                char *temp = remove_quotes(current->content);
+                char *temp = remove_squotes(current->content);
                 free(current->content);
                 current->content = temp;
                 printf("%s", current->content);
@@ -152,6 +214,51 @@ void expanding(t_node *list, char **env)
             free(str);  // Free the temporary str after usage
             printf("%s", current->content);
             enter++;
+        }
+        else if (current->type == 9 && contain_home_after_quote(current->content))
+        {
+            
+            if(current->state == 1)
+            {
+                
+                if (current->content[0] == '~' && current->content[1] == '\0')
+                {
+                    //printf("*******");
+                    current->content= strdup(getenv("HOME"));
+                    printf("%s\n",current->content);
+                }
+				    
+			    if (current->content[0] == '~' && current->content[1] == '/' && current->content[2] == '\0')
+                {
+                    current->content = strdup(ft_strjoin(getenv("HOME"), "/"));
+                    printf("%s\n",current->content);
+                }
+				    
+            }
+            else
+            {
+                //printf("#######");
+                char *temp;
+                if(current->state == 2)
+                    temp = remove_dquotes(current->content);
+                else
+                    temp = remove_squotes(current->content);
+                free(current->content);
+                current->content = temp;
+                if (current->content[0] == '~' && current->content[1] == '\0')
+                {
+				    current->content= strdup(getenv("HOME"));
+                    printf("%s\n",current->content);
+                }
+			    if (current->content[0] == '~' && current->content[1] == '/' && current->content[2] == '\0')
+                {
+                    
+				    current->content = strdup(ft_strjoin(getenv("HOME"), "/"));
+                    printf("%s\n",current->content);
+                }
+
+
+            }
         }
         current = current->next;
         in_herdoc = 0;

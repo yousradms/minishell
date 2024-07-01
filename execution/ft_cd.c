@@ -6,7 +6,6 @@ void ft_cd(t_command **command)
 
         if ((*command)->arg[1] != NULL)
         {
-            //printf("enter here1\n");
             if(strcmp((*command)->arg[1], "~") == 0)
             {
                 if (chdir(getenv("HOME")) == -1)

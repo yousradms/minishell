@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/26 18:08:58 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/06/29 10:59:47 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,7 @@ void add_node(t_node **head, t_node *node)
 }
 
 
-void print_list(t_node *head)
-{
-    t_node *temp = head;
-    
-    while(temp != NULL)
-    {
-        printf("content is :[%s]     ",temp->content);
-        printf("type is :[%d]    ",temp->type);
-        printf("state is :[%d]   \n",temp->state);
-        temp = temp->next;
-    }
-}
+
 
 void free_precedent_nodes(t_node *head)
 {

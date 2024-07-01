@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/08 13:48:25 by ksellami          #+#    #+#             */
+/*   Updated: 2024/06/27 17:07:13 by ksellami         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 char **ft_split(char *str)
@@ -17,38 +29,21 @@ char **ft_split(char *str)
             tab[i2] = malloc(sizeof(char) * L_count);
             while ((str[i] > 32 || quote) && str[i] != '\0')
             {
-                if (str[i] == '"' && quote == '"')
+                if ((str[i] == '"' || str[i] == '\'') && (quote == 0))
                 {
-                    if (str[i + 1] == '"')
-                    {
-                        tab[i2][i3++] = str[i++];
-                        tab[i2][i3++] = str[i++];
-                    }
-                    else
-                    {
-                        quote = 0;
-                        tab[i2][i3++] = str[i++];
-                    }
-                }
-                else if (str[i] == '"' && quote == 0)
-                {
-                    quote = '"';
-                    tab[i2][i3++] = str[i++];
-                }
-                else if (str[i] == '\'' && quote == 0)
-                {
-                    quote = '\'';
-                    tab[i2][i3++] = str[i++];
+                    quote = str[i];
+                    tab[i2][i3++] = str[i];
                 }
                 else if (str[i] == quote)
                 {
                     quote = 0;
-                    tab[i2][i3++] = str[i++];
+                    tab[i2][i3++] = str[i];
                 }
                 else
                 {
-                    tab[i2][i3++] = str[i++];
+                    tab[i2][i3++] = str[i];
                 }
+                i++;
             }
             tab[i2][i3] = '\0';
             i2++;
