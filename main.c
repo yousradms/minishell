@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/01 18:28:12 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/01 20:02:49 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void parsing_execute_command(char **line,char **env)
     printf("line is : %s\n",new_line);
     char *s = ft_strtrim(new_line," ");                                                                                                                                                                                                                                                                            
     result = ft_split(s);
-    //print_darg(result);
+    print_darg(result);
     i = 0;
     t_node *head = NULL;
     while (result[i])//tokenize
@@ -122,7 +122,7 @@ void parsing_execute_command(char **line,char **env)
 		return ;
 	}
     t_command *commands = ft_split2(&head);//splut pipe-->t_command
-    //print_list2(commands);
+    print_list2(commands);
     handle_herddoce(&commands);
     handle_multiple_command(&commands,env);//execution
     free_commands(commands);

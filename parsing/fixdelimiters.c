@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 16:45:33 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/01 18:29:01 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/01 20:01:20 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void add_double_delimiters(char *s, char *new_s, int *i, int *j, char c1,
     new_s[(*j)++] = ' ';
     (*i) += 2;
 }
-//handle correctly delimiters when we have double quotes inside double quotes
+// handle correctly delimiters when we have double quotes inside double quotes
 char *add_delimiter(char *s)
 {
     int len = strlen(s);
@@ -132,3 +132,4 @@ char *add_delimiter(char *s)
     new_s[j] = '\0';
     return new_s;
 }
+
