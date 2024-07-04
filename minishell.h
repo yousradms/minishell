@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/01 17:06:53 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/04 16:37:35 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 #define w_count 1000
 #define L_count 1000
 # define NAME "minishell: "
-# define ERR_PIPE "syntax error near unexpected token `|'\n"
-# define ERR_FILE "syntax error near unexpected token `'\n"
+# define ERR_PIPE "syntax error near unexpected token `|'"
+# define ERR_FILE "syntax error near unexpected token `'"
 typedef enum s_type
 {
     WSPACE = 1,
@@ -79,6 +79,9 @@ typedef struct s_env
 } t_env;
 //parsing
 char **set_env(char **env);
+int	error_red(t_node *token);
+int	error_pipe(t_node *token);
+void open_here(t_node *token, t_node *ptr_err);
 int	ft_strlen(char *str);
 char	**ft_split(char *s);
 t_node *create_node(char *content, int type,int state);
@@ -104,7 +107,7 @@ void print_list2(t_command *command);
 void execute(t_command **command,char **env);
 int count_elem_command(t_command *command);
 
-int handle_herdoc(char *delimiter);
+int handle_herdoc(char *delimiter, int f);
 int double_dquote_before(char *s,int i);
 int simple_squote_after(char *s,int i);
 char	*ft_strjoin(char *s1, char	*s2);
@@ -124,7 +127,7 @@ void ft_env(t_command **command, t_env **envp);
 void ft_exit(t_command **command);
 void ft_export(t_command **command);
 void ft_pwd(t_command **command);
-void ft_unset(t_command **command);
+void ft_unset(char *var_names[], int num_vars, t_env **envp);
 char *search_command(const char *command, char **env);
 char	**ft_split4( char *s, char c);
 char	*strndup1( char *s, size_t n);
@@ -134,5 +137,5 @@ void handle_redirections(t_command **command);
 void handle_multiple_command(t_command **commande,char **env);
 char *find_commande(char *cmd, char **envp);
 void handle_herddoce(t_command **command);
-
+void	ft_putendl_fd(char *s, int fd);
 #endif

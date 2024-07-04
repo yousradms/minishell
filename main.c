@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/01 20:02:49 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/03 14:53:28 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,10 @@ void parsing_execute_command(char **line,char **env)
 		return ;
 	}
     new_line = add_delimiter(*line);//problem here
-    printf("line is : %s\n",new_line);
+    //printf("line is : %s\n",new_line);
     char *s = ft_strtrim(new_line," ");                                                                                                                                                                                                                                                                            
     result = ft_split(s);
-    print_darg(result);
+    //print_darg(result);
     i = 0;
     t_node *head = NULL;
     while (result[i])//tokenize
@@ -122,7 +122,7 @@ void parsing_execute_command(char **line,char **env)
 		return ;
 	}
     t_command *commands = ft_split2(&head);//splut pipe-->t_command
-    print_list2(commands);
+    //print_list2(commands);
     handle_herddoce(&commands);
     handle_multiple_command(&commands,env);//execution
     free_commands(commands);
@@ -130,16 +130,19 @@ void parsing_execute_command(char **line,char **env)
     free_precedent_nodes(head);
     free(s); 
 }
-int handle_herdoc(char *delimiter) 
+int handle_herdoc(char *delimiter, int f) 
 {
     char *line;
     int temp_fd;
 
     // Open or create "temp.txt" for appending
-    temp_fd = open("temp.txt", O_RDWR | O_CREAT | O_TRUNC, 0644);
-    if (temp_fd == -1) {
-        perror("Error creating temporary file");
-        exit(0);
+    if (f)
+    {
+        temp_fd = open("temp.txt", O_RDWR | O_CREAT | O_TRUNC, 0644);
+        if (temp_fd == -1) {
+            perror("Error creating temporary file");
+            exit(0);
+        }
     }
 
     while (1) {
@@ -154,56 +157,42 @@ int handle_herdoc(char *delimiter)
         }
 
         // Write the line and newline character to the temporary file
-        if (write(temp_fd, line, strlen(line)) == -1) {
-            perror("Error writing to temporary file");
-            free(line);
-            close(temp_fd);
-            exit(0);
+        if (f)
+        {
+            if (write(temp_fd, line, strlen(line)) == -1) {
+                perror("Error writing to temporary file");
+                free(line);
+                close(temp_fd);
+                exit(0);
+            }
+            if (write(temp_fd, "\n", 1) == -1) {
+                perror("Error writing to temporary file");
+                free(line);
+                close(temp_fd);
+                exit(0);
+            }
         }
-        if (write(temp_fd, "\n", 1) == -1) {
-            perror("Error writing to temporary file");
-            free(line);
-            close(temp_fd);
-            exit(0);
-        }
-
         free(line);
     }
 
     // Close the temporary file after writing
-    close(temp_fd);
-
-    // Read from "temp.txt" and write to stdout
-    // char buffer[BUFFER_SIZE];
-    // ssize_t bytes_read;
-
-    temp_fd = open("temp.txt", O_RDONLY, 0644);
-    if (temp_fd == -1) {
-        perror("Error opening temporary file for reading");
-        exit(0);
+    if (f)
+    {
+        close(temp_fd);
+        temp_fd = open("temp.txt", O_RDONLY, 0644);
+        if (temp_fd == -1) {
+            perror("Error opening temporary file for reading");
+            exit(0);
+        }
+        int my_fd = temp_fd;
+        close(temp_fd);
+        if (unlink("temp.txt") == -1) {
+            perror("Error removing temporary file");
+            exit(0);
+        }
+        return(my_fd);
     }
-    int my_fd = temp_fd;
-    // while ((bytes_read = read(temp_fd, buffer, sizeof(buffer))) > 0) {
-    //     if (write(STDOUT_FILENO, buffer, bytes_read) == -1) {
-    //         perror("Error writing to stdout");
-    //         close(temp_fd);
-    //         return;
-    //     }
-    // }
-
-    // if (bytes_read == -1) {
-    //     perror("Error reading from temporary file");
-    //     close(temp_fd);
-    //     return;
-    // }
-
-    // Close and remove "temp.txt"
-    close(temp_fd);
-    if (unlink("temp.txt") == -1) {
-        perror("Error removing temporary file");
-        exit(0);
-    }
-    return(my_fd);
+    return (0);
 }
 void handle_herddoce(t_command **command)
 {
@@ -217,7 +206,7 @@ void handle_herddoce(t_command **command)
             {
                 //printf("#%s#\n",first->arg[i + 1]);
                 if(first->arg[i + 1])
-                    first->my_fd = handle_herdoc(first->arg[i + 1]);
+                    first->my_fd = handle_herdoc(first->arg[i + 1], 1);
                     
             }
             i++;
@@ -225,6 +214,109 @@ void handle_herddoce(t_command **command)
         first = first->next;
     }
 }
+// static int erroor_pipe(t_command **command) {
+//     t_command *curr = *command;
+
+//     while (curr) {
+//         int i = 0;
+//         while (curr->arg[i]) {
+//             if (strcmp(curr->arg[i], "|") == 0) {
+//                 if (curr->arg[i + 1] == NULL) {
+//                     printf("minishell: syntax error near unexpected token `|'\n");
+//                     return -1;
+//                 }
+//             }
+//             i++;
+//         }
+//         curr = curr->next;
+//     }
+
+//     return 1;
+// }
+// int handle_herdoc(char *delimiter) 
+// {
+//     char *line;
+//     int temp_fd;
+    
+
+//     // Open or create "temp.txt" for appending
+//     temp_fd = open("temp.txt", O_RDWR | O_CREAT | O_TRUNC, 0644);
+//     if (temp_fd == -1) {
+//         perror("Error creating temporary file");
+//         exit(0);
+//     }
+
+//     while (1) {
+//         line = readline("heredoc> ");
+//         if (line == NULL)
+//             break;
+
+//         // Check for the delimiter at the start of the line
+//         if (strncmp(line, delimiter, strlen(delimiter)) == 0 && line[strlen(delimiter)] == '\0') {
+//             free(line);
+//             break; // Exit loop when delimiter is found
+//         }
+
+//         // Write the line and newline character to the temporary file
+//         if (write(temp_fd, line, strlen(line)) == -1) {
+//             perror("Error writing to temporary file");
+//             free(line);
+//             close(temp_fd);
+//             exit(0);
+//         }
+//         if (write(temp_fd, "\n", 1) == -1) {
+//             perror("Error writing to temporary file");
+//             free(line);
+//             close(temp_fd);
+//             exit(0);
+//         }
+
+//         free(line);
+//     }
+
+//     // Close the temporary file after writing
+//     close(temp_fd);
+//     temp_fd = open("temp.txt", O_RDONLY, 0644);
+//     if (temp_fd == -1) {
+//         perror("Error opening temporary file for reading");
+//         exit(0);
+//     }
+//     int my_fd = temp_fd;
+//     close(temp_fd);
+//     if (unlink("temp.txt") == -1) {
+//         perror("Error removing temporary file");
+//         exit(0);
+//     }
+//     return(my_fd);
+// }
+// void handle_herddoce(t_command **command) {
+//     t_command *first = *command;
+//     while (first != NULL) {
+//         int i = 0;
+//         while (first->arg[i]) {
+//             if (strcmp(first->arg[i], "<<") == 0) {
+//                 if (first->arg[i + 1]) {
+//                     first->my_fd = handle_herdoc(first->arg[i + 1]);
+//                     if (first->my_fd == -1) {
+//                         if (erroor_pipe(command) == -1 ) {
+//                             printf("minishell: syntax error near unexpected token `%s'\n", first->arg[i + 1]);
+//                         }
+//                         else {
+//                             printf("Error: Syntax error near unexpected token '%s'\n", first->arg[i + 1]);
+//                         }
+//                         return;
+//                     }
+//                 }
+//             }
+//             i++;
+//         }
+//         first = first->next;
+//     }
+// }
+
+
+
+
 int main(int ac,char **av,char **env)
 { 
     (void)ac;

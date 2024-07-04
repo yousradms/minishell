@@ -34,12 +34,12 @@ void ft_exit(t_command **command)
             exit_status = atoi((*command)->arg[1]);
             if ((*command)->arg[2])
             {
-                printf("exit: too many arguments\n");
+                printf("exit: too many o\n");
                 exit(1);
             }
             else
             {
-                printf("exit\n");
+                printf("exit \n");
                 exit(exit_status);
             }
         }

@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/07/01 16:59:17 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/03 17:15:59 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,7 @@ void handle_multiple_command(t_command **commande, char **env)
                 cmd->arg[i] = cleaned_arg;
             }
             if (is_builtin(cmd->arg[0]))
-            {
                 execute_builtin(&cmd,env);
-            }
             else
             {
                 full_command = find_commande(cmd->arg[0], env);

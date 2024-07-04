@@ -25,9 +25,10 @@ void env_list(t_env **env, char **envp)
     // Initialize pointers
     t_env *head = NULL;
     t_env *last = NULL;
+    int i = 0;
     
     // Loop through envp
-    for (int i = 0; envp[i] != NULL; i++)
+    while ( envp[i] != NULL)
     {
         // Split string at '='
         char *equal_sign = strchr(envp[i], '=');
@@ -72,6 +73,7 @@ void env_list(t_env **env, char **envp)
         }
         
         last = new_env;
+        i++;
     }
     
     // Update the pointer to the head of the list
@@ -81,7 +83,8 @@ void env_list(t_env **env, char **envp)
 
 void execute_builtin(t_command **command, char **envp) {
     t_env *env = NULL; // Initialize linked list head for environment variables
-    env_list(&env, envp); // Populate the linked list with environment variables
+    env_list(&env, envp);
+ // Populate the linked list with environment variables
 
     if (strcmp((*command)->arg[0], "echo") == 0) {
         ft_echo(command);
@@ -95,8 +98,22 @@ void execute_builtin(t_command **command, char **envp) {
     else if (strcmp((*command)->arg[0], "export") == 0) {
         ft_export(command);
     }
-    else if (strcmp((*command)->arg[0], "unset") == 0) {
-        ft_unset(command);
+    // else if (strcmp((*command)->arg[0], "unset") == 0) {
+    //     ft_unset((*command)->arg[1], &env); // Pass the list and arguments starting from index 1
+    // }
+     else if (strcmp((*command)->arg[0], "unset") == 0) {
+        // Determine number of arguments excluding the command itself
+        int num_args = 0;
+        while ((*command)->arg[num_args] != NULL) {
+            num_args++;
+        }
+        
+        // Call ft_unset with arguments starting from index 1
+        if (num_args > 1) {
+            ft_unset(&((*command)->arg[1]), num_args - 1, &env);
+        } else {
+            printf("Usage: unset <variable> [<variable> ...]\n");
+        }
     }
     else if (strcmp((*command)->arg[0], "env") == 0) {
         
@@ -108,4 +125,6 @@ void execute_builtin(t_command **command, char **envp) {
     else {
         fprintf(stderr, "Unknown built-in command\n");
     }
+
+
 }

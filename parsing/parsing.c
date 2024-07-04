@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:57:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/06/30 15:19:13 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/03 14:57:22 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,30 @@ int ft_error(t_node **head)
 //         temp = temp->next;
 //     }  
 // }
+
+void	ft_putendl_fd(char *s, int fd)
+{
+	int	i;
+
+	if (fd < 0 || !s)
+		return ;
+	i = 0;
+	while (s[i])
+	{
+		write (fd, &s[i], 1);
+		i++;
+	}
+	write (fd, "\n", 1);
+}
+
 static void	ft_handl_error(char *s1, char *s2, char *s3)
 {
 
 	char	*str;
-
 	//g_tools.status_sign = status;
 	str = ft_strjoin(s1, ft_strjoin(s2, s3));
-	//ft_putendl_fd(str, 2);
-    printf("%s",str);
+	ft_putendl_fd(str, 2);
+    // printf("%s",str);
 }
 // static int	error_pipe(t_node *token)
 // {
@@ -114,61 +129,74 @@ static void	ft_handl_error(char *s1, char *s2, char *s3)
 // 	}
 // 	return (1);
 // }
-static int	error_pipe(t_node *token)
+int	error_pipe(t_node *token)
 {
     int	last_pipe;
+    t_node  *tmp = token;
 
-    if (token && token->type == 2)
+    if (tmp && tmp->type == 2)
+        return (ft_handl_error(NAME, "", ERR_PIPE), -1);
+    while (tmp)
     {
-        printf("error\n");
-        return (-1);
-    }
-
-    while (token)
-    {
-        if (token->type == 2 && token->next != NULL)
+        if (tmp->type == 2 && tmp->next != NULL)
         {
-            token = token->next;
-            while (token->type == 1 && token->next != NULL)
-                token = token->next;
-            if (token->type == 2)
-                return (ft_handl_error(NAME, "", ERR_PIPE), -1);
+            tmp = tmp->next;
+            while (tmp->type == 1 && tmp->next != NULL)
+                tmp = tmp->next;
+            if (tmp->type == 2)
+                return (open_here(token, tmp), ft_handl_error(NAME, "", ERR_PIPE), -1);
         }
-        last_pipe = token->type;
-        token = token->next; // Move to the next token
-        if (!token)
+        last_pipe = tmp->type;
+        tmp = tmp->next; // Move to the next tmp
+        if (!tmp)
         {
             if (last_pipe == 2)
-                return (ft_handl_error(NAME, "", ERR_PIPE), -1);
+                return (open_here(token, tmp), ft_handl_error(NAME, "", ERR_PIPE), -1);
         }
     }
-
-        
-
     return (1);
 }
 
-static int	error_red(t_node *token)
+int	error_red(t_node *token)
 {
-	while (token)
+    t_node  *tmp = token;
+	while (tmp)
 	{
-		if ((token->type == 3 || token->type == 4 || token->type == 5 || token->type == 6) && token->next == NULL)
-			return (ft_handl_error(NAME, ERR_FILE, token->content), -1);
-		if ((token->type == 3 || token->type == 4 || token->type == 5|| token->type == 6) && token->next != NULL)
+		if ((tmp->type == 3 || tmp->type == 4 || tmp->type == 5 || tmp->type == 6) && tmp->next == NULL)
+			return (open_here(token, tmp), ft_handl_error(NAME, ERR_FILE, tmp->content), -1);
+		if ((tmp->type == 3 || tmp->type == 4 || tmp->type == 5|| tmp->type == 6) && tmp->next != NULL)
 		{
-			token = token->next;
-			while (token->type == 1 && token->next != NULL)
-				token = token->next;
-			if (token->type != 9 )//&& token->type != SIGN && token->type != EXIT_STATUS)
-				return (ft_handl_error(NAME, ERR_FILE, token->content), -1);
+			tmp = tmp->next;
+			while (tmp->type == 1 && tmp->next != NULL)
+				tmp = tmp->next;
+			if (tmp->type != 9 )//&& tmp->type != SIGN && tmp->type != EXIT_STATUS)
+				return (open_here(token, tmp), ft_handl_error(NAME, ERR_FILE, tmp->content), -1);
 		}
-		token = token->next;
+		tmp = tmp->next;
 	}
 	return (1);
 }
+
+void open_here(t_node *token, t_node *ptr_err)
+{
+    while (token && token != ptr_err)
+	{
+		if (token->type == 6)
+        {
+            token = token->next;
+            while (token && token != ptr_err && token->type == 1)
+                token = token->next;
+            if (token && token != ptr_err)
+            {
+                handle_herdoc(token->content, 0);
+            }
+        }
+        token = token->next;
+	}
+}
+
 int parsing(t_node *head)
 {
-    
     if(error_pipe(head) == -1)
         return(-1);
     if(error_red(head) == -1)
