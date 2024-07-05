@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/04 16:37:35 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/05 12:12:42 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,15 @@
 #include <limits.h>
 #define w_count 1000
 #define L_count 1000
+#define MAX_WORDS 1000
+#define MAX_LENGTH 1000
 # define NAME "minishell: "
-# define ERR_PIPE "syntax error near unexpected token `|'"
-# define ERR_FILE "syntax error near unexpected token `'"
+# define ERR_PIPE "syntax error near unexpected token `|'\n"
+# define ERR_FILE "syntax error near unexpected token `'\n"
+
 typedef enum s_type
 {
+    
     WSPACE = 1,
     PIPE = 2,
     REDIN = 3,//<
@@ -70,6 +74,7 @@ typedef struct s_command
     struct s_command *next;
     struct s_command *prev;
 } t_command;
+
 typedef struct s_env
 {
     char *var;
@@ -77,48 +82,78 @@ typedef struct s_env
     struct s_env *next;
     struct s_env *prev;
 } t_env;
-//parsing
-char **set_env(char **env);
-int	error_red(t_node *token);
-int	error_pipe(t_node *token);
-void open_here(t_node *token, t_node *ptr_err);
-int	ft_strlen(char *str);
+
+///PARSING///
+void parsing_execute_command(char **line,char **env);
+
+//tokenize
+void add_single_quote_delimiters(char *s, char *new_s, int *i, int *j);
+void add_double_quote_delimiters(char *s, char *new_s, int *i, int *j);
+void add_one_delimiters(char *s, char *new_s, int *i, int *j, char c);
+void add_one_delimiters_before(char *s, char *new_s, int *i, int *j, char c);
+void add_double_delimiters(char *s, char *new_s, int *i, int *j, char c1, char c2);
+char *add_delimiter(char *s);
+void tokenize(char *s,t_node **head,t_state state);
 char	**ft_split(char *s);
+
+//expanding
+int contain_env(char *s);
+int is_valid_char(char c);
+int contain_home_after_quote(char *s);
+void expand_home_directory(t_node *current);
+char *extract_variable_name(char *expanded, int i, int j);
+void replace_numeric_variable(char **expanded, int *i, int j);
+void process_variable(char **expanded, int *i, int *j, char **env);
+void set_expanded(char **str, char **content, char **env);
+void expand_variable(t_node *current, char **env);
+char *replace_variable(char *str, char *value, int start, int end);
+void set_value(int *i, int *j, char **var_name, char **expanded, char **env);
+void expanding(t_node *list, char **env);
+
+//parser 
+char **ft_split3(char *str);
+t_command *ft_split2(t_node **head);
+char *initialize_command_line();
+int finalize_command(t_command **result, char *line);
+
+//error_syntax
+int parsing(t_node *head);
+void open_here(t_node *token, t_node *ptr_err);
+
+//heredoc
+void handle_herddoce(t_command **command);
+int handle_herdoc(char *delimiter, int f) ;
+
+//utilsp
+void add_back(t_command **head, t_command *new_node);
+t_command *create_new_command(char *line);
+int add_new_command_to_result(t_command **result, char **line);
+void free_commands(t_command *commands);
+void free_arg(char **result);
+int	check_quot(char *line, char a, char b);
+char *remove_quotes(char *s);
+char *remove_dquotes(char *s);
+char *remove_squotes(char *s);
 t_node *create_node(char *content, int type,int state);
 void add_node(t_node **head, t_node *node);
 void free_precedent_nodes(t_node *head);
-void print_list(t_node *head);
-int parsing(t_node *head);
-int ft_error(t_node **head);
 t_node	*ft_lstlast(t_node *lst);
-
-
-char *add_delimiter(char *s);
-void tokenize(char *s,t_node **head,t_state state);
+char **set_env(char **env);
 int just_spaces(char *s);
-char* replace_env_variables(char* input, char **env);
-void expanding(t_node *list, char **env);
-char *remove_quotes(char *s);
-int contain_env(char *s);
 t_state get_state(char *s);
-void free_arg(char **result);
-t_command *ft_split2(t_node **head);
-void print_list2(t_command *command);
-void execute(t_command **command,char **env);
-int count_elem_command(t_command *command);
 
-int handle_herdoc(char *delimiter, int f);
-int double_dquote_before(char *s,int i);
-int simple_squote_after(char *s,int i);
-char	*ft_strjoin(char *s1, char	*s2);
-char **fill_arg(char *str);
-char    **ft_split3(char *str);
+//debug
+void print_list(t_node *head);
+void print_list2(t_command *command);
 void print_darg(char **s);
-//execution
-int count_nbr_command(t_command *command);
-void execute(t_command **commande,char **env);
-void execute_one_command(t_command **command,char **env);
-void handle_concatenated_args(char **arg);
+
+//libft_utils.c
+char	*ft_strjoin(char *s1, char	*s2);
+char	*ft_strtrim(char  *s1, char  *set);
+
+///EXECUTION///
+
+//builtins
 void ft_cd(t_command **command);
 int is_builtin(char *cmd);
 void execute_builtin(t_command **command, char **envp);
@@ -128,14 +163,20 @@ void ft_exit(t_command **command);
 void ft_export(t_command **command);
 void ft_pwd(t_command **command);
 void ft_unset(char *var_names[], int num_vars, t_env **envp);
-char *search_command(const char *command, char **env);
+
+//execute
 char	**ft_split4( char *s, char c);
 char	*strndup1( char *s, size_t n);
+char *find_commande(char *cmd, char **envp);
+void execute(t_command **commande, char **env);
+void handle_one_command(t_command **commande,char **env);
+pid_t fork_process();
+void handle_quotes_ex(t_command **cmd);
+
+//redirections
 void handle_redirect_in(t_command *cmd, char *filename);
 void handle_redirect_out(t_command *cmd, char *filename, int append);
 void handle_redirections(t_command **command);
 void handle_multiple_command(t_command **commande,char **env);
-char *find_commande(char *cmd, char **envp);
-void handle_herddoce(t_command **command);
-void	ft_putendl_fd(char *s, int fd);
+
 #endif

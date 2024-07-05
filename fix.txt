@@ -1,6 +1,6 @@
-'ls'-'la'
-echo "s's's"
-echo "''''"
+'ls'-'la'   ==>> done
+echo "s's's" ==>>done
+echo "''''"  ==>>done
 cat << 'l'sl   > lsl
 cat << 'll'  >> when no quotse expand 
 ------------
@@ -13,3 +13,24 @@ cat << 'll'  >> when no quotse expand
 	> ll
 	ydoumas
 ------------
+
+$*
+$)
+$-
+$_
+$^
+$%
+$+
+$~
+echo $
+echo $;
+
+----------------
+<< ""'l'"" ==>> done
+----------------------
+
+if you use execute instead of handle_multiple_command   exit work as expected but it was a problem in $1 or $USER1 -->seg fault
+
+----------------------
+
+
