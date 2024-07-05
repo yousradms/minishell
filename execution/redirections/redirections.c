@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:05:13 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/05 09:41:13 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/05 20:40:39 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,15 @@ void handle_redirections(t_command **command)
                     exit(EXIT_FAILURE);
                 }
             }
-            //<< 
+            //<<
+            else if(strcmp(cmd->arg[i] , "<<") == 0)
+            {
+                if(cmd->arg[i + 1] != NULL)
+                {
+                    //handle_heredoc_ex(cmd->my_fd , cmd->arg[ i + 1]);//here my_fd is file when we have heredoc and arg[i + 1] is delimiter
+                    i += 2;
+                }
+            }
             else
             {
                 args[j++] = cmd->arg[i];
