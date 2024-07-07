@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+         #
+#    By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/08 13:48:45 by ksellami          #+#    #+#              #
-#    Updated: 2024/07/05 14:00:00 by ksellami         ###   ########.fr        #
+#    Updated: 2024/07/07 16:55:09 by ydoumas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ execution/execute/handle_pipes.c execution/execute/ft_split4.c execution/execute
 
 OBJS = ${FILES:%.c=%.o}
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 all : $(NAME)
 
 $(NAME): $(OBJS) $(HEADER)

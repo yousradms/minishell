@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_execute.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:21:42 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/05 20:32:21 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/06 20:16:08 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void free_resources(char **result, t_node *head, char *s)
     free(s);
 }
 
-void parsing_execute_command(char **line,char **env)
+char **parsing_execute_command(char **line,char **env)
 {
     (void)env;
     char **result;
@@ -53,7 +53,7 @@ void parsing_execute_command(char **line,char **env)
     if (!check_quot(*line,'\'', '\"'))
 	{
 		write(2, "UNCLOSED QUOT\n", 14);
-		return ;
+		return (env);
 	}
     s = prepare_line(line);
     //printf("line is[%s]\n",s);                                                                                                                                                                                                                                                                          
@@ -64,16 +64,17 @@ void parsing_execute_command(char **line,char **env)
     if (parsing(head) == -1)//leaks here
 	{
         free_resources(result, head, s);
-		return ;
+		return (env);
 	}
     //print_list(head);
     expanding(head, env);
     commands = ft_split2(&head);
     //print_list2(commands);
     handle_herddoce(&commands);
-    //execute(&commands,env);//--> exit work we divide into one command and multiple command but problem in expanding seg fault
-    handle_multiple_command(&commands,env);
+    env = execute(&commands,env);//--> exit work we divide into one command and multiple command but problem in expanding seg fault
+    // handle_multiple_command(&commands,env);
     free_commands(commands);
     free_resources(result, head, s);
+    return(env);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:45:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/05 13:49:37 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/06 20:33:05 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 int is_builtin(char *cmd)
 {
-    if (strcmp(cmd, "cd") == 0)
+    if (cmd && strcmp(cmd, "cd") == 0)
         return (1);
-    else if (strcmp(cmd, "unset") == 0)
+    else if (cmd && strcmp(cmd, "unset") == 0)
         return (1);
-    else if (strcmp(cmd, "exit") == 0)
+    else if (cmd && strcmp(cmd, "exit") == 0)
         return (1);
-    else if (strcmp(cmd, "echo") == 0)
+    else if (cmd && strcmp(cmd, "echo") == 0)
         return (1);
-    else if (strcmp(cmd, "pwd") == 0)
+    else if (cmd && strcmp(cmd, "pwd") == 0)
         return (1);
-    else if (strcmp(cmd, "export") == 0)
+    else if (cmd && strcmp(cmd, "export") == 0)
         return (1);
-    else if (strcmp(cmd, "env") == 0)
+    else if (cmd && strcmp(cmd, "env") == 0)
         return (1);
     else
         return (0);
@@ -82,13 +82,52 @@ void env_list(t_env **env, char **envp)
     // Update the pointer to the head of the list
     *env = head;
 }
+char  **env_to_char_array(t_env *env) {
+    int count = 0;
+    t_env *current = env;
 
-void execute_builtin(t_command **command, char **envp)
-{
+    // Count the number of elements in the linked list
+    while (current != NULL) {
+        count++;
+        current = current->next;
+    }
+
+    // Allocate memory for the char ** array
+    char **envp = (char **)malloc((count + 1) * sizeof(char *)); // +1 for NULL terminator
+
+    // Populate the char ** array
+    current = env;
+    int i = 0;
+    while (current != NULL) {
+        // Calculate the lengths of var and value
+        size_t var_len = strlen(current->var);
+        size_t value_len = strlen(current->value);
+
+        // Allocate memory for the combined string "var=value"
+        envp[i] = (char *)malloc((var_len + value_len + 2) * sizeof(char));
+        
+        // Copy variable name (var)
+        strcpy(envp[i], current->var);
+        
+        // Concatenate '='
+        strcat(envp[i], "=");
+        
+        // Concatenate value
+        strcat(envp[i], current->value);
+
+        i++;
+        current = current->next;
+    }
+
+    // Set the last element of the array to NULL as required by execve and other functions
+    envp[i] = NULL;
+    return(envp);
+
+
+}
+char **execute_builtin(t_command **command, char **envp) {
     t_env *env = NULL; // Initialize linked list head for environment variables
     env_list(&env, envp);
- // Populate the linked list with environment variables
-
     if (strcmp((*command)->arg[0], "echo") == 0) {
         ft_echo(command);
     }
@@ -101,10 +140,7 @@ void execute_builtin(t_command **command, char **envp)
     else if (strcmp((*command)->arg[0], "export") == 0) {
         ft_export(command);
     }
-    // else if (strcmp((*command)->arg[0], "unset") == 0) {
-    //     ft_unset((*command)->arg[1], &env); // Pass the list and arguments starting from index 1
-    // }
-     else if (strcmp((*command)->arg[0], "unset") == 0) {
+    else if (strcmp((*command)->arg[0], "unset") == 0) {
         // Determine number of arguments excluding the command itself
         int num_args = 0;
         while ((*command)->arg[num_args] != NULL) {
@@ -128,6 +164,7 @@ void execute_builtin(t_command **command, char **envp)
     else {
         fprintf(stderr, "Unknown built-in command\n");
     }
-
+    envp = env_to_char_array(env);
+    return (envp);
 
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:05:13 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/05 20:40:39 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/07 20:27:11 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,9 @@ void handle_redirections(t_command **command)
         j = 0;
         while (cmd->arg[i] != NULL)
         {
-            if (strcmp(cmd->arg[i], "<") == 0)
+            if (strcmp(cmd->arg[i], "<") == 0)//detecter heredoc o ndekhelih l fd o mn l fd ghadi dupih l 0
             {
+            
                 if (cmd->arg[i + 1] != NULL)
                 {
                     handle_redirect_in(cmd, cmd->arg[i + 1]);
@@ -116,8 +117,11 @@ void handle_redirections(t_command **command)
             {
                 if(cmd->arg[i + 1] != NULL)
                 {
-                    //handle_heredoc_ex(cmd->my_fd , cmd->arg[ i + 1]);//here my_fd is file when we have heredoc and arg[i + 1] is delimiter
                     i += 2;
+                    // printf("i'm here %d\n", cmd->my_fd);
+                    //handle_heredoc_ex(cmd->my_fd , cmd->arg[ i + 1]);//here my_fd is file when we have heredoc and arg[i + 1] is delimiter
+                    // dup2(cmd->my_fd, STDIN_FILENO);
+                    // close(cmd->my_fd);
                 }
             }
             else

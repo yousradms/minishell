@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:03:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/05 11:27:32 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/06 20:07:07 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void ft_unset(char *var_names[], int num_vars, t_env **envp)
 {
-    t_command **cmd = NULL;
+    // t_command **cmd = NULL;
     int i = 0;
     while ( i < num_vars )
     {
@@ -51,5 +51,5 @@ void ft_unset(char *var_names[], int num_vars, t_env **envp)
         }
         i++;
     }
-    ft_env(cmd, envp);
+    // ft_env(cmd, envp);
 }

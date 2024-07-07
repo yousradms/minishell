@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:57:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/05 14:31:07 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/07 16:21:10 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	ft_handl_error(char *s1, char *s2, char *s3)
 	free(str);
 }
 
-static int	error_pipe(t_node *token)
+static int error_pipe(t_node *token)
 {
     int	last_pipe;
     t_node  *tmp;

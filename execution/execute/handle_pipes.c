@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/07/05 12:12:24 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/07 16:59:39 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ char *strjoin(const char *str1, const char *str2)
 }
 
 static int is_absolute_or_relative_path(char *cmd)
-{
+{ 
+    if(!cmd)
+        return(0);
     return (cmd[0] == '/' || cmd[0] == '.');
 }
 
@@ -70,6 +72,8 @@ char *find_commande(char *cmd, char **envp)
     char **paths;
     char *path;
 
+    if (!cmd)
+        return(NULL);
     if (is_absolute_or_relative_path(cmd))
         return (cmd);
     paths = get_paths_from_env(envp);
@@ -166,7 +170,7 @@ pid_t fork_process()
     return (pid);
 }
 
-void handle_multiple_command(t_command **commande, char **env)
+char **handle_multiple_command(t_command **commande, char **env)
 {
     t_command *cmd;
     pid_t pid;
@@ -178,10 +182,10 @@ void handle_multiple_command(t_command **commande, char **env)
     while (cmd)
     {
         if (cmd->next != NULL && !create_pipe(fd))
-            return;
+            return(env);
         pid = fork_process();
         if (pid == -1)
-            return;
+            return(env);
         else if (pid == 0)
         {
             setup_child_process(cmd, prev_fd, fd);
@@ -192,6 +196,7 @@ void handle_multiple_command(t_command **commande, char **env)
         cmd = cmd->next;
     }
     while (wait(NULL) > 0);
+    return(env);
 }
 
 

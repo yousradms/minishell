@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute_one_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 09:11:12 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/05 19:20:15 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/07 20:21:16 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void handle_one_command(t_command **commande,char **env)
+char **handle_one_command(t_command **commande,char **env)
 {
     pid_t pid;
     char *full_command;
@@ -21,12 +21,12 @@ void handle_one_command(t_command **commande,char **env)
     handle_quotes_ex(commande);
     if (is_builtin((*commande)->arg[0]))
     {
-        execute_builtin(commande, env);
-        return ;
+        env = execute_builtin(commande, env);
+        return(env) ;
     }
     pid = fork_process();
     if (pid == -1)
-        return;
+        return (env);
     else if (pid == 0)
     {
         full_command = find_commande((*commande)->arg[0], env);
@@ -43,14 +43,18 @@ void handle_one_command(t_command **commande,char **env)
         }   
     }
     else
-        wait(NULL);
+        waitpid(pid, 0, 0);
+    return(env);
              
 }
 
-void execute(t_command **commande, char **env)
+char **execute(t_command **commande, char **env)
 {
+
     if((*commande)->next == NULL)
-        handle_one_command(commande,env);  
+        env = handle_one_command(commande,env);  
     else
-        handle_multiple_command(commande,env);
+        env = handle_multiple_command(commande,env);
+
+    return(env);
 }

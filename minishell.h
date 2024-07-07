@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/05 12:12:42 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/06 20:14:10 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct s_env
 } t_env;
 
 ///PARSING///
-void parsing_execute_command(char **line,char **env);
+char **parsing_execute_command(char **line,char **env);
 
 //tokenize
 void add_single_quote_delimiters(char *s, char *new_s, int *i, int *j);
@@ -141,6 +141,7 @@ t_node	*ft_lstlast(t_node *lst);
 char **set_env(char **env);
 int just_spaces(char *s);
 t_state get_state(char *s);
+char  **env_to_char_array(t_env *env);
 
 //debug
 void print_list(t_node *head);
@@ -156,7 +157,7 @@ char	*ft_strtrim(char  *s1, char  *set);
 //builtins
 void ft_cd(t_command **command);
 int is_builtin(char *cmd);
-void execute_builtin(t_command **command, char **envp);
+char **execute_builtin(t_command **command, char **envp);
 void ft_echo(t_command **cmd);
 void ft_env(t_command **command, t_env **envp);
 void ft_exit(t_command **command);
@@ -168,8 +169,8 @@ void ft_unset(char *var_names[], int num_vars, t_env **envp);
 char	**ft_split4( char *s, char c);
 char	*strndup1( char *s, size_t n);
 char *find_commande(char *cmd, char **envp);
-void execute(t_command **commande, char **env);
-void handle_one_command(t_command **commande,char **env);
+char **execute(t_command **commande, char **env);
+char **handle_one_command(t_command **commande,char **env);
 pid_t fork_process();
 void handle_quotes_ex(t_command **cmd);
 
@@ -177,6 +178,6 @@ void handle_quotes_ex(t_command **cmd);
 void handle_redirect_in(t_command *cmd, char *filename);
 void handle_redirect_out(t_command *cmd, char *filename, int append);
 void handle_redirections(t_command **command);
-void handle_multiple_command(t_command **commande,char **env);
+char **handle_multiple_command(t_command **commande, char **env);
 
 #endif
