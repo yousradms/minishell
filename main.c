@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/07 18:17:23 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/08 08:47:47 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int main(int ac,char **av,char **env)
     char *line;
     
     envp = set_env(env);
-    int i =0;
-    int j =0;
+    int i = 0;
+    int j = 0;
     while (1)
     {
         line = readline("minishell🥶😁");
@@ -41,10 +41,10 @@ int main(int ac,char **av,char **env)
             
         }
         free(line);
-            dup2(j, STDOUT_FILENO);
-            dup2(i, STDIN_FILENO);
-            close(i);
-            close(j);
+        dup2(j, STDOUT_FILENO);
+        dup2(i, STDIN_FILENO);
+        close(i);
+        close(j);
     }
     return(0);
 }

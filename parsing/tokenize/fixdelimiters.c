@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 16:45:33 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/05 14:05:26 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/08 15:23:11 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int  calculate_new_length(char *s)
         else if (s[i] == '|' || s[i] == '<' || s[i] == '>')
             new_len += 2;
         else if (s[i] == '$')
-            new_len += 1;
+            new_len += 2;
         i++;
     }
     return (new_len);
@@ -86,6 +86,10 @@ char *add_delimiter(char *s)
     len = strlen(s);
     new_len = calculate_new_length(s);
     new_s = allocate_new_string(new_len);
+    // if (!new_s)
+    //     return NULL;  // Handle malloc failure
     process_characters(s, new_s, len);
+    if (!new_s)
+        return(NULL);
     return (new_s);
 }
