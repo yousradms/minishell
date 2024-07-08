@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/07/07 16:59:39 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/08 20:26:54 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,6 @@ char **handle_multiple_command(t_command **commande, char **env)
             parent_process_actions(&prev_fd, fd, cmd);
         cmd = cmd->next;
     }
-    while (wait(NULL) > 0);
     return(env);
 }
 

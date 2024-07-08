@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:18 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/07 20:26:39 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/08 20:16:51 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,15 @@
 int handle_herdoc(char *delimiter, int f) 
 {
     char *line;
-    int temp_fd;
+    int temp_fd[2];
     // int my_fd = 0;
     char *s = remove_quotes(delimiter);
     if (f)// Open or create "temp.txt" for appending
     {
         unlink("temp.txt");
-        temp_fd = open("temp.txt", O_RDWR | O_CREAT | O_TRUNC, 0644);
-        if (temp_fd == -1)
+        temp_fd[0] = open("temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        temp_fd[1] = open("temp.txt", O_RDONLY | O_TRUNC, 0644);
+        if (temp_fd[0] == -1 || temp_fd[1] == -1)
             return (-1);
         unlink("temp.txt");
     }
@@ -44,16 +45,16 @@ int handle_herdoc(char *delimiter, int f)
 
         if (f)// Write the line and newline character to the temporary file
         {
-            if (write(temp_fd, line, strlen(line)) == -1)
+            if (write(temp_fd[0], line, strlen(line)) == -1)
             {
                 free(line);
-                close(temp_fd);
+                close(temp_fd[0]);
                 // return (my_fd);
             }
-            if (write(temp_fd, "\n", 1) == -1)
+            if (write(temp_fd[0], "\n", 1) == -1)
             {
                 free(line);
-                close(temp_fd);
+                close(temp_fd[0]);
                 // return (my_fd);
             }
         }
@@ -67,8 +68,7 @@ int handle_herdoc(char *delimiter, int f)
     //         return (0);
     //     close(temp_fd);
     // }
-        return(temp_fd);
-        
+    return(temp_fd[1]);
     return (0);
 }
 
@@ -86,7 +86,7 @@ void handle_herddoce(t_command **command)
             if (strcmp(first->arg[i],"<<") == 0)
             {
                 if (first->arg[i + 1])
-                    first->my_fd = handle_herdoc(first->arg[i + 1], 1);       
+                    first->my_fd = handle_herdoc(first->arg[i + 1], 1);
             }
             i++;
         }

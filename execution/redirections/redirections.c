@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:05:13 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/07 20:27:11 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/08 20:20:30 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,14 +115,14 @@ void handle_redirections(t_command **command)
             //<<
             else if(strcmp(cmd->arg[i] , "<<") == 0)
             {
-                if(cmd->arg[i + 1] != NULL)
-                {
-                    i += 2;
-                    // printf("i'm here %d\n", cmd->my_fd);
+                // if(cmd->arg[i + 1] != NULL)
+                // {
+                    printf("i'm here %d\n", cmd->my_fd);
                     //handle_heredoc_ex(cmd->my_fd , cmd->arg[ i + 1]);//here my_fd is file when we have heredoc and arg[i + 1] is delimiter
-                    // dup2(cmd->my_fd, STDIN_FILENO);
-                    // close(cmd->my_fd);
-                }
+                    dup2(cmd->my_fd, STDIN_FILENO);
+                    close(cmd->my_fd);
+                    i += 2;
+                // }
             }
             else
             {
