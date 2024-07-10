@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/08 20:43:40 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/10 22:52:26 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@ int main(int ac,char **av,char **env)
     envp = set_env(env);
     int i = 0;
     int j = 0;
-    i = dup(STDIN_FILENO);
-    j = dup(STDOUT_FILENO);
+    // i = dup(STDIN_FILENO);
+    // j = dup(STDOUT_FILENO);
     while (1)
     {
+        i = dup(STDIN_FILENO);
+        j = dup(STDOUT_FILENO);
         line = readline("minishell🥶😁");
         if (!line)
             exit(1);
@@ -48,5 +50,6 @@ int main(int ac,char **av,char **env)
         }
         free(line);
     }
+
     return(0);
 }
