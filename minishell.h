@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/06 20:14:10 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/10 23:35:56 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ char **execute_builtin(t_command **command, char **envp);
 void ft_echo(t_command **cmd);
 void ft_env(t_command **command, t_env **envp);
 void ft_exit(t_command **command);
-void ft_export(t_command **command);
+void ft_export(t_command **command, t_env **envp);
 void ft_pwd(t_command **command);
 void ft_unset(char *var_names[], int num_vars, t_env **envp);
 
@@ -179,5 +179,6 @@ void handle_redirect_in(t_command *cmd, char *filename);
 void handle_redirect_out(t_command *cmd, char *filename, int append);
 void handle_redirections(t_command **command);
 char **handle_multiple_command(t_command **commande, char **env);
+
 
 #endif
