@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:21:42 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/08 15:14:55 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/11 03:10:23 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,5 @@ char **parsing_execute_command(char **line,char **env)
     free_resources(result, head, s);
     return(env);
 }
+
 
