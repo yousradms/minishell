@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/07/11 04:16:16 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/12 21:22:58 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,21 +104,22 @@ static int create_pipe(int fd[2])
     }
     return (1);
 }
-
-static void setup_child_process(t_command *cmd, int prev_fd, int fd[2])
+#include<stdbool.h>
+bool has_output_redirection(t_command *cmd)
 {
-    if (prev_fd != -1)
-    {
-        dup2(prev_fd, 0);
-        close(prev_fd);
-    }
-    if (cmd->next != NULL)
-    {
-        close(fd[0]);
-        dup2(fd[1], 1);
-        close(fd[1]);
-    }
+    return(cmd->out != 1);
 }
+// static void setup_child_process(t_command *cmd,int fd[2])
+// {
+//     int pid = fork();
+//     if (pid == 0)
+//     {
+//         close(fd[0]);
+//         if (cmd->next && has_output_redirection(cmd))
+//             dup2(fd[1], 1);
+//         close(fd[1]);
+//     }
+// }
 
 static  void execute_command(t_command *cmd, char **env)
 {
@@ -150,17 +151,15 @@ static  void execute_command(t_command *cmd, char **env)
     }
 }
 
-static void parent_process_actions(int *prev_fd, int fd[2], t_command *cmd)
-{
-    if (*prev_fd != -1)
-        close(*prev_fd);
-    if (cmd->next != NULL)
-    {
-        close(fd[1]);
-        *prev_fd = fd[0];
-    }
-    wait(NULL);
-}
+// static void parent_process_actions(int fd[2], t_command *cmd)
+// {
+//     // (void)cmd;
+//     close(fd[1]);
+//     if (cmd-> next)
+//         dup2(fd[0],0);
+//     close(fd[0]);
+    
+// }
 
 pid_t fork_process()
 {
@@ -179,6 +178,8 @@ char **handle_multiple_command(t_command **commande, char **env)
 
     cmd = *commande;
     prev_fd = -1;
+    int i = dup(STDIN_FILENO);
+    int j = dup(STDOUT_FILENO);
     while (cmd)
     {
         if (cmd->next != NULL && !create_pipe(fd))
@@ -188,13 +189,29 @@ char **handle_multiple_command(t_command **commande, char **env)
             return(env);
         else if (pid == 0)
         {
-            setup_child_process(cmd, prev_fd, fd);
+            // setup_child_process(cmd, fd);
+            close(fd[0]);
+            if (cmd->next && has_output_redirection(cmd))
+                dup2(fd[1], 1);
+            close(fd[1]);
             execute_command(cmd, env);
         }
         else
-            parent_process_actions(&prev_fd, fd, cmd);
+        {
+            close(fd[1]);
+            if (cmd-> next)
+                dup2(fd[0],0);
+            close(fd[0]);
+            // parent_process_actions( fd, cmd);
+        }
+
         cmd = cmd->next;
     }
+    dup2(j, STDOUT_FILENO);
+    dup2(i, STDIN_FILENO);
+    close(i);
+    close(j);
+            waitpid(pid , 0, 0);
     return(env);
 }
 

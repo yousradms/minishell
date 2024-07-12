@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/10 23:35:56 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/12 17:26:06 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <limits.h>
+#include<stdbool.h>
 #define w_count 1000
 #define L_count 1000
 #define MAX_WORDS 1000
@@ -179,6 +180,7 @@ void handle_redirect_in(t_command *cmd, char *filename);
 void handle_redirect_out(t_command *cmd, char *filename, int append);
 void handle_redirections(t_command **command);
 char **handle_multiple_command(t_command **commande, char **env);
+bool has_output_redirection(t_command *cmd);
 
 
 #endif

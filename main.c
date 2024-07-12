@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/11 07:40:49 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/12 20:32:37 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ int main(int ac,char **av,char **env)
     // j = dup(STDOUT_FILENO);
     while (1)
     {
-        i = dup(STDIN_FILENO);
-        j = dup(STDOUT_FILENO);
         line = readline("minishell🥶😁");
         if (!line)
             exit(1);
@@ -39,6 +37,8 @@ int main(int ac,char **av,char **env)
         if (strlen(line) > 0)
         {
             add_history(line);
+            i = dup(STDIN_FILENO);
+            j = dup(STDOUT_FILENO);
             envp = parsing_execute_command(&line, envp);
             //printf("here.......\n");
             dup2(j, STDOUT_FILENO);
