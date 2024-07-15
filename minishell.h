@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/13 21:43:25 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/15 19:23:31 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void ft_echo(t_command **cmd);
 void ft_env(t_command **command, t_env **envp);
 void ft_exit(t_command **command);
 // void ft_export(t_command **command, t_env **envp);
-void ft_export(t_command **command, t_env **envp, char **str);
+void ft_export(t_command **command, t_env **envp);
 void ft_pwd(t_command **command);
 void ft_unset(char *var_names[], int num_vars, t_env **envp);
 

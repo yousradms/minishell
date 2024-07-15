@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:09:19 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/15 19:02:44 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/15 19:16:42 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,11 @@ void set_expanded(char **str, char **content, char **env)
     int i;
     int j;
 
+        if (!str || !*str || !content || !env) {
+        fprintf(stderr, "Invalid input: str, content, or env is NULL\n");
+        return;
+    }
+
     expanded = ft_strdup(*str);
     if(!expanded)
         return;
@@ -187,7 +192,9 @@ void set_expanded(char **str, char **content, char **env)
         {
             j = i + 1;
             handle_special_cases(&expanded, &i, &j, env);
-            if(strcmp(expanded,""))
+            //printf("[%s]\n",expanded);
+            //exit(1);
+            if(strcmp(expanded,"") == 0)
                 break;
         }
         else
@@ -244,21 +251,35 @@ void expand_variable(t_node *current, char **env)
 {
     char *str;
     char *temp;
-
+    if(!current || !env)
+        return;
     str = NULL;
     if (current->state == 2)
+    {
         str = remove_dquotes(current->content);
+        if(!str)
+            return ;
+    }
     else if (current->state == 1)
-        str = strdup(current->content);
+    {
+        str = ft_strdup(current->content);
+        if(!str)
+            return ;
+    }
     else if (current->state == 3)
     {
         temp = remove_squotes(current->content);
+        if(!temp)
+            return;
         free(current->content);
         current->content = temp;
         //printf("%s", current->content);
         return;
     }
-    set_expanded(&str, &(current->content), env);
-    free(str);
+    if(str)
+    {
+        set_expanded(&str, &(current->content), env);
+        free(str);
+    }
     //printf("%s", current->content);
 }

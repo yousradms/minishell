@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:18:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/13 17:38:34 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/15 19:26:21 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,31 +66,35 @@ void set_value(int *i, int *j, char **var_name, char **expanded, char **env)
 
 void expanding(t_node *list, char **env)
 {
+    if(!list)
+        return;
     t_node *current;
-    //int enter;
     int in_herdoc;
     
-    //enter = 0;
     in_herdoc = 0;
     current = list;
     while (current != NULL)
     {
         if (current->type == 6)
+        {
             in_herdoc = 1;
+            // Skip spaces after the heredoc
+            while (current->next && current->next->type == 1)
+                current = current->next;
+        }
+        while(current && current->type == 1)
+            current = current->next;
+        if (current == NULL)
+            break; // Added null check
         if (in_herdoc && current->next)
             current = current->next;
-        if (current->type == 9 && contain_env(current->content) && !in_herdoc)
-        {
+        if (current->type == 9 && contain_env(current->content) && in_herdoc != 1)
             expand_variable(current, env);
-            //enter++;
-        }
         else if (current->type == 9 && contain_home_after_quote(current->content))
             expand_home_directory(current);
         current = current->next;
         in_herdoc = 0;
     }
-    // if (enter > 0)
-    //     printf("\n");
 }
 
 

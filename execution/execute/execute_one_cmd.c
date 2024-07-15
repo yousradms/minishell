@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 09:11:12 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/10 22:46:15 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/15 19:17:54 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,10 @@ char **handle_one_command(t_command **commande,char **env)
 
 char **execute(t_command **commande, char **env)
 {
+    if (!commande || !*commande || !env) {
+        //fprintf(stderr, "Invalid input: commande or env is NULL\n");
+        return env;
+    }
 
     if((*commande)->next == NULL)
         env = handle_one_command(commande,env);  

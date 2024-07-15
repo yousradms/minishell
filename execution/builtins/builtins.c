@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:45:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/13 21:44:30 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/15 19:24:08 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ char **execute_builtin(t_command **command, char **envp) {
     }
     else if (strcmp((*command)->arg[0], "export") == 0) {
         
-        ft_export(command,&env, envp);
+        ft_export(command,&env);
     }
     else if (strcmp((*command)->arg[0], "unset") == 0) {
         // Determine number of arguments excluding the command itself
