@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:54:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/11 04:31:53 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/13 21:49:28 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,40 @@ static int valid_key(char *var)
     }
     return(1);
 }
-void ft_export(t_command **command, t_env **envp) {
-    int i = 1;
 
+// void export_env(t_env *head)
+// {
+//     while (head)
+//     {
+//         if (head->value)
+//             printf("declare -x %s=\"%s\"\n", head->var, head->value);
+//         head = head->next;
+//     }
+// }
+
+void ft_env1(t_command **command, t_env **envp)
+{
+	(void)command; // Suppress unused parameter warning
+	t_env *env; // Dereference envp to get the linked list head
+	
+	env = *envp;
+	if (env == NULL)
+		return;
+	// Iterate through the linked list of environment variables
+	while (env != NULL)
+	{
+		 printf("declare -x %s=\"%s\"\n", env->var, env->value);
+		env = env->next; // Move to the next node
+	}
+}
+
+void ft_export(t_command **command, t_env **envp, char **str) {
+    int i = 1;
+    if(!str || !str[0])
+    {
+        ft_env1(command ,envp);
+        return ;
+    }
     while ((*command)->arg[i] != NULL) {
         char *arg = (*command)->arg[i];
         char *equal = strchr(arg, '=');

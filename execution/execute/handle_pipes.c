@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/07/12 21:22:58 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/15 18:36:24 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,24 @@ static int create_pipe(int fd[2])
     return (1);
 }
 #include<stdbool.h>
-bool has_output_redirection(t_command *cmd)
-{
-    return(cmd->out != 1);
+// bool has_output_redirection(t_command *cmd)
+// {
+//     return(cmd->out != 1);
+// }
+bool has_output_redirection(t_command *cmd) {
+    int i = 0;
+    while (cmd != NULL) {
+        if (cmd->arg[i] != NULL) {
+            while(strchr(cmd->arg[i], '>') != NULL) {
+                return 1;
+            }
+            i++;
+        }
+        cmd = cmd->next;
+    }
+    return 0;
 }
+
 // static void setup_child_process(t_command *cmd,int fd[2])
 // {
 //     int pid = fork();
@@ -185,13 +199,14 @@ char **handle_multiple_command(t_command **commande, char **env)
         if (cmd->next != NULL && !create_pipe(fd))
             return(env);
         pid = fork_process();
+        handle_redirections(&cmd);
         if (pid == -1)
             return(env);
         else if (pid == 0)
         {
             // setup_child_process(cmd, fd);
             close(fd[0]);
-            if (cmd->next && has_output_redirection(cmd))
+            if (cmd->next)
                 dup2(fd[1], 1);
             close(fd[1]);
             execute_command(cmd, env);
@@ -211,7 +226,7 @@ char **handle_multiple_command(t_command **commande, char **env)
     dup2(i, STDIN_FILENO);
     close(i);
     close(j);
-            waitpid(pid , 0, 0);
+    waitpid(pid , 0, 0);
     return(env);
 }
 

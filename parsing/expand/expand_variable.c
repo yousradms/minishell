@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:09:19 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/05 17:50:38 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/15 19:02:44 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,20 +150,45 @@ static void handle_special_cases(char **expanded, int *i, int *j, char **env)
         free(value);
     }
 }
+char	*ft_strdup(char *s1)
+{
+	char	*tmp;
+	int		len;
+	size_t	i;
+
+	i = 0;
+	len = strlen(s1);
+	tmp = malloc(sizeof(char) * (len + 1));
+	if (tmp == NULL)
+		return (NULL);
+	while (s1[i])
+	{
+		tmp[i] = s1[i];
+		i++;
+	}
+	tmp[i] = '\0';
+	return (tmp);
+}
 void set_expanded(char **str, char **content, char **env)
 {
     char *expanded;
     int i;
     int j;
 
-    expanded = strdup(*str);
+    expanded = ft_strdup(*str);
+    if(!expanded)
+        return;
     i = 0;
+    // if(expanded[i] == '\0')
+    //     return;
     while (expanded[i] != '\0')
     {
-        if (expanded[i] == '$')
+        if (expanded[i] == '$' )
         {
             j = i + 1;
             handle_special_cases(&expanded, &i, &j, env);
+            if(strcmp(expanded,""))
+                break;
         }
         else
             i++;
@@ -171,6 +196,49 @@ void set_expanded(char **str, char **content, char **env)
     free(*content);
     *content = expanded;
 }
+// void set_expanded(char **str, char **content, char **env)
+// {
+//     char *expanded;
+//     int i = 0;
+
+//     // Ensure input string is not NULL
+//     if (!str || !*str)
+//     {
+//         fprintf(stderr, "Error: Input string is NULL\n");
+//         return;
+//     }
+
+//     // Duplicate the string
+//     expanded = strdup(*str);
+//     if (!expanded)
+//     {
+//         perror("strdup");
+//         return;
+//     }
+
+//     // Process each character in the expanded string
+//     while (expanded[i] != '\0')
+//     {
+//         if (expanded[i] == '$')
+//         {
+//             int j = i + 1;
+//             if (!handle_special_cases(&expanded, &i, &j, env))
+//             {
+//                 free(expanded);
+//                 return;
+//             }
+//         }
+//         else
+//         {
+//             i++;
+//         }
+//     }
+
+//     // Replace content with expanded string
+//     free(*content);
+//     *content = expanded;
+// }
+
 
 void expand_variable(t_node *current, char **env)
 {

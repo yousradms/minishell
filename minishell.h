@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/12 17:26:06 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/13 21:43:25 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void expand_variable(t_node *current, char **env);
 char *replace_variable(char *str, char *value, int start, int end);
 void set_value(int *i, int *j, char **var_name, char **expanded, char **env);
 void expanding(t_node *list, char **env);
+char	*ft_strdup(char *s1);
 
 //parser 
 char **ft_split3(char *str);
@@ -162,7 +163,8 @@ char **execute_builtin(t_command **command, char **envp);
 void ft_echo(t_command **cmd);
 void ft_env(t_command **command, t_env **envp);
 void ft_exit(t_command **command);
-void ft_export(t_command **command, t_env **envp);
+// void ft_export(t_command **command, t_env **envp);
+void ft_export(t_command **command, t_env **envp, char **str);
 void ft_pwd(t_command **command);
 void ft_unset(char *var_names[], int num_vars, t_env **envp);
 
