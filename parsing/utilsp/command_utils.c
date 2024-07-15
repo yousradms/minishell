@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 18:50:16 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/04 20:18:56 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/15 18:23:17 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ t_command *create_new_command(char *line)
     }
     new_command->cmd = line;
     new_command->arg = ft_split3(line);
+    new_command->in = 0;
+    new_command->out = 1;
     new_command->next = NULL;
     return (new_command);
 }

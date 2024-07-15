@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:45:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/15 19:24:08 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/15 12:14:19 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,11 @@ void env_list(t_env **env, char **envp)
         {
             // Allocate memory for var and value
             var = (char *)malloc((equal_sign - envp[i] + 1) * sizeof(char));
+            if (!var)
+                return ;
             value = (char *)malloc((strlen(equal_sign + 1) + 1) * sizeof(char));
+            if (!value)
+                return ;
             // Copy var and value
             strncpy(var, envp[i], equal_sign - envp[i]);
             var[equal_sign - envp[i]] = '\0'; // Null-terminate var
@@ -63,10 +67,14 @@ void env_list(t_env **env, char **envp)
         {
             // No '=', treat entire string as var
             var = (char *)malloc((strlen(envp[i]) + 1) * sizeof(char));
+            if (!var)
+                return ;
             strcpy(var, envp[i]);
         }
         // Allocate memory for t_env structure
         new_env = (t_env *)malloc(sizeof(t_env));
+        if(!new_env)
+            return ;
         new_env->var = var;
         new_env->value = value;
         new_env->next = NULL;
@@ -82,7 +90,8 @@ void env_list(t_env **env, char **envp)
     // Update the pointer to the head of the list
     *env = head;
 }
-char  **env_to_char_array(t_env *env) {
+char  **env_to_char_array(t_env *env)
+{
     int count = 0;
     t_env *current = env;
 
@@ -98,22 +107,28 @@ char  **env_to_char_array(t_env *env) {
     // Populate the char ** array
     current = env;
     int i = 0;
+    int var_len;
+    int value_len ;
     while (current != NULL) {
         // Calculate the lengths of var and value
-        size_t var_len = strlen(current->var);
-        size_t value_len = strlen(current->value);
+        if(current->var)
+            var_len = strlen(current->var);
+        if(current->value)
+            value_len = strlen(current->value);
 
         // Allocate memory for the combined string "var=value"
         envp[i] = (char *)malloc((var_len + value_len + 2) * sizeof(char));
         
         // Copy variable name (var)
         strcpy(envp[i], current->var);
-        
+        if(current->value)
+        {
         // Concatenate '='
-        strcat(envp[i], "=");
+            strcat(envp[i], "=");
         
         // Concatenate value
-        strcat(envp[i], current->value);
+            strcat(envp[i], current->value);
+        }
 
         i++;
         current = current->next;
@@ -125,33 +140,33 @@ char  **env_to_char_array(t_env *env) {
 
 
 }
-char **execute_builtin(t_command **command, char **envp) {
+char **execute_builtin(t_command **command, char **envp)
+{
     t_env *env = NULL; // Initialize linked list head for environment variables
     env_list(&env, envp);
-    if (strcmp((*command)->arg[0], "echo") == 0) {
+    if (strcmp((*command)->arg[0], "echo") == 0) 
         ft_echo(command);
-    }
-    else if (strcmp((*command)->arg[0], "cd") == 0) {
+    
+    else if (strcmp((*command)->arg[0], "cd") == 0) 
         ft_cd(command);
-    }
-    else if (strcmp((*command)->arg[0], "pwd") == 0) {
+    
+    else if (strcmp((*command)->arg[0], "pwd") == 0) 
         ft_pwd(command);
-    }
-    else if (strcmp((*command)->arg[0], "export") == 0) {
+    
+    else if (strcmp((*command)->arg[0], "export") == 0) 
         
         ft_export(command,&env);
-    }
-    else if (strcmp((*command)->arg[0], "unset") == 0) {
+    
+    else if (strcmp((*command)->arg[0], "unset") == 0)
+    {
         // Determine number of arguments excluding the command itself
         int num_args = 0;
-        while ((*command)->arg[num_args] != NULL) {
+        while ((*command)->arg[num_args] != NULL)
             num_args++;
-        }
-        
         // Call ft_unset with arguments starting from index 1
-        if (num_args > 1) {
+        if (num_args > 1)
             ft_unset(&((*command)->arg[1]), num_args - 1, &env);
-        } else {
+         else {
             printf("Usage: unset <variable> [<variable> ...]\n");
         }
     }

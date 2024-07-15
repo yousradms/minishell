@@ -6,11 +6,12 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:14:22 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/05 17:42:56 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/15 16:18:13 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include "../../libft/libft.h"
 
 int contain_env(char *s)
 {
@@ -18,7 +19,7 @@ int contain_env(char *s)
     
     i = 0;
     while(s[i]) {
-        if(s[i] == '$' && s[i+1] != ' ')
+        if(s[i] == '$' && s[i+1] != ' ' && s[i+1] != '^' && s[i+1] != '%' && s[i+1] != '+' && s[i+1] != '~')
             return (1);
         i++;
     }

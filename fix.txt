@@ -1,8 +1,8 @@
 'ls'-'la'   ==>> done
-echo "s's's" ==>>done
-echo "''''"  ==>>done
-cat << 'l'sl   > lsl
-cat << 'll'  >> when no quotse expand 
+echo "s's's" ==>> done
+echo "''''"  ==>> done
+cat << 'l'sl   > lsl ==>> done
+cat << 'll'  >> when no quotse expand ==>> done
 ------------
 	bash-3.2$ cat << 'll'
 	> $USER
@@ -14,23 +14,35 @@ cat << 'll'  >> when no quotse expand
 	ydoumas
 ------------
 
-$*
+$* ==>> done
 $)
-$-
+$- ==>>done
 $_
-$^
-$%
-$+
-$~
-echo $
-echo $;
+$^==>> done
+$% ==>> done
+$+ ==>> done
+$~ ==>> done
+echo $ ==>> done
 
-----------------
+
+---------------------
 << ""'l'"" ==>> done
 ----------------------
-
-if you use execute instead of handle_multiple_command   exit work as expected but it was a problem in $1 or $USER1 -->seg fault
-
+export a ==>> done
+export ==>> done
 ----------------------
+ls |
+----------------------
+ls -la | wc -c > a
+----------------------
+cat < 'll'
+----------------------
+()
+"()"
+(hi)
+(
+)
+----------------------
+
 
 

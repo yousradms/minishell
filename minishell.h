@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/15 19:23:31 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/15 10:34:01 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ void expand_variable(t_node *current, char **env);
 char *replace_variable(char *str, char *value, int start, int end);
 void set_value(int *i, int *j, char **var_name, char **expanded, char **env);
 void expanding(t_node *list, char **env);
-char	*ft_strdup(char *s1);
 
 //parser 
 char **ft_split3(char *str);
@@ -123,8 +122,8 @@ int parsing(t_node *head);
 void open_here(t_node *token, t_node *ptr_err);
 
 //heredoc
-void handle_herddoce(t_command **command);
-int handle_herdoc(char *delimiter, int f) ;
+void handle_herddoce(t_command **command, char **env);
+int handle_herdoc(char *delimiter, int f, int *flag)  ;
 
 //utilsp
 void add_back(t_command **head, t_command *new_node);
@@ -163,7 +162,6 @@ char **execute_builtin(t_command **command, char **envp);
 void ft_echo(t_command **cmd);
 void ft_env(t_command **command, t_env **envp);
 void ft_exit(t_command **command);
-// void ft_export(t_command **command, t_env **envp);
 void ft_export(t_command **command, t_env **envp);
 void ft_pwd(t_command **command);
 void ft_unset(char *var_names[], int num_vars, t_env **envp);

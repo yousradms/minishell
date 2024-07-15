@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/07/15 18:36:24 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/15 18:39:23 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,24 +105,11 @@ static int create_pipe(int fd[2])
     return (1);
 }
 #include<stdbool.h>
-// bool has_output_redirection(t_command *cmd)
-// {
-//     return(cmd->out != 1);
-// }
-bool has_output_redirection(t_command *cmd) {
-    int i = 0;
-    while (cmd != NULL) {
-        if (cmd->arg[i] != NULL) {
-            while(strchr(cmd->arg[i], '>') != NULL) {
-                return 1;
-            }
-            i++;
-        }
-        cmd = cmd->next;
-    }
-    return 0;
+bool has_output_redirection(t_command *cmd)
+{
+    return(cmd->out != 1);
+    //return(strchr(cmd->cmd,'>') != NULL);
 }
-
 // static void setup_child_process(t_command *cmd,int fd[2])
 // {
 //     int pid = fork();
@@ -229,7 +216,6 @@ char **handle_multiple_command(t_command **commande, char **env)
     waitpid(pid , 0, 0);
     return(env);
 }
-
 
 
 

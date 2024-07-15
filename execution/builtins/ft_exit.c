@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:54:41 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/05 10:17:28 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/13 11:55:07 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void ft_exit(t_command **command)
     {
         if (!ft_is_number((*command)->arg[1]))
         {
+            printf("exit\n");
             printf("Minishell: exit: %s: numeric argument required\n",(*command)->arg[1]);
             exit(255);
         }
@@ -44,8 +45,10 @@ void ft_exit(t_command **command)
             exit_status = atoi((*command)->arg[1]);
             if ((*command)->arg[2])
             {
+                printf("exit\n");
                 printf("Minishell: exit: too many arguments\n");
-                exit(1);
+                //exit(1);
+                return ;
             }
             else
             {
