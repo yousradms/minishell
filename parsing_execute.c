@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_execute.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:21:42 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/17 12:40:14 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/17 14:59:06 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void free_resources(char **result, t_node *head, char *s)
 
 char **parsing_execute_command(char **line,char **env)
 {
-    (void)env;
+    
     char **result;
     char *s;
     t_node *head;
@@ -62,12 +62,17 @@ char **parsing_execute_command(char **line,char **env)
     s = prepare_line(line);
     //printf("line is[%s]\n",s); 
     if(!s)
-        return(NULL);                                                                                                                                                                                                                                                                         
+        return(env);                                                                                                                                                                                                                                                                         
     result = ft_split(s);
     //print_darg(result);
+    if (!result)
+    {
+        free(s);
+        return (env);
+    }
     head = NULL;
     tokenize_line(&head, result);
-    if (parsing(head) == -1)//leaks here
+    if (parsing(head) == -1)
 	{
         free_resources(result, head, s);
 		return (env);
@@ -77,7 +82,7 @@ char **parsing_execute_command(char **line,char **env)
     commands = ft_split2(&head);
     //print_list2(commands);
     handle_herddoce(&commands,env );
-    env = execute(&commands,env);
+    env = execute(&commands,env);//leaks in the execution
     free_commands(commands);
     free_resources(result, head, s);
     return(env);

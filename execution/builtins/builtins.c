@@ -12,6 +12,32 @@
 
 #include "../../minishell.h"
 
+static void free_char_array(char **array)
+{
+    if (array == NULL)
+        return;
+
+    for (int i = 0; array[i] != NULL; ++i) {
+        free(array[i]);
+    }
+    free(array);
+}
+static void free_env_list(t_env *head)
+{
+    t_env *current = head;
+    t_env *next;
+
+    while (current != NULL)
+    {
+        next = current->next;
+        free(current->var);
+        free(current->value);
+        free(current);
+        current = next;
+    }
+}
+
+
 int is_builtin(char *cmd)
 {
     if (cmd && strcmp(cmd, "cd") == 0)
@@ -180,7 +206,10 @@ char **execute_builtin(t_command **command, char **envp)
     else {
         fprintf(stderr, "Unknown built-in command\n");
     }
-    envp = env_to_char_array(env);
-    return (envp);
+    char **new_envp = env_to_char_array(env);
+    free_char_array(envp);
+    free_env_list(env);
+
+    return (new_envp);
 
 }

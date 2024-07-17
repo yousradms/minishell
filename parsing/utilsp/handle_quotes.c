@@ -40,6 +40,8 @@ char *remove_quotes(char *s)
     int j;
 
     token = malloc(strlen(s) + 1);
+    if(!token)
+        return(NULL);
     i = 0;
     j = 0;
     while (s[i])
@@ -60,6 +62,8 @@ char *remove_dquotes(char *s)
     int j;
 
     token = malloc(strlen(s) + 1);
+    if(!token)
+        return(NULL);
     i = 0;
     j = 0;
     while (s[i])
@@ -80,6 +84,8 @@ char *remove_squotes(char *s)
     int j;
 
     token = malloc(strlen(s) + 1);
+    if(!token)
+        return(NULL);
     i = 0;
     j = 0;
     while (s[i])

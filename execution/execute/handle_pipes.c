@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/07/15 18:39:23 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/17 16:44:37 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,17 +110,7 @@ bool has_output_redirection(t_command *cmd)
     return(cmd->out != 1);
     //return(strchr(cmd->cmd,'>') != NULL);
 }
-// static void setup_child_process(t_command *cmd,int fd[2])
-// {
-//     int pid = fork();
-//     if (pid == 0)
-//     {
-//         close(fd[0]);
-//         if (cmd->next && has_output_redirection(cmd))
-//             dup2(fd[1], 1);
-//         close(fd[1]);
-//     }
-// }
+
 
 static  void execute_command(t_command *cmd, char **env)
 {
@@ -152,15 +142,7 @@ static  void execute_command(t_command *cmd, char **env)
     }
 }
 
-// static void parent_process_actions(int fd[2], t_command *cmd)
-// {
-//     // (void)cmd;
-//     close(fd[1]);
-//     if (cmd-> next)
-//         dup2(fd[0],0);
-//     close(fd[0]);
-    
-// }
+
 
 pid_t fork_process()
 {

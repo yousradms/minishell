@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_one_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 09:11:12 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/17 12:25:37 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/17 16:50:22 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ char **handle_one_command(t_command **commande,char **env)
     pid_t pid;
     char *full_command;
     
-    handle_redirections(commande);
-    handle_quotes_ex(commande);//"'$USER'"
-    //"    $USER"
+    handle_redirections(commande);//leaks here
+    handle_quotes_ex(commande);
+    
     if (is_builtin((*commande)->arg[0]))
     {
         env = execute_builtin(commande, env);
@@ -40,10 +40,12 @@ char **handle_one_command(t_command **commande,char **env)
         {
             perror("execve");
             exit(EXIT_FAILURE);
-        }   
+        }
+        free(full_command);  
     }
     else
         waitpid(pid, 0, 0);
+    
     return(env);
              
 }

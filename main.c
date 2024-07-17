@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/17 12:45:50 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/17 14:44:32 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int main(int ac,char **av,char **env)
             i = dup(STDIN_FILENO);
             j = dup(STDOUT_FILENO);
             envp = parsing_execute_command(&line, envp);
-            //printf("here.......\n");
+
             dup2(j, STDOUT_FILENO);
             dup2(i, STDIN_FILENO);
             close(i);
@@ -50,6 +50,11 @@ int main(int ac,char **av,char **env)
         }
         free(line);
     }
-    //free envp
+    // Free envp
+    for (int k = 0; envp[k] != NULL; k++)
+    {
+        free(envp[k]);
+    }
+    free(envp);
     return(0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:18:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/17 12:06:06 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/17 15:00:37 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,7 @@ char *get_env_value(char *var_name, char **env)
     return (NULL);
 }
 
-// char *replace_variable(char *str, char *value, int start, int end)
-// {
-//     int new_expanded_len;
-//     char *new_expanded;
 
-//     new_expanded_len = ft_strlen(str) - (end - start) + ft_strlen(value) + 1;
-//     new_expanded = malloc(new_expanded_len);
-//     if(!new_expanded)
-//         return(NULL);
-//     strncpy(new_expanded, str, start);
-//     strcpy(new_expanded + start, value);
-//     strcpy(new_expanded + start + ft_strlen(value), str + end);
-//     return (new_expanded);
-// }
 char *replace_variable( char *expanded,  char *value, int i, int j)
 {
     size_t len_expanded = strlen(expanded);
@@ -70,6 +57,11 @@ void set_value(int *i, int *j, char **var_name, char **expanded, char **env)
     if (value != NULL)
     {
         new_expanded = replace_variable(*expanded, value, *i, *j);
+        if (!new_expanded)
+        {
+            free(value);
+            return;
+        }
         free(*expanded);
         *expanded = new_expanded;
         *i += ft_strlen(value);
@@ -78,6 +70,8 @@ void set_value(int *i, int *j, char **var_name, char **expanded, char **env)
     else
     {
         new_expanded = replace_variable(*expanded, "", *i, *j);
+        if(!new_expanded)
+            return ;
         free(*expanded);
         *expanded = new_expanded;
         *i += 1;

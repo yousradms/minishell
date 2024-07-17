@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:05:13 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/15 18:18:31 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/17 16:57:03 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,18 @@ void handle_redirect_in(t_command *cmd, char *filename)
 
     fd = open(filename, O_RDONLY);
     //printf("1:[%d]\n",cmd->in);//-1094795586
-    // if (fd == -1)
-    // {
-    //     perror("open");
-    //     exit(EXIT_FAILURE);
-    // }
+    if (fd == -1)
+    {
+        perror("open");
+        //exit(EXIT_FAILURE);
+        return;
+    }
     if (dup2(fd, STDIN_FILENO) == -1)
     {
         //perror("dup2");
         close(fd);
         //exit(EXIT_FAILURE);
+        return;
     }
     cmd->in = fd;
     //printf("2:[%d]\n",cmd->in);//5
@@ -45,16 +47,17 @@ void handle_redirect_out(t_command *cmd, char *filename, int append)
     else 
         flags = O_WRONLY | O_CREAT | O_TRUNC;
     fd = open(filename, flags, 0644);
-    // if (fd == -1)
-    // {
-    //     perror("open");
-    //     exit(EXIT_FAILURE);
-    // }
+    if (fd == -1)
+    {
+        perror("open");
+        exit(EXIT_FAILURE);
+    }
     if (dup2(fd, STDOUT_FILENO) == -1)
     {
-        //perror("dup2");
+        perror("dup2");
         close(fd);
         //exit(EXIT_FAILURE);
+        return;
     }
     cmd->out = fd;
     close(fd);
@@ -77,13 +80,11 @@ void handle_redirections(t_command **command)
         {
             if (strcmp(cmd->arg[i], "<") == 0)//detecter heredoc o ndekhelih l fd o mn l fd ghadi dupih l 0
             {
-            
                 if (cmd->arg[i + 1] != NULL)
                 {
                     handle_redirect_in(cmd, cmd->arg[i + 1]);
                     i += 2; // Skip over both "<" and the filename
                 }
-
             }
             else if (strcmp(cmd->arg[i], ">") == 0)
             {
@@ -92,11 +93,6 @@ void handle_redirections(t_command **command)
                     handle_redirect_out(cmd, cmd->arg[i + 1], 0);
                     i += 2; // Skip over both ">" and the filename
                 }
-                // else
-                // {
-                //     fprintf(stderr, "Syntax error: Missing filename after '>'\n");
-                //     exit(EXIT_FAILURE);
-                // }
             } 
             else if (strcmp(cmd->arg[i], ">>") == 0)
             {
@@ -105,23 +101,13 @@ void handle_redirections(t_command **command)
                     handle_redirect_out(cmd, cmd->arg[i + 1], 1);
                     i += 2; // Skip over both ">>" and the filename
                 }
-                // else
-                // {
-                //     fprintf(stderr, "Syntax error: Missing filename after '>>'\n");
-                //     exit(EXIT_FAILURE);
-                // }
             }
             //<<
             else if(strcmp(cmd->arg[i] , "<<") == 0)
             {
-                // if(cmd->arg[i + 1] != NULL)
-                // {
-                    //printf("i'm here %d\n", cmd->my_fd);
-                    //handle_heredoc_ex(cmd->my_fd , cmd->arg[ i + 1]);//here my_fd is file when we have heredoc and arg[i + 1] is delimiter
                     dup2(cmd->my_fd, STDIN_FILENO);
                     close(cmd->my_fd);
                     i += 2;
-                // }
             }
             else
             {
