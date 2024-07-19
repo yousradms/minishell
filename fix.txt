@@ -4,7 +4,7 @@ echo "''''"  ==>> done
 cat << 'l'sl   > lsl ==>> done
 cat << 'll'  >> when no quotse expand ==>> done
 ------------
-	bash-3.2$ cat << 'll'
+	bash-3.2$ cat << 'll' ==>>done 
 	> $USER
 	> ll
 	$USER
@@ -44,7 +44,12 @@ cat < 'll'
 )
 ----------------------
 
-
-------------
 echo ""'a'""
+----------------------
+pipe
+----------------------
+heredoc with commands and redirections
+----------------------
+
+
 

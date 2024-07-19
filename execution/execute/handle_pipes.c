@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/07/19 12:07:13 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/19 15:25:22 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,24 +104,19 @@ static int create_pipe(int fd[2])
     }
     return (1);
 }
-#include<stdbool.h>
-bool has_output_redirection(t_command *cmd)
-{
-    return(cmd->out != 1);
-    //return(strchr(cmd->cmd,'>') != NULL);
-}
+// #include<stdbool.h>
+// bool has_output_redirection(t_command *cmd)
+// {
+//     return(cmd->out != 1);
+//     //return(strchr(cmd->cmd,'>') != NULL);
+// }
 
 
 static  void execute_command(t_command *cmd, char **env)
 {
     char *full_command;
     
-    handle_redirections(&cmd);
-    // for (int i = 0; cmd->arg[i] != NULL; i++) {
-    //     char *cleaned_arg = remove_quotes(cmd->arg[i]);
-    //     free(cmd->arg[i]);
-    //     cmd->arg[i] = cleaned_arg;
-    // }
+    // handle_redirections(&cmd);
     handle_quotes_ex(&cmd);
     if (is_builtin(cmd->arg[0]))
         execute_builtin(&cmd, env);
@@ -130,8 +125,8 @@ static  void execute_command(t_command *cmd, char **env)
     full_command = find_commande(cmd->arg[0], env);
     if (full_command == NULL)
     {
-        fprintf(stderr, "Error: find_commande returned NULL\n");
-        // printf("Minishell: %s: command not found\n",cmd->arg[0]);
+        //fprintf(stderr, "Error: find_commande returned NULL\n");
+        printf("Minishell: %s: command not found\n",cmd->arg[0]);
         exit(EXIT_FAILURE);
     }
     if (execve(full_command, cmd->arg, env) == -1)
@@ -140,7 +135,6 @@ static  void execute_command(t_command *cmd, char **env)
         exit(EXIT_FAILURE);
     }
 
-    // }
 }
 
 
@@ -157,40 +151,30 @@ char **handle_multiple_command(t_command **commande, char **env)
 {
     t_command *cmd;
     pid_t pid;
-    int prev_fd;
     int fd[2];
 
     cmd = *commande;
-    prev_fd = -1;
-    int i = dup(STDIN_FILENO);
-    int j = dup(STDOUT_FILENO);
-
     while (cmd)
     {
-
         if (cmd->next != NULL && !create_pipe(fd))
             return(env);
         pid = fork_process();
-        //handle_redirections(&cmd);
         if (pid == -1)
             return(env);
         else if (pid == 0)
         {
-            // Processus enfant
-            // handle_redirections(&cmd); // Appliquer les redirections de fichiers avant les redirections de pipes
-            if (cmd->next && strchr(cmd->cmd,'>') == NULL)//test out
+            handle_redirections(&cmd);
+            if (cmd->next)
             {
                 close(fd[0]);
-                if (cmd->next)
+                if (cmd->next && strchr(cmd->cmd,'>') == NULL)
                     dup2(fd[1], 1);
                 close(fd[1]);
-                //execute_command(cmd, env);
             }
             execute_command(cmd, env);
         }
         else
         {
-            // Processus parent
             if (cmd->next)
             {
                 close(fd[1]);
@@ -198,15 +182,11 @@ char **handle_multiple_command(t_command **commande, char **env)
                 close(fd[0]);
             }
         }
-
         cmd = cmd->next;
     }
-    dup2(j, STDOUT_FILENO);
-    dup2(i, STDIN_FILENO);
-    close(i);
-    close(j);
     waitpid(pid, 0, 0);
     return(env);
 }
+
 
 
