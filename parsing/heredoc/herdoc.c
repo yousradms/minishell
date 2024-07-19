@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:18 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/19 12:43:38 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/19 13:00:24 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,9 +237,11 @@ void handle_herddoce(t_command **command, char **env)
     while (first != NULL)
     {
         i = 0;
+        
         while (first->arg[i])
         {
             if (strcmp(first->arg[i], "<<") == 0)
+            // handle_redirections(command);
             {
                 if (first->arg[i + 1])
                 {
