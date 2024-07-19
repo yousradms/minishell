@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:18 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/17 17:13:54 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/19 12:43:38 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,23 @@ int handle_herdoc(char *delimiter, int f, int *flag)
     char *line;
     int temp_fd[2];
     // int my_fd = 0;
-
     // If delimiter does not have quotes, set flag to 1
-    if(del_without_quotes(delimiter))
-        *flag = 1;
-    else
-        *flag = 0;
 
+    if(del_without_quotes(delimiter))
+    {
+        printf("flag\n");
+        if(flag)
+            *flag = 1;
+        printf("flag2\n");
+    }
+    else
+    {
+        if(flag)
+            *flag = 0;
+    }
+        
     char *s = remove_quotes(delimiter);
+
     if (f) // Open or create "temp.txt" for appending
     {
         unlink("temp.txt");
@@ -46,11 +55,14 @@ int handle_herdoc(char *delimiter, int f, int *flag)
     }
     while (1)
     {
+
         line = readline(">");
         if (line == NULL)
             break;
-        if (strncmp(line, s, strlen(s)) == 0 && line[strlen(s)] == '\0') // Check for the delimiter at the start of the line
+        if (strncmp(line, s, strlen(s)) == 0 && line[strlen(s)] == '\0' ) // Check for the delimiter at the start of the line
         {
+            // free(delimiter);//zedt hada
+            free(s);//zedt hada 
             free(line);
             break; // Exit loop when delimiter is found
         }
@@ -59,19 +71,25 @@ int handle_herdoc(char *delimiter, int f, int *flag)
         {
             if (write(temp_fd[0], line, strlen(line)) == -1)
             {
+                // free(delimiter);//zedt hada
                 free(line);
+                free(s);
                 close(temp_fd[0]);
                 return temp_fd[1];
             }
             if (write(temp_fd[0], "\n", 1) == -1)
             {
+                // free(delimiter);//zedt hada
                 free(line);
+                free(s);
                 close(temp_fd[0]);
                 return temp_fd[1];
             }
         }
         free(line);
+    
     }
+    
     return temp_fd[1];
 }
 //expand inside the file where i have herdoc
@@ -213,7 +231,7 @@ void handle_herddoce(t_command **command, char **env)
     (void)env;
     t_command *first;
     int i;
-    int flag;
+    int flag =0;
 
     first = *command;
     while (first != NULL)
@@ -229,10 +247,10 @@ void handle_herddoce(t_command **command, char **env)
                     //printf("[%d]----[%d]\n", first->my_fd, flag);
                     if(flag)
                     {
-                        //printf("Must expand what inside this file\n");
+                        // printf("Must expand what inside this file\n");
                         expand_her(first->my_fd, env);
                     }
-                }  
+                }
             }
             i++;
         }

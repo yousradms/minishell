@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/07/17 16:44:37 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/19 12:07:13 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,21 +125,22 @@ static  void execute_command(t_command *cmd, char **env)
     handle_quotes_ex(&cmd);
     if (is_builtin(cmd->arg[0]))
         execute_builtin(&cmd, env);
-    else
+    // else
+    // {
+    full_command = find_commande(cmd->arg[0], env);
+    if (full_command == NULL)
     {
-        full_command = find_commande(cmd->arg[0], env);
-        if (full_command == NULL)
-        {
-            //fprintf(stderr, "Error: find_commande returned NULL\n");
-            printf("Minishell: %s: command not found\n",cmd->arg[0]);
-            exit(EXIT_FAILURE);
-        }
-        if (execve(full_command, cmd->arg, env) == -1)
-        {
-            perror("execve");
-            exit(EXIT_FAILURE);
-        }
+        fprintf(stderr, "Error: find_commande returned NULL\n");
+        // printf("Minishell: %s: command not found\n",cmd->arg[0]);
+        exit(EXIT_FAILURE);
     }
+    if (execve(full_command, cmd->arg, env) == -1)
+    {
+        perror("execve");
+        exit(EXIT_FAILURE);
+    }
+
+    // }
 }
 
 
@@ -163,30 +164,39 @@ char **handle_multiple_command(t_command **commande, char **env)
     prev_fd = -1;
     int i = dup(STDIN_FILENO);
     int j = dup(STDOUT_FILENO);
+
     while (cmd)
     {
+
         if (cmd->next != NULL && !create_pipe(fd))
             return(env);
         pid = fork_process();
-        handle_redirections(&cmd);
+        //handle_redirections(&cmd);
         if (pid == -1)
             return(env);
         else if (pid == 0)
         {
-            // setup_child_process(cmd, fd);
-            close(fd[0]);
-            if (cmd->next)
-                dup2(fd[1], 1);
-            close(fd[1]);
+            // Processus enfant
+            // handle_redirections(&cmd); // Appliquer les redirections de fichiers avant les redirections de pipes
+            if (cmd->next && strchr(cmd->cmd,'>') == NULL)//test out
+            {
+                close(fd[0]);
+                if (cmd->next)
+                    dup2(fd[1], 1);
+                close(fd[1]);
+                //execute_command(cmd, env);
+            }
             execute_command(cmd, env);
         }
         else
         {
-            close(fd[1]);
-            if (cmd-> next)
-                dup2(fd[0],0);
-            close(fd[0]);
-            // parent_process_actions( fd, cmd);
+            // Processus parent
+            if (cmd->next)
+            {
+                close(fd[1]);
+                dup2(fd[0], STDIN_FILENO);
+                close(fd[0]);
+            }
         }
 
         cmd = cmd->next;
@@ -195,9 +205,8 @@ char **handle_multiple_command(t_command **commande, char **env)
     dup2(i, STDIN_FILENO);
     close(i);
     close(j);
-    waitpid(pid , 0, 0);
+    waitpid(pid, 0, 0);
     return(env);
 }
-
 
 

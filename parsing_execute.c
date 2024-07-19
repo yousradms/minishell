@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_execute.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:21:42 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/17 14:59:06 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/18 18:20:07 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,9 @@ char **parsing_execute_command(char **line,char **env)
     expanding(head, env);
     commands = ft_split2(&head);
     //print_list2(commands);
-    handle_herddoce(&commands,env );
+    handle_herddoce(&commands,env);
     env = execute(&commands,env);//leaks in the execution
+    
     free_commands(commands);
     free_resources(result, head, s);
     return(env);

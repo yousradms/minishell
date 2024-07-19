@@ -1,6 +1,5 @@
 Makefile
 a
-ds
 execution
 file
 file;cat
@@ -8,7 +7,6 @@ fix.txt
 hello
 jiji
 k
-kap
 l
 libft
 ls
@@ -16,7 +14,6 @@ main.c
 main.o
 minishell
 minishell.h
-o
 okk
 owo
 p
@@ -24,7 +21,6 @@ parsing
 parsing_execute.c
 parsing_execute.o
 q
-qq
 salut
 test_cd.c
 test_quotes.c

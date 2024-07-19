@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/17 12:07:48 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/19 11:31:51 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_command
     int my_fd;
     int in;
     int out;
+    int append;
     struct s_command *next;
     struct s_command *prev;
 } t_command;
@@ -178,6 +179,7 @@ void handle_quotes_ex(t_command **cmd);
 //redirections
 void handle_redirect_in(t_command *cmd, char *filename);
 void handle_redirect_out(t_command *cmd, char *filename, int append);
+// void handle_redirect_out(t_command *cmd, char *filename, int append);
 void handle_redirections(t_command **command);
 char **handle_multiple_command(t_command **commande, char **env);
 bool has_output_redirection(t_command *cmd);

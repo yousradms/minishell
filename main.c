@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/17 14:44:32 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/18 21:20:04 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,6 @@ int main(int ac,char **av,char **env)
         free(line);
     }
     // Free envp
-    for (int k = 0; envp[k] != NULL; k++)
-    {
-        free(envp[k]);
-    }
-    free(envp);
+
     return(0);
 }

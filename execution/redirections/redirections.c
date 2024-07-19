@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:05:13 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/17 16:57:03 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/19 11:33:46 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ void handle_redirect_in(t_command *cmd, char *filename)
     {
         //perror("dup2");
         close(fd);
-        //exit(EXIT_FAILURE);
+        // exit(EXIT_FAILURE);
         return;
     }
     cmd->in = fd;
+    // free(filename);
     //printf("2:[%d]\n",cmd->in);//5
     //exit(1);
     close(fd);
@@ -49,6 +50,7 @@ void handle_redirect_out(t_command *cmd, char *filename, int append)
     fd = open(filename, flags, 0644);
     if (fd == -1)
     {
+        
         perror("open");
         exit(EXIT_FAILURE);
     }
@@ -60,6 +62,7 @@ void handle_redirect_out(t_command *cmd, char *filename, int append)
         return;
     }
     cmd->out = fd;
+    // free(filename);//hada
     close(fd);
 }
 
@@ -83,6 +86,8 @@ void handle_redirections(t_command **command)
                 if (cmd->arg[i + 1] != NULL)
                 {
                     handle_redirect_in(cmd, cmd->arg[i + 1]);
+                    // free(cmd->arg[i]);
+                    // free(cmd->arg[i + 1]);
                     i += 2; // Skip over both "<" and the filename
                 }
             }
@@ -91,6 +96,7 @@ void handle_redirections(t_command **command)
                 if (cmd->arg[i + 1] != NULL) 
                 {
                     handle_redirect_out(cmd, cmd->arg[i + 1], 0);
+                    // free(cmd->arg[i]);
                     i += 2; // Skip over both ">" and the filename
                 }
             } 
@@ -99,6 +105,7 @@ void handle_redirections(t_command **command)
                 if (cmd->arg[i + 1] != NULL)
                 {
                     handle_redirect_out(cmd, cmd->arg[i + 1], 1);
+                    // free(cmd->arg[i]);
                     i += 2; // Skip over both ">>" and the filename
                 }
             }
@@ -107,6 +114,7 @@ void handle_redirections(t_command **command)
             {
                     dup2(cmd->my_fd, STDIN_FILENO);
                     close(cmd->my_fd);
+                    // free(cmd->arg[i]);
                     i += 2;
             }
             else
@@ -124,7 +132,11 @@ void handle_redirections(t_command **command)
         }
         cmd->arg[j] = NULL;
         cmd = cmd->next;
+        // free(cmd);
     }
+    cmd = *command;
+    
+    
 }
 
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:14 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/05 17:03:57 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/17 18:49:25 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ char *remove_quotes(char *s)
             i++;
         else
             token[j++] = s[i++];
+        
     }
     token[j] = '\0';
     return (token);

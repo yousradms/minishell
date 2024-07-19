@@ -16,7 +16,6 @@ main.c
 main.o
 minishell
 minishell.h
-o
 okk
 owo
 p
@@ -24,7 +23,6 @@ parsing
 parsing_execute.c
 parsing_execute.o
 q
-qq
 salut
 test_cd.c
 test_quotes.c
