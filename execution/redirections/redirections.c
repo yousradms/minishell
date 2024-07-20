@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:05:13 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/20 10:41:50 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/20 11:10:02 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@ void handle_redirect_in(t_command *cmd, char *filename)
         return;
     }
     cmd->in = fd;
-    // free(filename);
-    //printf("2:[%d]\n",cmd->in);//5
-    //exit(1);
     close(fd);
 }
 
@@ -138,44 +135,6 @@ void handle_redirect_out(t_command *cmd, char *filename, int append)
     
     
 // }
-// void handle_redirections(t_command *cmd)
-// {
-//     for (int i = 0; cmd->arg[i] != NULL; ++i)
-//     {
-//         if (strcmp(cmd->arg[i], ">") == 0)
-//         {
-//             handle_redirect_out(cmd,cmd->arg[i + 1],0);
-//             for (int j = i; cmd->arg[j] != NULL; ++j)
-//             {
-//                 cmd->arg[j] = cmd->arg[j + 2];
-//             }
-//             i--; 
-//         } 
-//         else if (strcmp(cmd->arg[i], ">>") == 0)
-//         {
-//             handle_redirect_out(cmd,cmd->arg[i + 1],1);
-//             for (int j = i; cmd->arg[j] != NULL; ++j)
-//                 cmd->arg[j] = cmd->arg[j + 2];
-//             i--;
-//         }
-//         else if (strcmp(cmd->arg[i], "<" ) == 0)
-//         {
-//             handle_redirect_in(cmd,cmd->arg[i + 1]);
-//             for (int j = i; cmd->arg[j] != NULL; ++j)
-//                 cmd->arg[j] = cmd->arg[j + 2];
-//             i--;
-//         }
-//         else if (strcmp(cmd->arg[i], "<<" ) == 0)
-//         {
-//             dup2(cmd->my_fd, STDIN_FILENO);
-//             close(cmd->my_fd);
-//             for (int j = i; cmd->arg[j] != NULL; ++j)
-//                 cmd->arg[j] = cmd->arg[j + 2];
-//             i--;
-//         }
-//     }
-// }
-
 void handle_redirections(t_command *cmd)
 {
     for (int i = 0; cmd->arg[i] != NULL; ++i)
@@ -213,6 +172,44 @@ void handle_redirections(t_command *cmd)
         }
     }
 }
+
+// void handle_redirections(t_command *cmd)
+// {
+//     for (int i = 0; cmd->arg[i] != NULL; ++i)
+//     {
+//         if (strcmp(cmd->arg[i], ">") == 0)
+//         {
+//             handle_redirect_out(cmd,cmd->arg[i + 1],0);
+//             for (int j = i; cmd->arg[j] != NULL; ++j)
+//             {
+//                 cmd->arg[j] = cmd->arg[j + 2];
+//             }
+//             i--; 
+//         } 
+//         else if (strcmp(cmd->arg[i], ">>") == 0)
+//         {
+//             handle_redirect_out(cmd,cmd->arg[i + 1],1);
+//             for (int j = i; cmd->arg[j] != NULL; ++j)
+//                 cmd->arg[j] = cmd->arg[j + 2];
+//             i--;
+//         }
+//         else if (strcmp(cmd->arg[i], "<" ) == 0)
+//         {
+//             handle_redirect_in(cmd,cmd->arg[i + 1]);
+//             for (int j = i; cmd->arg[j] != NULL; ++j)
+//                 cmd->arg[j] = cmd->arg[j + 2];
+//             i--;
+//         }
+//         else if (strcmp(cmd->arg[i], "<<" ) == 0)
+//         {
+//             dup2(cmd->my_fd, STDIN_FILENO);
+//             close(cmd->my_fd);
+//             for (int j = i; cmd->arg[j] != NULL; ++j)
+//                 cmd->arg[j] = cmd->arg[j + 2];
+//             i--;
+//         }
+//     }
+// }
 
 
 
