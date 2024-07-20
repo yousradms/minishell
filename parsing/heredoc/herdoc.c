@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:18 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/19 13:00:24 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/20 10:22:11 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ int handle_herdoc(char *delimiter, int f, int *flag)
 
     if(del_without_quotes(delimiter))
     {
-        printf("flag\n");
+        //printf("flag\n");
         if(flag)
             *flag = 1;
-        printf("flag2\n");
+        //printf("flag2\n");
     }
     else
     {
@@ -43,7 +43,7 @@ int handle_herdoc(char *delimiter, int f, int *flag)
     }
         
     char *s = remove_quotes(delimiter);
-
+    
     if (f) // Open or create "temp.txt" for appending
     {
         unlink("temp.txt");

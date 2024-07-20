@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:45:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/15 12:14:19 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/20 10:21:40 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ char **execute_builtin(t_command **command, char **envp)
         ft_echo(command);
     
     else if (strcmp((*command)->arg[0], "cd") == 0) 
-        ft_cd(command);
+        ft_cd(command,&env);
     
     else if (strcmp((*command)->arg[0], "pwd") == 0) 
         ft_pwd(command);

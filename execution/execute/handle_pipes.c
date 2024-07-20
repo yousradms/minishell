@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/07/19 15:25:22 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/20 11:01:33 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,21 +95,7 @@ char *find_commande(char *cmd, char **envp)
     return (NULL);
 }
 
-static int create_pipe(int fd[2])
-{
-    if (pipe(fd) == -1)
-    {
-        perror("pipe");
-        return (0);
-    }
-    return (1);
-}
-// #include<stdbool.h>
-// bool has_output_redirection(t_command *cmd)
-// {
-//     return(cmd->out != 1);
-//     //return(strchr(cmd->cmd,'>') != NULL);
-// }
+
 
 
 static  void execute_command(t_command *cmd, char **env)
@@ -138,7 +124,6 @@ static  void execute_command(t_command *cmd, char **env)
 }
 
 
-
 pid_t fork_process()
 {
     pid_t pid = fork();
@@ -156,18 +141,18 @@ char **handle_multiple_command(t_command **commande, char **env)
     cmd = *commande;
     while (cmd)
     {
-        if (cmd->next != NULL && !create_pipe(fd))
-            return(env);
-        pid = fork_process();
+        if (cmd->next != NULL && pipe(fd) == -1)
+            return(NULL); // return NULL on error
+        pid = fork();
         if (pid == -1)
-            return(env);
+            return(NULL); // return NULL on error
         else if (pid == 0)
         {
-            handle_redirections(&cmd);
+            handle_redirections(cmd);
             if (cmd->next)
             {
                 close(fd[0]);
-                if (cmd->next && strchr(cmd->cmd,'>') == NULL)
+                if (cmd->out == 1)
                     dup2(fd[1], 1);
                 close(fd[1]);
             }
@@ -181,12 +166,11 @@ char **handle_multiple_command(t_command **commande, char **env)
                 dup2(fd[0], STDIN_FILENO);
                 close(fd[0]);
             }
+            waitpid(pid, 0, 0);
         }
         cmd = cmd->next;
     }
-    waitpid(pid, 0, 0);
     return(env);
 }
-
 
 

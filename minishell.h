@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/19 11:31:51 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/20 10:41:59 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ char	*ft_strtrim(char  *s1, char  *set);
 ///EXECUTION///
 
 //builtins
-void ft_cd(t_command **command);
+void ft_cd(t_command **command, t_env **envp);
 int is_builtin(char *cmd);
 char **execute_builtin(t_command **command, char **envp);
 void ft_echo(t_command **cmd);
@@ -180,9 +180,9 @@ void handle_quotes_ex(t_command **cmd);
 void handle_redirect_in(t_command *cmd, char *filename);
 void handle_redirect_out(t_command *cmd, char *filename, int append);
 // void handle_redirect_out(t_command *cmd, char *filename, int append);
-void handle_redirections(t_command **command);
+void handle_redirections(t_command *cmd);
 char **handle_multiple_command(t_command **commande, char **env);
-bool has_output_redirection(t_command *cmd);
+//bool has_output_redirection(t_command *cmd);
 
 
 #endif
