@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/20 10:41:59 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/20 12:02:04 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <limits.h>
+#include <signal.h>
 #include<stdbool.h>
 #define w_count 1000
 #define L_count 1000
@@ -31,6 +32,7 @@
 # define NAME "minishell: "
 # define ERR_PIPE "syntax error near unexpected token `|'\n"
 # define ERR_FILE "syntax error near unexpected token `'\n"
+
 
 typedef enum s_type
 {
@@ -183,6 +185,10 @@ void handle_redirect_out(t_command *cmd, char *filename, int append);
 void handle_redirections(t_command *cmd);
 char **handle_multiple_command(t_command **commande, char **env);
 //bool has_output_redirection(t_command *cmd);
+
+void setup_signal_handlers();
+void handle_ctrl_d(void);
+void sigint_handler(int sign_num);
 
 
 #endif
