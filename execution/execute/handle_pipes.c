@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/07/20 11:14:48 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/20 11:28:25 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ char **handle_multiple_command(t_command **commande, char **env)
     while (cmd)
     {
         if (cmd->next != NULL && pipe(fd) == -1)
-            return(NULL); // return NULL on error
+            return(env); // return NULL on error
         pid = fork();
         if (pid == -1)
             return(NULL); // return NULL on error
@@ -166,10 +166,10 @@ char **handle_multiple_command(t_command **commande, char **env)
                 dup2(fd[0], STDIN_FILENO);
                 close(fd[0]);
             }
-            waitpid(pid, 0, 0);
         }
         cmd = cmd->next;
     }
+            waitpid(pid, 0, 0);
     return(env);
 }
 
