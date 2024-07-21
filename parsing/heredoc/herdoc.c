@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:18 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/21 16:57:00 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/21 17:50:31 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,177 +39,74 @@ int handle_herdoc(char *delimiter, int f, int *flag)
 {
     char *line;
     int temp_fd[2];
-    // int my_fd = 0;
-    // If delimiter does not have quotes, set flag to 1
-
-    if(del_without_quotes(delimiter))
-    {
-        //printf("flag\n");
-        if(flag)
+    
+    if (del_without_quotes(delimiter)) {
+        if (flag)
             *flag = 1;
-        //printf("flag2\n");
-    }
-    else
-    {
-        if(flag)
+    } else {
+        if (flag)
             *flag = 0;
     }
         
     char *s = remove_quotes(delimiter);
     
-    if (f) // Open or create "temp.txt" for appending
-    {
-        unlink("temp.txt");
+    if (f) {
         temp_fd[0] = open("temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        temp_fd[1] = open("temp.txt", O_RDONLY | O_TRUNC, 0644);
-        if (temp_fd[0] == -1 || temp_fd[1] == -1)
+        temp_fd[1] = open("temp.txt", O_RDONLY, 0644);
+        if (temp_fd[0] == -1 || temp_fd[1] == -1) {
+            close(temp_fd[0]);
+            close(temp_fd[1]);
             return -1;
-        unlink("temp.txt");
+        }
     }
+
     signal(SIGINT, sigint_handler_herdoc);
     signal(SIGQUIT, SIG_IGN);
     rl_catch_signals = 1;
+
     int pid = fork();
     
-        if(pid == 0)
-        {
-            while (1)
-            {
-                line = readline(">");
-                if (line == NULL)
-                    break;
-                if (strncmp(line, s, strlen(s)) == 0 && line[strlen(s)] == '\0' ) // Check for the delimiter at the start of the line
-                {
-                    // free(delimiter);//zedt hada
-                    free(s);//zedt hada 
+    if (pid == 0) {
+        while (1) {
+            line = readline(">");
+            if (line == NULL)
+                break;
+            if (strncmp(line, s, strlen(s)) == 0 && line[strlen(s)] == '\0') {
+                free(s);
+                free(line);
+                break;
+            }
+            if (f) {
+                if (write(temp_fd[0], line, strlen(line)) == -1) {
                     free(line);
-                    break; // Exit loop when delimiter is found
+                    free(s);
+                    close(temp_fd[0]);
+                    close(temp_fd[1]);
+                    exit(EXIT_FAILURE);
                 }
-
-                if (f) // Write the line and newline character to the temporary file
-                {
-                    if (write(temp_fd[0], line, strlen(line)) == -1)
-                    {
-                        // free(delimiter);//zedt hada
-                        free(line);
-                        free(s);
-                        close(temp_fd[0]);
-                        return temp_fd[1];
-                    }
-                    if (write(temp_fd[0], "\n", 1) == -1)
-                    {
-                        // free(delimiter);//zedt hada
-                        free(line);
-                        free(s);
-                        close(temp_fd[0]);
-                        return temp_fd[1];
-                    }
+                if (write(temp_fd[0], "\n", 1) == -1) {
+                    free(line);
+                    free(s);
+                    close(temp_fd[0]);
+                    close(temp_fd[1]);
+                    exit(EXIT_FAILURE);
                 }
             }
             free(line);
-            exit(0);
         }
-        else
-        {
-            waitpid(pid, 0 , 0);
-            rl_catch_signals = 0;
-            signal(SIGINT, sigint_handler);
-            signal(SIGQUIT, sigint_handler);
-        }
+        close(temp_fd[0]);
+        exit(0);
+    } else {
+        waitpid(pid, NULL, 0);
+        rl_catch_signals = 0;
+        signal(SIGINT, sigint_handler);
+        signal(SIGQUIT, sigint_handler);
+    }
     
-    
+    close(temp_fd[0]);
     return temp_fd[1];
 }
-//expand inside the file where i have herdoc
-// static void expand_her(int fd, char **env)
-// {
-//     //char buffer[1024];
-//     //int bytesRead;
-//     char *line = NULL;
-//     size_t len = 0;
-//     ssize_t read;
-//     FILE *file = fdopen(fd, "r");
 
-//     if (file == NULL)
-//     {
-//         perror("Error opening file descriptor");
-//         return;
-//     }
-
-//     while ((read = getline(&line, &len, file)) != -1)
-//     {
-//         if (contain_env(line))
-//         {
-//             char *str = NULL;
-//             str = strdup(line);
-//             set_expanded(&str, &line, env);
-//             free(str);
-//         }
-//         printf("%s", line);
-//     }
-
-//     if (line)
-//     {
-//         free(line);
-//     }
-
-//     fclose(file);
-// }
-//expand inside the file where i have herdoc
-// static void expand_her(int fd, char **env)
-// {
-//     char buffer[1024];
-//     ssize_t bytes_read;
-//     char *line = NULL;
-//     size_t line_size = 0;
-
-//     while ((bytes_read = read(fd, buffer, sizeof(buffer) - 1)) > 0)
-//     {
-//         buffer[bytes_read] = '\0';
-//         char *start = buffer;
-//         char *end;
-
-//         while ((end = strchr(start, '\n')))
-//         {
-//             *end = '\0';
-//             if (contain_env(start))
-//             {
-//                 char *str = strdup(start);
-//                 set_expanded(&str, &line, env);
-//                 if (line)
-//                 {
-//                     printf("%s\n", line);
-//                     free(line);
-//                     line = NULL;
-//                     line_size = 0;
-//                 }
-//             }
-//             else
-//             {
-//                 printf("%s\n", start);
-//             }
-//             start = end + 1;
-//         }
-
-//         if (start[0] != '\0')
-//         {
-//             size_t remaining = strlen(start);
-//             line = realloc(line, line_size + remaining + 1);
-//             strcpy(line + line_size, start);
-//             line_size += remaining;
-//         }
-//     }
-
-//     if (line)
-//     {
-//         printf("%s\n", line);
-//         free(line);
-//     }
-
-//     close(fd);
-// }
-//
-//here
 void expand_her(int fd, char **env)
 {
     // (void)env;
