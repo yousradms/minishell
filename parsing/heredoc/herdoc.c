@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:18 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/20 10:22:11 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/21 16:57:00 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,19 @@
 
 #define BUFFER_SIZE 1024
 #include <string.h>
+void    sigint_handler_herdoc(int signo)
+{
+    if (signo == SIGINT)
+    {
+        if (waitpid(-1, 0, WNOHANG) == 0)
+        {
+            printf("\n");
+            return;
+        }
+        else
+            exit(1);
+    }
+}
 static int del_without_quotes(char *s)
 {
     if(s[0] != '\"' && s[0] != '\'')
@@ -53,42 +66,57 @@ int handle_herdoc(char *delimiter, int f, int *flag)
             return -1;
         unlink("temp.txt");
     }
-    while (1)
-    {
-
-        line = readline(">");
-        if (line == NULL)
-            break;
-        if (strncmp(line, s, strlen(s)) == 0 && line[strlen(s)] == '\0' ) // Check for the delimiter at the start of the line
-        {
-            // free(delimiter);//zedt hada
-            free(s);//zedt hada 
-            free(line);
-            break; // Exit loop when delimiter is found
-        }
-
-        if (f) // Write the line and newline character to the temporary file
-        {
-            if (write(temp_fd[0], line, strlen(line)) == -1)
-            {
-                // free(delimiter);//zedt hada
-                free(line);
-                free(s);
-                close(temp_fd[0]);
-                return temp_fd[1];
-            }
-            if (write(temp_fd[0], "\n", 1) == -1)
-            {
-                // free(delimiter);//zedt hada
-                free(line);
-                free(s);
-                close(temp_fd[0]);
-                return temp_fd[1];
-            }
-        }
-        free(line);
+    signal(SIGINT, sigint_handler_herdoc);
+    signal(SIGQUIT, SIG_IGN);
+    rl_catch_signals = 1;
+    int pid = fork();
     
-    }
+        if(pid == 0)
+        {
+            while (1)
+            {
+                line = readline(">");
+                if (line == NULL)
+                    break;
+                if (strncmp(line, s, strlen(s)) == 0 && line[strlen(s)] == '\0' ) // Check for the delimiter at the start of the line
+                {
+                    // free(delimiter);//zedt hada
+                    free(s);//zedt hada 
+                    free(line);
+                    break; // Exit loop when delimiter is found
+                }
+
+                if (f) // Write the line and newline character to the temporary file
+                {
+                    if (write(temp_fd[0], line, strlen(line)) == -1)
+                    {
+                        // free(delimiter);//zedt hada
+                        free(line);
+                        free(s);
+                        close(temp_fd[0]);
+                        return temp_fd[1];
+                    }
+                    if (write(temp_fd[0], "\n", 1) == -1)
+                    {
+                        // free(delimiter);//zedt hada
+                        free(line);
+                        free(s);
+                        close(temp_fd[0]);
+                        return temp_fd[1];
+                    }
+                }
+            }
+            free(line);
+            exit(0);
+        }
+        else
+        {
+            waitpid(pid, 0 , 0);
+            rl_catch_signals = 0;
+            signal(SIGINT, sigint_handler);
+            signal(SIGQUIT, sigint_handler);
+        }
+    
     
     return temp_fd[1];
 }
@@ -233,6 +261,7 @@ void handle_herddoce(t_command **command, char **env)
     int i;
     int flag =0;
 
+
     first = *command;
     while (first != NULL)
     {
@@ -258,4 +287,5 @@ void handle_herddoce(t_command **command, char **env)
         }
         first = first->next;
     }
+    
 }
