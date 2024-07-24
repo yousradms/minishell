@@ -52,4 +52,19 @@ heredoc with commands and redirections
 ----------------------
 
 
+minishell🥶😁echo -nnn fff 
+-nnn ff
 
+minishell🥶😁<< d cat
+>gwgweg
+>wegwe
+>d
+
+
+minishell🥶😁<in
+open: No such file or directory
+Minishell: 0: command not found
+minishell🥶😁<< Makefile 
+>wg
+>
+Minishell: 127: command not foun

@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/24 13:58:07 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/24 15:22:52 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ typedef enum s_type
     WORD = 9,//
     SQUOTE = 10,//
     DQUOTE = 11//
-    
 } t_type;
 
 typedef enum s_state
@@ -189,6 +188,7 @@ char **handle_multiple_command(t_command **commande, char **env);
 void setup_signal_handlers();
 void handle_ctrl_d(void);
 void sigint_handler(int sign_num);
+int exit_s(int new_one, int set);
 
 
 #endif

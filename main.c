@@ -6,53 +6,23 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/21 17:58:25 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/24 15:21:02 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int exit_s(int new_one, int set)
+{
+    static int x = 0;
+    if (set == 1)
+        x = new_one;
+    else
+        return x;
+    return 0;
+}
 
-// pid_t g_pid = 0;  
-// int g_status = 0; // Global status
-
-
-// void prompt(void) {
-//     write(1, "minishell🥶😁 ", 12); // Ajout d'un espace pour séparer le prompt de l'entrée utilisateur
-//     fflush(stdout); // S'assurer que le buffer est vidé
-// }
-
-// // Function to handle signals sent to the process
-// void process(int sign_num) {
-//     if (sign_num == SIGQUIT) {
-//         write(1, "Quit: 3\n", 8);
-//         g_status = 131;
-//     } else if (sign_num == SIGINT) {
-//         write(1, "\n", 1);
-//         g_status = 130;
-//         prompt(); // Afficher le prompt après avoir reçu SIGINT
-//     }
-// }
-
-// // Signal handler function
-// void sigint_handler(int sign_num) {
-//     if (sign_num == SIGINT) {
-//         if (g_pid == 0) {
-//             // For the main process
-//             rl_on_new_line(); // Move to a new line
-//             // rl_replace_line("", 0); // Clear the current line
-//             write(1,"",1);
-//             write(1, "\n", 1); // Write a newline character
-//             prompt(); // Display the prompt
-//             g_status = 1;
-//         } else {
-//             process(sign_num); // Handle SIGINT in child processes
-//         }
-//     } else if (sign_num == SIGQUIT) {
-//         process(sign_num); // Handle SIGQUIT
-//     }
-// }
- void    sigint_handler(int signo)
+void    sigint_handler(int signo)
 {
     int    i;
 
@@ -66,6 +36,7 @@
             rl_on_new_line();
             rl_replace_line("", 0);
             rl_redisplay();
+            exit_s(1, 1);
         }
         else
             printf("\n");

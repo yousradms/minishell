@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 09:11:12 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/24 13:57:32 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/24 15:27:41 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@
     
 //     return env;
 // }
-int global_exit_status = 0;
+
 
 int handle_exit_status(int status)
 {
@@ -94,12 +94,12 @@ int handle_exit_status(int status)
 
     if (WIFEXITED(status)) // Check if the child exited normally
     {
-        exit_code = WEXITSTATUS(status); // Get the exit status
+        exit_s(WEXITSTATUS(status), 1); // Get the exit status
     }
     else if (WIFSIGNALED(status)) // Check if the child was terminated by a signal
     {
         int signal_number = WTERMSIG(status);
-        exit_code = 128 + signal_number; // Common practice to return 128 + signal number
+        exit_s(128 + signal_number,1);// Common practice to return 128 + signal number
     }
     return exit_code;
 }
@@ -117,7 +117,7 @@ char **handle_one_command(t_command **commande, char **env)
     if (is_builtin((*commande)->arg[0]))
     {
         env = execute_builtin(commande, env);
-        global_exit_status = 0; // Assuming built-ins are successful
+        exit_s(0,1); // Assuming built-ins are successful
         return env;
     }
     
@@ -125,7 +125,7 @@ char **handle_one_command(t_command **commande, char **env)
     if (pid == -1)
     {
         perror("fork");
-        global_exit_status = 1; // Set exit status to 1 on fork error
+        exit_s(1,1);; // Set exit status to 1 on fork error
         return env;
     }
     else if (pid == 0)
@@ -133,7 +133,7 @@ char **handle_one_command(t_command **commande, char **env)
         full_command = find_commande((*commande)->arg[0], env);
         if (full_command == NULL)
         {
-            fprintf(stderr, "Minishell: %s: command not found\n", (*commande)->arg[0]);
+            fprintf(stderr, "Minishell: %d: command not found\n", (*commande)->arg[0]);
             exit(127);
         }
         if (execve(full_command, (*commande)->arg, env) == -1)
@@ -150,11 +150,11 @@ char **handle_one_command(t_command **commande, char **env)
         if (waitpid(pid, &status, 0) == -1)
         {
             perror("waitpid");
-            global_exit_status = 1; // Set exit status to 1 on waitpid error
+            exit_s(1,1); // Set exit status to 1 on waitpid error
             return env;
         }
         // Handle exit status
-        global_exit_status = handle_exit_status(status);
+        exit_s(handle_exit_status(status),1);
     }
     
     return env;
