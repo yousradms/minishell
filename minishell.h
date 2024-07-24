@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/24 15:22:52 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/24 17:34:05 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ char	*ft_strtrim(char  *s1, char  *set);
 void ft_cd(t_command **command, t_env **envp);
 int is_builtin(char *cmd);
 char **execute_builtin(t_command **command, char **envp);
-void ft_echo(char **args);
+void ft_echo(t_command **cmd);
 void ft_env(t_command **command, t_env **envp);
 void ft_exit(t_command **command);
 void ft_export(t_command **command, t_env **envp);
@@ -188,7 +188,7 @@ char **handle_multiple_command(t_command **commande, char **env);
 void setup_signal_handlers();
 void handle_ctrl_d(void);
 void sigint_handler(int sign_num);
-int exit_s(int new_one, int set);
+char *exit_s(int new_one, int set);
 
 
 #endif

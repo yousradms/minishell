@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:18:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/17 15:00:37 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:35:04 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void expanding(t_node *list, char **env)
             break; // Added null check
         if (in_herdoc && current->next)
             current = current->next;
-        if (current->type == 9 && contain_env(current->content) && in_herdoc != 1)
+        if ((current->type == 9 || current->type == 8) && contain_env(current->content) && in_herdoc != 1)
             expand_variable(current, env);
         else if (current->type == 9 && contain_home_after_quote(current->content))
             expand_home_directory(current);

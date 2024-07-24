@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:54:41 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/13 11:55:07 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:28:12 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+#include "libft/libft.h"
 int ft_is_number(char *s)
 {
     while(*s)
@@ -30,7 +31,7 @@ void ft_exit(t_command **command)
     if (!((*command)->arg[1]))//no arguments
     {
         printf("exit\n");
-        exit(0);
+        exit(ft_atoi(exit_s(0, 0)));
     }
     else if ((*command)->arg[1])//with argument
     {

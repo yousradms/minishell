@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:09:19 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/17 15:17:21 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:36:10 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,11 @@ char *extract_variable_name(char *expanded, int i, int j)
     return var_name;
 }
 
-// void replace_numeric_variable(char **expanded, int *i, int j)
-// {
-//     *expanded = replace_variable(*expanded, "", *i, j + 1);
-//     *i += 1;
-// }
 void replace_numeric_variable(char **expanded, int *i, int j)
 {
     char *new_expanded = replace_variable(*expanded, "", *i, j + 1);
     if (!new_expanded)
-    {
-        //fprintf(stderr, "Memory allocation failed in replace_numeric_variable\n");
         return;
-    }
     free(*expanded);
     *expanded = new_expanded;
     *i += 1;
@@ -63,13 +55,8 @@ void process_variable(char **expanded, int *i, int *j, char **env)
 
 static void handle_special_cases(char **expanded, int *i, int *j, char **env)
 {
-
-    
-        if (!expanded || !*expanded || !i || !j || !env)
-    {
-        //printf("handle_special_cases: Invalid arguments\n"); // Debug statement
+    if (!expanded || !*expanded || !i || !j || !env)
         return;
-    }
     char *new_expanded;
     char *value = NULL;
 
@@ -98,6 +85,8 @@ static void handle_special_cases(char **expanded, int *i, int *j, char **env)
     {
         value = ft_strdup("himBH");  // Placeholder, should be the process ID of the last background command
     }
+    else if((*expanded)[*i + 1] == '?')
+        value = exit_s(0, 0);
     else if(((*expanded)[*i + 1] > '0' && (*expanded)[*i + 1] <= '9') && (*expanded)[*i + 2])
     {
         replace_numeric_variable(expanded,i,*j);//leaks here
