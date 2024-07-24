@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:18 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/24 09:31:52 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/21 20:01:16 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 #define BUFFER_SIZE 1024
 #include <string.h>
-
 void    sigint_handler_herdoc(int signo)
 {
     if (signo == SIGINT)
@@ -35,87 +34,128 @@ static int del_without_quotes(char *s)
     return(0);
 }
 
-
-int handle_herdoc(char *delimiter, char **env)
+// Handle heredoc function
+int handle_herdoc(char *delimiter, int f, int *flag) 
 {
     char *line;
     int temp_fd[2];
-    int flag;
-    int pid;
-
-    // Handle delimiter and flag
-    flag = del_without_quotes(delimiter) ? 1 : 0;
-    char *s = remove_quotes(delimiter);
-
-    // Handle file operations
-    unlink("temp.txt");
-    temp_fd[0] = open("temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-    temp_fd[1] = open("temp.txt", O_RDONLY | O_TRUNC, 0644);
-    if (temp_fd[0] == -1 || temp_fd[1] == -1) {
-        free(s);
-        return -1;
+    
+    if (del_without_quotes(delimiter)) {
+        if (flag)
+            *flag = 1;
+    } else {
+        if (flag)
+            *flag = 0;
     }
-    unlink("temp.txt");
+        
+    char *s = remove_quotes(delimiter);
+    
+    if (f) {
+        temp_fd[0] = open("temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        temp_fd[1] = open("temp.txt", O_RDONLY, 0644);
+        if (temp_fd[0] == -1 || temp_fd[1] == -1) {
+            close(temp_fd[0]);
+            close(temp_fd[1]);
+            return -1;
+        }
+    }
 
-    // Set up signal handlers
     signal(SIGINT, sigint_handler_herdoc);
     signal(SIGQUIT, SIG_IGN);
     rl_catch_signals = 1;
-
-    // Fork process to read lines
-    pid = fork();
-    if (pid == 0)
-    {
-        // Child process
-        while (1)
-        {
+    int pid = fork();
+    if (pid == 0) {
+        while (1) {
             line = readline(">");
-            if (line == NULL) break;
-
-            // Check for delimiter
+            if (line == NULL)
+                break;
             if (strncmp(line, s, strlen(s)) == 0 && line[strlen(s)] == '\0') {
                 free(s);
                 free(line);
                 break;
             }
+            if (f) {
+                if (write(temp_fd[0], line, strlen(line)) == -1) {
+                    free(line);
+                    free(s);
+                    close(temp_fd[0]);
+                    close(temp_fd[1]);
+                    exit(EXIT_FAILURE);
+                }
+                if (write(temp_fd[0], "\n", 1) == -1) {
+                    free(line);
+                    free(s);
+                    close(temp_fd[0]);
+                    close(temp_fd[1]);
+                    exit(EXIT_FAILURE);
+                }
+            }
+            free(line);
+        }
+        close(temp_fd[0]);
+        exit(0);
+    } else {
+        waitpid(pid, NULL, 0);
+        rl_catch_signals = 0;
+        signal(SIGINT, sigint_handler);
+        signal(SIGQUIT, sigint_handler);
+    }
+    
+    close(temp_fd[0]);
+    return temp_fd[1];
+}
 
-            // Expand environment variables if flag is 1
-            if (flag && contain_env(line))
+void expand_her(int fd, char **env)
+{
+    // (void)env;
+    // Variables
+    char *line = NULL;
+    char buffer[1024];
+    ssize_t bytesRead;
+
+    // Read lines from file descriptor using readline
+    while ((bytesRead = read(fd, buffer, sizeof(buffer) - 1)) > 0)
+    {
+        buffer[bytesRead] = '\0';
+
+        char *start = buffer;
+        char *newline_pos;
+        
+        while ((newline_pos = strchr(start, '\n')) != NULL)
+        {
+            *newline_pos = '\0';
+            line = strdup(start);
+            //printf("%s\n",line);
+            if (contain_env(line))
             {
                 char *str = strdup(line);
                 set_expanded(&str, &line, env);
                 free(str);
             }
-
-            // Write to temporary file
-            if (write(temp_fd[0], line, strlen(line)) == -1 || write(temp_fd[0], "\n", 1) == -1)
-            {
+            //printf("%s\n", line);
+            
                 free(line);
-                free(s);
-                close(temp_fd[0]);
-                return temp_fd[1];
-            }
-            free(line);
+
+            start = newline_pos + 1;
         }
-        exit(0);
     }
-    else
+
+    if (bytesRead == -1)
     {
-        // Parent process
-        waitpid(pid, 0, 0);
-        rl_catch_signals = 0;
-        signal(SIGINT, sigint_handler);
-        signal(SIGQUIT, sigint_handler);
+        perror("Error reading from file descriptor");
     }
-    free(s);
-    return temp_fd[1];
 }
 
+
+
+// Handle heredoc command function
 void handle_herddoce(t_command **command, char **env)
 {
     (void)env;
     t_command *first;
     int i;
+    int flag =0;
+
 
     first = *command;
     while (first != NULL)
@@ -125,14 +165,22 @@ void handle_herddoce(t_command **command, char **env)
         while (first->arg[i])
         {
             if (strcmp(first->arg[i], "<<") == 0)
+            // handle_redirections(command);
             {
                 if (first->arg[i + 1])
                 {
-                    first->my_fd = handle_herdoc(first->arg[i + 1],env);  
+                    first->my_fd = handle_herdoc(first->arg[i + 1], 1, &flag);
+                    //printf("[%d]----[%d]\n", first->my_fd, flag);
+                    if(flag)
+                    {
+                        // printf("Must expand what inside this file\n");
+                        expand_her(first->my_fd, env);
+                    }
                 }
             }
             i++;
         }
         first = first->next;
-    }  
+    }
+    
 }

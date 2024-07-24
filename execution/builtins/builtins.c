@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:45:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/21 19:47:50 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/24 13:59:07 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,10 +168,14 @@ char  **env_to_char_array(t_env *env)
 }
 char **execute_builtin(t_command **command, char **envp)
 {
+    int global_exit_status;
     t_env *env = NULL; // Initialize linked list head for environment variables
     env_list(&env, envp);
-    if (strcmp((*command)->arg[0], "echo") == 0) 
-        ft_echo(command);
+    if (strcmp((*command)->arg[0], "echo") == 0)
+{
+        ft_echo((*command)->arg);
+        global_exit_status = 0;
+}
     
     else if (strcmp((*command)->arg[0], "cd") == 0) 
         ft_cd(command,&env);

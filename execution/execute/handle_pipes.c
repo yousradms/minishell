@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/07/22 17:26:20 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/21 20:02:34 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char *strjoin(const char *str1, const char *str2)
 
 static int is_absolute_or_relative_path(char *cmd)
 { 
-    if(!cmd || strcmp(cmd,"") == 0)
+    if(!cmd)
         return(0);
     return (cmd[0] == '/' || cmd[0] == '.');
 }
@@ -36,8 +36,7 @@ static int is_absolute_or_relative_path(char *cmd)
 static char **get_paths_from_env(char **envp)
 {
     int i;
-    if (!envp)
-        return NULL;
+    
     i = 0;
     while (envp[i] && strnstr(envp[i], "PATH", 4) == NULL)
         i++;
@@ -48,14 +47,10 @@ static char **get_paths_from_env(char **envp)
 
 static char *build_full_path(char *dir, char *cmd)
 {
-    if (!dir || !cmd)
-        return NULL;
     char *part_path;
     char *full_path;
 
     part_path = strjoin(dir, "/");
-    if (!part_path)
-        return NULL;
     full_path = strjoin(part_path, cmd);
     free(part_path);
     return full_path;
@@ -64,8 +59,7 @@ static char *build_full_path(char *dir, char *cmd)
 static void free_paths(char **paths)
 {
     int i;
-    if (!paths)
-        return;
+    
     i = 0;
     while (paths[i])
         free(paths[i++]);
@@ -78,7 +72,7 @@ char *find_commande(char *cmd, char **envp)
     char **paths;
     char *path;
 
-    if (!cmd || strcmp(cmd,"") == 0)
+    if (!cmd)
         return(NULL);
     if (is_absolute_or_relative_path(cmd))
         return (cmd);
@@ -89,11 +83,6 @@ char *find_commande(char *cmd, char **envp)
     while (paths[i])
     {
         path = build_full_path(paths[i], cmd);
-        if (!path)
-        {
-            free_paths(paths);
-            return NULL;
-        }
         if (access(path, F_OK) == 0)
         {
             free_paths(paths);
@@ -112,21 +101,18 @@ char *find_commande(char *cmd, char **envp)
 static  void execute_command(t_command *cmd, char **env)
 {
     char *full_command;
-
+    
     // handle_redirections(&cmd);
-    //handle_quotes_ex(&cmd);
+    handle_quotes_ex(&cmd);
     if (is_builtin(cmd->arg[0]))
-    {
         execute_builtin(&cmd, env);
-        //return ;
-    }
     // else
     // {
     full_command = find_commande(cmd->arg[0], env);
     if (full_command == NULL)
     {
         //fprintf(stderr, "Error: find_commande returned NULL\n");
-        fprintf(stderr,"Minishell: %s: command not found\n",cmd->arg[0]);
+        fprintf(stderr, "Minishell: %s: command not found\n",cmd->arg[0]);
         exit(EXIT_FAILURE);
     }
     if (execve(full_command, cmd->arg, env) == -1)
@@ -137,7 +123,6 @@ static  void execute_command(t_command *cmd, char **env)
 
 }
 
-
 pid_t fork_process()
 {
     pid_t pid = fork();
@@ -145,23 +130,12 @@ pid_t fork_process()
         perror("fork");
     return (pid);
 }
-static int count_nbr_commands(t_command *cmd)
-{
-    int count =0;
-    while(cmd)
-    {
-        count++;
-        cmd = cmd->next;
-    }
-    return(count);
-}
+
 // char **handle_multiple_command(t_command **commande, char **env)
 // {
 //     t_command *cmd;
 //     pid_t pid;
 //     int fd[2];
-//     int i;
-    
 
 //     cmd = *commande;
 //     while (cmd)
@@ -198,6 +172,19 @@ static int count_nbr_commands(t_command *cmd)
 //     return(env);
 // }
 
+
+
+
+static int count_nbr_commands(t_command *cmd)
+{
+    int count =0;
+    while(cmd)
+    {
+        count++;
+        cmd = cmd->next;
+    }
+    return(count);
+}
 char **handle_multiple_command(t_command **commande, char **env)
 {
     t_command *cmd;
@@ -261,4 +248,6 @@ char **handle_multiple_command(t_command **commande, char **env)
     free(pids);
     return env;
 }
+
+
 
