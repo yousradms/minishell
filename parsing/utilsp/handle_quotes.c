@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:14 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/17 18:49:25 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/21 21:24:03 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,47 +56,91 @@ char *remove_quotes(char *s)
     return (token);
 }
 
-char *remove_dquotes(char *s)
-{
-    char *token;
-    int i;
-    int j;
+// char *remove_dquotes(char *s)
+// {
+//     char *token;
+//     int i;
+//     int j;
 
-    token = malloc(strlen(s) + 1);
-    if(!token)
-        return(NULL);
-    i = 0;
-    j = 0;
-    while (s[i])
+//     token = malloc(strlen(s) + 1);
+//     if(!token)
+//         return(NULL);
+//     i = 0;
+//     j = 0;
+//     while (s[i])
+//     {
+//         if (s[i] == '"')
+//             i++;
+//         else
+//             token[j++] = s[i++];
+//     }
+//     token[j] = '\0';
+//     return (token);
+// }
+char *remove_dquotes(char *str)
+{
+    int len = strlen(str);
+    char *result = (char *)malloc(len + 1);
+    int j = 0, k = 0;
+    int double_quote_open = 0;
+
+    while (str[j])
     {
-        if (s[i] == '"')
-            i++;
+        if (str[j] == '\"')
+        {
+            double_quote_open = !double_quote_open;
+        }
         else
-            token[j++] = s[i++];
+        {
+            result[k++] = str[j];
+        }
+        j++;
     }
-    token[j] = '\0';
-    return (token);
+    result[k] = '\0';
+    return result;
 }
 
-char *remove_squotes(char *s)
-{
-    char *token;
-    int i;
-    int j;
+// char *remove_squotes(char *s)
+// {
+//     char *token;
+//     int i;
+//     int j;
 
-    token = malloc(strlen(s) + 1);
-    if(!token)
-        return(NULL);
-    i = 0;
-    j = 0;
-    while (s[i])
+//     token = malloc(strlen(s) + 1);
+//     if(!token)
+//         return(NULL);
+//     i = 0;
+//     j = 0;
+//     while (s[i])
+//     {
+//         if (s[i] == '\'')
+//             i++;
+//         else
+//             token[j++] = s[i++];
+//     }
+//     token[j] = '\0';
+//     return (token);
+// }
+char *remove_squotes(char *str)
+{
+    int len = strlen(str);
+    char *result = (char *)malloc(len + 1);
+    int j = 0, k = 0;
+    int single_quote_open = 0;
+
+    while (str[j])
     {
-        if (s[i] == '\'')
-            i++;
+        if (str[j] == '\'')
+        {
+            single_quote_open = !single_quote_open;
+        }
         else
-            token[j++] = s[i++];
+        {
+            result[k++] = str[j];
+        }
+        j++;
     }
-    token[j] = '\0';
-    return (token);
+    result[k] = '\0';
+    return result;
 }
 

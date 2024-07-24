@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:05:13 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/20 11:10:02 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:57:56 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void handle_redirect_out(t_command *cmd, char *filename, int append)
     {
         
         perror("open");
-        exit(EXIT_FAILURE);
+        //exit(EXIT_FAILURE);
+        return;
     }
     if (dup2(fd, STDOUT_FILENO) == -1)
     {
@@ -163,7 +164,7 @@ void handle_redirections(t_command *cmd)
             i--;
         }
         else if (strcmp(cmd->arg[i], "<<" ) == 0)
-        {
+        {                                                                                                                                                                                          
             dup2(cmd->my_fd, STDIN_FILENO);
             close(cmd->my_fd);
             for (int j = i; cmd->arg[j] != NULL; ++j)
@@ -210,6 +211,8 @@ void handle_redirections(t_command *cmd)
 //         }
 //     }
 // }
+
+//ls > ''''
 
 
 

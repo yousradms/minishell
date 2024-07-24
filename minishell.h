@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/20 12:02:04 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/22 20:30:46 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void open_here(t_node *token, t_node *ptr_err);
 
 //heredoc
 void handle_herddoce(t_command **command, char **env);
-int handle_herdoc(char *delimiter, int f, int *flag)  ;
+int handle_herdoc(char *delimiter, char **env);
 
 //utilsp
 void add_back(t_command **head, t_command *new_node);

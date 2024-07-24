@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 09:11:12 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/20 09:43:21 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:51:31 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@ char **handle_one_command(t_command **commande,char **env)
 {
     pid_t pid;
     char *full_command;
-    
+    //handle_quotes_ex(commande);
+
     handle_redirections(*commande);//leaks here
-    handle_quotes_ex(commande);
-    
     if (is_builtin((*commande)->arg[0]))
     {
         env = execute_builtin(commande, env);
@@ -30,7 +29,11 @@ char **handle_one_command(t_command **commande,char **env)
         return (env);
     else if (pid == 0)
     {
+        // print_list2(*commande);
+        // exit(1);
         full_command = find_commande((*commande)->arg[0], env);
+        // printf("[%s]\n",full_command);
+        // exit(1);
         if (full_command == NULL)
         {
             printf("Minishell: %s: command not found\n",(*commande)->arg[0]);
@@ -50,7 +53,7 @@ char **handle_one_command(t_command **commande,char **env)
              
 }
 
-char **execute(t_command **commande, char **env)
+char ** execute(t_command **commande, char **env)
 {
     if (commande == NULL || *commande == NULL)
         return env;

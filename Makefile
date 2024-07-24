@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+         #
+#    By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/08 13:48:45 by ksellami          #+#    #+#              #
-#    Updated: 2024/07/21 15:42:22 by ydoumas          ###   ########.fr        #
+#    Updated: 2024/07/22 17:24:15 by ksellami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 OBJS = ${FILES:%.c=%.o}
 CC = cc 
-# CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 CFLAGS = -Wall -Wextra -Werror 
 
 all : $(NAME)

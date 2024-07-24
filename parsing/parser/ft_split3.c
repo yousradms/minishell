@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:06 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/04 18:48:23 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/24 09:32:58 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ char **ft_split3(char *str)
         if (!is_whitespace(str[i]))
         {
             tab[i2] = malloc(sizeof(char) * (MAX_LENGTH + 1));
+            if (!tab[i2])
+                return (NULL);
             i3 = 0;
             fill_word(str, tab[i2], &i, &i3, &qouat);
             i2++;
