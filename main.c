@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/24 17:29:13 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/28 12:32:14 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,10 @@ void    sigint_handler(int signo)
             exit_s(1, 1);
         }
         else
+        {
             printf("\n");
+            exit_s(128+signo,1);
+        }
     }
     else if (signo == SIGQUIT)
     {

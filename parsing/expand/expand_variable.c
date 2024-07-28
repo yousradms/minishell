@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:09:19 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/24 17:36:10 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/28 17:41:12 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,23 @@ void expand_variable(t_node *current, char **env)
         current->content = temp;
         return;
     }
+    // if (current->prev &&  current->prev->prev && current->prev->prev->prev && !ft_strncmp(current->prev->prev->prev->content, "export", ft_strlen("export")))
+    // {
+    //     current->content = ft_strjoin("\"", current->content);
+    //     current->content = ft_strjoin(current->content, "\"");
+    // }
+    // if (current->prev && current->prev->type == WORD)
+    // {
+    //     while(current->prev && current->prev->type == 1)
+    //         current = current->prev;
+    //     if(current->prev && !ft_strncmp(current->prev->content,"export",ft_strlen("export")))
+    //     {
+    //         current->content = ft_strjoin("\"", current->content);
+    //         current->content = ft_strjoin(current->content, "\"");    
+    //     }
+    // }
+    // print_list(current);
+    // exit(1);
     if(str)
     {
         set_expanded(&str, &(current->content), env);

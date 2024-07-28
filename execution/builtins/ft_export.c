@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:54:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/15 18:09:29 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/28 15:58:48 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,12 +110,12 @@ static char *extract_value(char *line)
 
 void ft_export(t_command **command, t_env **envp)
 {
-    int i;
     
+    int i;
+    //handle_quotes_ex(command);
     // If no arguments are provided, print the current environment
     if ((*command)->arg[1] == NULL)
     {
-        
         get_expoted(envp);
         return ;
     }

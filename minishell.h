@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/24 17:34:05 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/28 17:44:34 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 #include <readline/readline.h>
+#include <errno.h>
 #include <readline/history.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -189,6 +190,7 @@ void setup_signal_handlers();
 void handle_ctrl_d(void);
 void sigint_handler(int sign_num);
 char *exit_s(int new_one, int set);
+void export_expand(t_node **head);
 
 
 #endif

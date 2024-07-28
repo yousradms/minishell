@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:18:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/24 17:35:04 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/28 17:41:34 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void set_value(int *i, int *j, char **var_name, char **expanded, char **env)
 
 void expanding(t_node *list, char **env)
 {
+    // print_list(list);
+    // exit(1);
     if(!list)
         return;
     t_node *current;
