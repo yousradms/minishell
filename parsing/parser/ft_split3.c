@@ -3,73 +3,87 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:06 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/28 16:34:53 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/29 16:29:38 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//done
 #include "../../minishell.h"
+#include "../../libft/libft.h"
 
 static int is_whitespace(char c)
 {
-    return (c == ' ' || c == '\t' || c == '\n');
+	return (c == ' ' || c == '\t' || c == '\n');
 }
 
-static void handle_quotation(char *str, char *quote, int *i)
+static void handle_quotation(char *str, t_args *a)
 {
-    if (!*quote && (str[*i] == '\'' || str[*i] == '"'))
-        *quote = str[*i];
-    else if (*quote && str[*i] == *quote)
-        *quote = 0;
+	if (!a->quoat && (str[a->i] == '\'' || str[a->i] == '"'))
+		a->quoat = str[a->i];
+	else if (a->quoat && str[a->i] == a->quoat)
+		a->quoat = 0;
 }
 
-static void fill_word(char *str, char *word, int *i, int *i3, char *quote)
+static void fill_word(char *str, char *word, t_args *a)
 {
-    while (str[*i] && (!is_whitespace(str[*i]) || *quote))
+	while (str[a->i] && (!is_whitespace(str[a->i]) || a->quoat))
+	{
+		handle_quotation(str, a);
+		word[(a->i3)++] = str[a->i];
+		(a->i)++;
+	}
+	word[a->i3] = '\0';
+}
+
+static void skip_initial_whitespaces(char *str, t_args *a)
+{
+	while (is_whitespace(str[a->i]))
+		(a->i)++;
+}
+
+static t_args *init_args(void)
+{
+	t_args *a;
+
+    a = malloc(sizeof(t_args));
+    if (a)
     {
-        handle_quotation(str, quote, i);
-        word[(*i3)++] = str[*i];
-        (*i)++;
+        a->i = 0;
+        a->i2 = 0;
+        a->i3 = 0;
+        a->quoat = 0;
     }
-    word[*i3] = '\0';
-}
-
-static void skip_initial_whitespaces(char *str, int *i)
-{
-    while (is_whitespace(str[*i]))
-        (*i)++;
+    return (a);
 }
 
 char **ft_split3(char *str)
 {
-    int i;
-    int i2;
-    int i3;
-    char **tab;
-    char qouat;
-
-    i = 0;
-    i2 = 0;
-    i3 = 0;
-    qouat = 0;
-    tab = malloc(sizeof(*tab) * (MAX_WORDS + 1));
-    if (tab == NULL)
-        return (NULL); 
-    skip_initial_whitespaces(str, &i);
-    while (str[i])
-    {
-        if (!is_whitespace(str[i]))
-        {
-            tab[i2] = malloc(sizeof(char) * (MAX_LENGTH + 1));
-            i3 = 0;
-            fill_word(str, tab[i2], &i, &i3, &qouat);
-            i2++;
-        }
-        else
-            i++;
-    }
-    tab[i2] = NULL; 
-    return (tab);
+	char **tab;
+	t_args *a;
+	
+	a = init_args();
+	if (!a)
+		return (NULL);
+	tab = malloc(sizeof(*tab) * (MAX_WORDS + 1));
+	if (tab == NULL)
+		return (free(a), NULL); 
+	skip_initial_whitespaces(str, a);
+	while (str[a->i])
+	{
+		if (!is_whitespace(str[a->i]))
+		{
+			tab[a->i2] = malloc(sizeof(char) * (MAX_LENGTH + 1));
+			if (!tab[a->i2])
+				return (free(a), NULL);
+			a->i3 = 0;
+			fill_word(str, tab[a->i2], a);
+			a->i2++;
+		}
+		else
+			a->i++;
+	}
+	return (tab[a->i2] = NULL, free(a), tab);
 }

@@ -6,50 +6,60 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/04 20:20:21 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/25 21:06:17 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//done
 #include "../../minishell.h"
+#include "../../libft/libft.h"
 
 t_node *create_node(char *content, int type,int state)
 {
-    t_node *node = malloc(sizeof(t_node));
-    node->content = content;
-    node->type = type;
-    node->state = state;
-    node->next = NULL;
-    node->prev = NULL;
-    return (node);
+	t_node *node;
+	
+	node = malloc(sizeof(t_node));
+	if (!node)
+		return (NULL);
+	node->content = content;
+	node->type = type;
+	node->state = state;
+	node->next = NULL;
+	node->prev = NULL;
+	return (node);
 }
 
 void add_node(t_node **head, t_node *node)
 {
-    if (*head == NULL)
-    {
-        *head = node;
-        node->prev = NULL;
-    }
-    else
-    {
-        t_node *current = *head;
-        while (current->next != NULL)
-            current = current->next;
-        current->next = node;
-        node->prev = current;
-    }
+	t_node *current;
+	
+	if (*head == NULL)
+	{
+		*head = node;
+		node->prev = NULL;
+	}
+	else
+	{
+		current = *head;
+		while (current->next != NULL)
+			current = current->next;
+		current->next = node;
+		node->prev = current;
+	}
 }
 
 void free_precedent_nodes(t_node *head)
 {
-    t_node *current = head;
-    while (current!= NULL)
-    {
-        t_node *next = current->next;
-        free(current->content);
-        free(current);
-        current = next;
-    }
+	t_node *current;
+	
+	current = head;
+	while (current!= NULL)
+	{
+		t_node *next = current->next;
+		free(current->content);
+		free(current);
+		current = next;
+	}
 }
 
 t_node	*ft_lstlast(t_node *lst)

@@ -3,143 +3,84 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/28 12:32:14 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/29 10:01:33 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//done
 #include "minishell.h"
 #include "libft/libft.h"
 
-// pid_t g_pid = 0;  
-// int g_status = 0; // Global status
-
-
-// void prompt(void) {
-//     write(1, "minishell🥶😁 ", 12); // Ajout d'un espace pour séparer le prompt de l'entrée utilisateur
-//     fflush(stdout); // S'assurer que le buffer est vidé
-// }
-
-// // Function to handle signals sent to the process
-// void process(int sign_num) {
-//     if (sign_num == SIGQUIT) {
-//         write(1, "Quit: 3\n", 8);
-//         g_status = 131;
-//     } else if (sign_num == SIGINT) {
-//         write(1, "\n", 1);
-//         g_status = 130;
-//         prompt(); // Afficher le prompt après avoir reçu SIGINT
-//     }
-// }
-
-// // Signal handler function
-// void sigint_handler(int sign_num) {
-//     if (sign_num == SIGINT) {
-//         if (g_pid == 0) {
-//             // For the main process
-//             rl_on_new_line(); // Move to a new line
-//             // rl_replace_line("", 0); // Clear the current line
-//             write(1,"",1);
-//             write(1, "\n", 1); // Write a newline character
-//             prompt(); // Display the prompt
-//             g_status = 1;
-//         } else {
-//             process(sign_num); // Handle SIGINT in child processes
-//         }
-//     } else if (sign_num == SIGQUIT) {
-//         process(sign_num); // Handle SIGQUIT
-//     }
-// }
-
-
-char *exit_s(int new_one, int set)
+void setup_signals(void)
 {
-    static int x;
-    if (set == 1)
-        x = new_one;
-    else
-        return (ft_itoa(x));
-    return NULL;
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigint_handler);
+	rl_catch_signals = 0;
 }
 
-void    sigint_handler(int signo)
+char *read_input(void)
 {
-    int    i;
+	char *line;
 
-    if (signo == SIGINT)
+	line = readline("minishell🥶😁");
+	if (!line)
+	{
+		printf("exit\n");
+		exit(ft_atoi(exit_s(0, 0)));
+	}
+	return (line);
+}
+
+char **process_command(char *line, char **envp)
+{
+	int stdin_backup;
+	int stdout_backup;
+
+	stdin_backup = dup(STDIN_FILENO);
+	stdout_backup = dup(STDOUT_FILENO);
+	if (stdin_backup == -1 || stdout_backup == -1)
     {
-        i = wait(NULL);
-        
-        if (i <= 0)
-        {
-            printf("\n");
-            rl_on_new_line();
-            rl_replace_line("", 0);
-            rl_redisplay();
-            exit_s(1, 1);
-        }
-        else
-        {
-            printf("\n");
-            exit_s(128+signo,1);
-        }
+        perror("dup");
+        return (envp);
     }
-    else if (signo == SIGQUIT)
-    {
-        if (waitpid(-1, 0, WNOHANG) == 0)
-        {
-            printf("Quit: 3\n");
-        }
-    }
-} 
+	envp = parsing_execute_command(&line, envp);
+	dup2(stdout_backup, STDOUT_FILENO);
+	dup2(stdin_backup, STDIN_FILENO);
+	if (dup2(stdout_backup, STDOUT_FILENO) == -1 || dup2(stdin_backup, STDIN_FILENO) == -1)
+        perror("dup2");
+	close(stdin_backup);
+	close(stdout_backup);
+	while (wait(NULL) != -1)
+		;
+	return (envp);
+}
+
 int main(int ac,char **av,char **env)
 { 
-    (void)ac;
-    (void)av;
-    char **envp;
-    char *line;
-    
-    signal(SIGINT, sigint_handler);
-    signal(SIGQUIT, sigint_handler);
-    rl_catch_signals = 0;
-    envp = set_env(env);
-    int i = 0;
-    int j = 0;
-    // i = dup(STDIN_FILENO);
-    // j = dup(STDOUT_FILENO);
-    while (1)
-    {
-        line = readline("minishell🥶😁");
-        if (!line)
-        {
-            
-            printf("exit\n");
-            exit(ft_atoi(exit_s(0,0)));
-        }         
-        if (line[0] == '\0' || just_spaces(line))
-        {
-            free(line);
-            continue;
-        }
-        if (strlen(line) > 0)
-        {
-            add_history(line);
-            i = dup(STDIN_FILENO);
-            j = dup(STDOUT_FILENO);
-            envp = parsing_execute_command(&line, envp);
-
-            dup2(j, STDOUT_FILENO);
-            dup2(i, STDIN_FILENO);
-            close(i);
-            close(j);
-            while (wait(NULL) != -1)
-                ;
-        }
-        free(line);
-    }
-    // Free envp
-
-    return(0);
+	(void)ac;
+	(void)av;
+	char **envp;
+	char *line;
+	
+	setup_signals();
+	envp = set_env(env);
+	while (1)
+	{
+		line = read_input();        
+		if (line[0] == '\0' || just_spaces(line))
+		{
+			free(line);
+			continue;
+		}
+		if (strlen(line) > 0)
+		{
+			add_history(line);
+			envp = process_command(line, envp);
+		}
+		free(line);
+	}
+	return (0);
 }

@@ -50,6 +50,18 @@ pipe
 ----------------------
 heredoc with commands and redirections
 ----------------------
-
-
-
+bash-3.2$ << '' '' | a
+> 
+bash: : command not found
+bash: a: command not found
+bash-3.2$ ''
+bash: : command not found
+----------------------
+0: Success
+1: General error
+2: Misuse of shell built-ins (according to bash documentation)
+127: Command not found
+128 + n: Fatal error signal "n"
+255: Exit status out of range
+----------------------
+code pour fonction fprintf

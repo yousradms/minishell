@@ -6,25 +6,25 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:53:54 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/15 17:55:58 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/07/25 21:03:24 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//done
 #include "../../minishell.h"
+#include "../../libft/libft.h"
 
-void ft_env(t_command **command, t_env **envp)
+void ft_env(t_env **envp)
 {
-	(void)command; // Suppress unused parameter warning
-	t_env *env; // Dereference envp to get the linked list head
+	t_env *env;
 	
 	env = *envp;
 	if (env == NULL)
 		return;
-	// Iterate through the linked list of environment variables
 	while (env != NULL)
 	{
-		if(env->var && env->value != NULL)
+		if (env->var && env->value != NULL)
 			printf("%s=%s\n", env->var, env->value);
-		env = env->next; // Move to the next node
+		env = env->next;
 	}
 }

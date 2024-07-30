@@ -3,251 +3,117 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/07/21 20:02:34 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/07/29 16:24:32 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//done
 #include "../../minishell.h"
+#include "../../libft/libft.h"
 
-// Function to join two strings with a "/" in between
-char *strjoin(const char *str1, const char *str2)
+static  char **execute_command(t_command *cmd, char **env)
 {
-    size_t len1 = strlen(str1);
-    size_t len2 = strlen(str2);
-    char *result = malloc(len1 + len2 + 2); // +2 for '/' and '\0'
-    if (!result)
-        exit(EXIT_FAILURE);
-    strcpy(result, str1);
-    result[len1] = '/';
-    strcpy(result + len1 + 1, str2);
-    return result;
+	char *full_command;
+
+	if (is_builtin(cmd->arg[0]))
+	{
+		execute_builtin(&cmd, env);
+		return (env);
+	}
+	if (!cmd)
+		return (env);
+	full_command = find_commande(cmd->arg[0], env);
+	if (full_command == NULL)
+	{
+		fprintf(stderr,"Minishell: %s: command not found\n",cmd->arg[0]);
+		exit_s(127, 1);
+		exit(127);
+	}
+	if (execve(full_command, cmd->arg, env) == -1)
+	{
+		perror("execve");
+		exit_s(EXIT_FAILURE, 1);
+		exit(EXIT_FAILURE);
+	}
+	return(env);
 }
 
-static int is_absolute_or_relative_path(char *cmd)
-{ 
-    if(!cmd)
-        return(0);
-    return (cmd[0] == '/' || cmd[0] == '.');
-}
-
-static char **get_paths_from_env(char **envp)
+static void wait_for_all_processes(pid_t *pids, int cmd_count)
 {
-    int i;
-    
-    i = 0;
-    while (envp[i] && strnstr(envp[i], "PATH", 4) == NULL)
-        i++;
-    if (!envp[i])
-        return (NULL);
-    return (ft_split4(envp[i] + 5, ':')); // "PATH="
-}
+    int j;
+    int status;
 
-static char *build_full_path(char *dir, char *cmd)
-{
-    char *part_path;
-    char *full_path;
-
-    part_path = strjoin(dir, "/");
-    full_path = strjoin(part_path, cmd);
-    free(part_path);
-    return full_path;
-}
-
-static void free_paths(char **paths)
-{
-    int i;
-    
-    i = 0;
-    while (paths[i])
-        free(paths[i++]);
-    free(paths);
-}
-
-char *find_commande(char *cmd, char **envp)
-{
-    int i;
-    char **paths;
-    char *path;
-
-    if (!cmd)
-        return(NULL);
-    if (is_absolute_or_relative_path(cmd))
-        return (cmd);
-    paths = get_paths_from_env(envp);
-    if (!paths)
-        return (NULL);
-    i = 0;
-    while (paths[i])
-    {
-        path = build_full_path(paths[i], cmd);
-        if (access(path, F_OK) == 0)
-        {
-            free_paths(paths);
-            return (path);
-        }
-        free(path);
-        i++;
-    }
-    free_paths(paths);
-    return (NULL);
-}
-
-
-
-
-static  void execute_command(t_command *cmd, char **env)
-{
-    char *full_command;
-    
-    // handle_redirections(&cmd);
-    handle_quotes_ex(&cmd);
-    if (is_builtin(cmd->arg[0]))
-        execute_builtin(&cmd, env);
-    // else
-    // {
-    full_command = find_commande(cmd->arg[0], env);
-    if (full_command == NULL)
-    {
-        //fprintf(stderr, "Error: find_commande returned NULL\n");
-        fprintf(stderr, "Minishell: %s: command not found\n",cmd->arg[0]);
-        exit(EXIT_FAILURE);
-    }
-    if (execve(full_command, cmd->arg, env) == -1)
-    {
-        perror("execve");
-        exit(EXIT_FAILURE);
-    }
-
-}
-
-pid_t fork_process()
-{
-    pid_t pid = fork();
-    if (pid == -1)
-        perror("fork");
-    return (pid);
-}
-
-// char **handle_multiple_command(t_command **commande, char **env)
-// {
-//     t_command *cmd;
-//     pid_t pid;
-//     int fd[2];
-
-//     cmd = *commande;
-//     while (cmd)
-//     {
-//         if (cmd->next != NULL && pipe(fd) == -1)
-//             return(env); // return NULL on error
-//         pid = fork();
-//         if (pid == -1)
-//             return(NULL); // return NULL on error
-//         else if (pid == 0)
-//         {
-//             handle_redirections(cmd);
-//             if (cmd->next)
-//             {
-//                 close(fd[0]);
-//                 if (cmd->out == 1)
-//                     dup2(fd[1], 1);
-//                 close(fd[1]);
-//             }
-//             execute_command(cmd, env);
-//         }
-//         else
-//         {
-//             if (cmd->next)
-//             {
-//                 close(fd[1]);
-//                 dup2(fd[0], STDIN_FILENO);
-//                 close(fd[0]);
-//             }
-//         }
-//         cmd = cmd->next;
-//     }
-//             waitpid(pid, 0, 0);
-//     return(env);
-// }
-
-
-
-
-static int count_nbr_commands(t_command *cmd)
-{
-    int count =0;
-    while(cmd)
-    {
-        count++;
-        cmd = cmd->next;
-    }
-    return(count);
-}
-char **handle_multiple_command(t_command **commande, char **env)
-{
-    t_command *cmd;
-    pid_t *pids;
-    int fd[2];
-    int i, cmd_count;
-
-    cmd = *commande;
-    cmd_count = count_nbr_commands(cmd);
-
-    pids = (pid_t *)malloc(sizeof(pid_t) * cmd_count);
-    if (!pids)
-        return NULL; // Handle memory allocation failure
-
-    i = 0;
-    while (cmd)
-    {
-        if (cmd->next != NULL && pipe(fd) == -1)
-        {
-            free(pids);
-            return env; // return env on error
-        }
-
-        pids[i] = fork();
-        if (pids[i] == -1)
-        {
-            free(pids);
-            return NULL; // Handle fork failure
-        }
-        else if (pids[i] == 0)
-        {
-            handle_redirections(cmd);
-            if (cmd->next)
-            {
-                close(fd[0]);
-                if (cmd->out == 1)
-                    dup2(fd[1], 1);
-                close(fd[1]);
-            }
-            execute_command(cmd, env);
-            //exit(0); // Ensure the child process exits after executing the command
-        }
-        else
-        {
-            if (cmd->next)
-            {
-                close(fd[1]);
-                dup2(fd[0], STDIN_FILENO);
-                close(fd[0]);
-            }
-        }
-        cmd = cmd->next;
-        i++;
-    }
-    int j = 0;
+    j = 0;
     while (j < cmd_count)
     {
-        waitpid(pids[j], NULL, 0);
+        waitpid(pids[j], &status, 0);
+        if (WIFEXITED(status))
+            exit_s(WEXITSTATUS(status), 1);
         j++;
     }
-    free(pids);
-    return env;
 }
 
+static void setup_child_process(int input_fd, int fd[2], t_command *cmd)
+{
+    dup2(input_fd, STDIN_FILENO);
+    if (cmd->next)
+        dup2(fd[1], STDOUT_FILENO);
+    close(fd[0]);
+    if (input_fd != 0)
+        close(input_fd);
+    handle_redirections(cmd);
+}
 
+static void setup_parent_process(int *input_fd, int fd[2])
+{
+    close(fd[1]);
+    if (*input_fd != 0)
+        close(*input_fd);
+    *input_fd = fd[0];
+}
 
+static char **process_pipe(t_command *cmd, char **env, pid_t *pids)
+{
+    int fd[2];
+    int input_fd;
+    int i;
+
+	input_fd = 0;
+	i = 0;
+    while (cmd)
+	{
+        if (cmd->next != NULL && pipe(fd) == -1)
+            return (free(pids), env);
+        pids[i] = fork();
+        if (pids[i] == -1)
+            return (free(pids), NULL);
+        else if (pids[i] == 0)
+		{
+            setup_child_process(input_fd, fd, cmd);
+            env = execute_command(cmd, env);
+            exit(0);
+        }
+		else
+            setup_parent_process(&input_fd, fd);
+        cmd = cmd->next;
+        i++;
+    }
+    return (env);
+}
+
+char **handle_multiple_command(t_command **commande, char **env)
+{
+	pid_t *pids;
+	int cmd_count;
+
+	cmd_count = count_nbr_commands(*commande);
+	pids = (pid_t *)malloc(sizeof(pid_t) * cmd_count);
+	if (!pids)
+		return (NULL);
+	env = process_pipe(*commande, env, pids);
+	wait_for_all_processes(pids, cmd_count);
+	return (free(pids), env);
+}
