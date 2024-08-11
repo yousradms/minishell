@@ -6,26 +6,25 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 12:04:15 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/25 21:04:11 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/10 14:07:37 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//done
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-static char *clean_argument(char *arg)
+static char	*clean_argument(char *arg)
 {
-	int len;
-	char *result;
-	int k;
-	int single_quote_open;
-	int double_quote_open;
-	
+	int		len;
+	char	*result;
+	int		k;
+	int		single_quote_open;
+	int		double_quote_open;
+
 	len = ft_strlen(arg);
 	result = (char *)malloc(len + 1);
 	if (!result)
-		return(NULL);
+		return (NULL);
 	k = 0;
 	single_quote_open = 0;
 	double_quote_open = 0;
@@ -43,13 +42,13 @@ static char *clean_argument(char *arg)
 	return (result);
 }
 
-static void clean_command_arguments(t_command *cmd)
+static void	clean_command_arguments(t_command *cmd)
 {
-	int i;
-	char *cleaned_arg;
-	
+	int		i;
+	char	*cleaned_arg;
+
 	i = 0;
-	while(cmd->arg[i])
+	while (cmd->arg[i])
 	{
 		cleaned_arg = clean_argument(cmd->arg[i]);
 		free(cmd->arg[i]);
@@ -58,9 +57,9 @@ static void clean_command_arguments(t_command *cmd)
 	}
 }
 
-void handle_quotes_ex(t_command **cmd)
+void	handle_quotes_ex(t_command **cmd)
 {
-	t_command *first;
+	t_command	*first;
 
 	first = *cmd;
 	while (first)

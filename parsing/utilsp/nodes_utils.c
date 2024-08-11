@@ -6,18 +6,17 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/25 21:06:17 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/10 17:23:57 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//done
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-t_node *create_node(char *content, int type,int state)
+t_node	*create_node(char *content, int type, int state)
 {
-	t_node *node;
-	
+	t_node	*node;
+
 	node = malloc(sizeof(t_node));
 	if (!node)
 		return (NULL);
@@ -29,10 +28,10 @@ t_node *create_node(char *content, int type,int state)
 	return (node);
 }
 
-void add_node(t_node **head, t_node *node)
+void	add_node(t_node **head, t_node *node)
 {
-	t_node *current;
-	
+	t_node	*current;
+
 	if (*head == NULL)
 	{
 		*head = node;
@@ -48,14 +47,15 @@ void add_node(t_node **head, t_node *node)
 	}
 }
 
-void free_precedent_nodes(t_node *head)
+void	free_precedent_nodes(t_node *head)
 {
-	t_node *current;
-	
+	t_node	*current;
+	t_node	*next;
+
 	current = head;
-	while (current!= NULL)
+	while (current != NULL)
 	{
-		t_node *next = current->next;
+		next = current->next;
 		free(current->content);
 		free(current);
 		current = next;
@@ -73,5 +73,3 @@ t_node	*ft_lstlast(t_node *lst)
 		temp = temp->next;
 	return (temp);
 }
-
-

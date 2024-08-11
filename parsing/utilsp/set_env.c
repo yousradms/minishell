@@ -6,20 +6,19 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:45 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/28 20:32:50 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/11 18:53:51 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//done
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-char **set_env(char **env)
+char	**set_env(char **env)//yousra
 {
-	int i;
-	int num_strings;
-	char **envp;
-	
+	int		i;
+	int		num_strings;
+	char	**envp;
+
 	i = 0;
 	num_strings = 0;
 	while (env[num_strings] != NULL)

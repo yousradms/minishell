@@ -6,17 +6,16 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:11:16 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/29 09:57:50 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/11 18:49:40 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//done
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-static void extract_var_value(char *envp_str, char **var, char **value)
+static void	extract_var_value(char *envp_str, char **var, char **value)//yousra
 {
-	char *equal_sign;
+	char	*equal_sign;
 
 	equal_sign = ft_strchr(envp_str, '=');
 	if (equal_sign != NULL)
@@ -39,12 +38,12 @@ static void extract_var_value(char *envp_str, char **var, char **value)
 	}
 }
 
-static int process_envp_entry(char *envp_str, t_env **head, t_env **last)
+static int	process_envp_entry(char *envp_str, t_env **head, t_env **last)//yousra
 {
-	char *var;
-	char *value;
-	t_env *new_env;
-	
+	char	*var;
+	char	*value;
+	t_env	*new_env;
+
 	var = NULL;
 	value = NULL;
 	extract_var_value(envp_str, &var, &value);
@@ -65,12 +64,12 @@ static int process_envp_entry(char *envp_str, t_env **head, t_env **last)
 	return (0);
 }
 
-void env_list(t_env **env, char **envp)
+void	env_list(t_env **env, char **envp)//yousra
 {
-	t_env *head;
-	t_env *last;
-	int i;
-	
+	t_env	*head;
+	t_env	*last;
+	int		i;
+
 	if (!env || !envp)
 		return ;
 	head = NULL;
@@ -79,10 +78,7 @@ void env_list(t_env **env, char **envp)
 	while (envp[i] != NULL)
 	{
 		if (process_envp_entry(envp[i], &head, &last) == -1)
-		{
-			//free_env_list(head); // Free the allocated memory before returning
 			return ;
-		}
 		i++;
 	}
 	*env = head;

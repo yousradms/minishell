@@ -6,21 +6,20 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:53:54 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/25 21:03:24 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/11 18:47:03 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//done
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-void ft_env(t_env **envp)
+void	ft_env(t_env **envp)//yousra
 {
-	t_env *env;
-	
+	t_env	*env;
+
 	env = *envp;
 	if (env == NULL)
-		return;
+		return ;
 	while (env != NULL)
 	{
 		if (env->var && env->value != NULL)

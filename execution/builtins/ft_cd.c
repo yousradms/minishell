@@ -6,17 +6,16 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:51:25 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/28 20:19:09 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/10 13:00:32 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//done
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-void update_oldpwd(t_env **envp, char *oldpwd)
+void	update_oldpwd(t_env **envp, char *oldpwd)
 {
-	t_env *current;
+	t_env	*current;
 
 	current = *envp;
 	while (current)
@@ -31,9 +30,9 @@ void update_oldpwd(t_env **envp, char *oldpwd)
 	}
 }
 
-void update_pwd(t_env **envp, char *newpwd)
+void	update_pwd(t_env **envp, char *newpwd)
 {
-	t_env *current;
+	t_env	*current;
 
 	current = *envp;
 	while (current)
@@ -48,11 +47,11 @@ void update_pwd(t_env **envp, char *newpwd)
 	}
 }
 
-void ft_cd(t_command **command, t_env **envp)
+void	ft_cd(t_command **command, t_env **envp)
 {
-	char cwd[1024];
-	char *home;
-	char oldpwd[1024];
+	char	cwd[1024];
+	char	*home;
+	char	oldpwd[1024];
 
 	home = getenv("HOME");
 	if (get_current_directory(oldpwd, sizeof(oldpwd)) == -1)

@@ -6,15 +6,14 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:54:41 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/25 21:09:21 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/06 10:28:56 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//done
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-int ft_is_number(char *s)
+int	ft_is_number(char *s)
 {
 	while (*s)
 	{
@@ -25,16 +24,16 @@ int ft_is_number(char *s)
 	return (1);
 }
 
-static void handle_exit(char *arg)
+static void	handle_exit(char *arg)
 {
-	int exit_status;
+	int	exit_status;
 
 	exit_status = ft_atoi(arg);
 	printf("exit\n");
 	exit(exit_status);
 }
 
-void ft_exit(t_command **command)
+void	ft_exit(t_command **command)
 {
 	if (!((*command)->arg[1]))
 	{
@@ -43,7 +42,8 @@ void ft_exit(t_command **command)
 	}
 	else if (!ft_is_number((*command)->arg[1]))
 	{
-		printf("exit\nMinishell: exit: %s: numeric argument required\n", (*command)->arg[1]);
+		printf("exit\nMinishell: exit: %s: \
+		numeric argument required\n", (*command)->arg[1]);
 		exit(255);
 	}
 	else if ((*command)->arg[2])

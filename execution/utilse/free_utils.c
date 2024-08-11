@@ -6,18 +6,17 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:51:31 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/28 20:25:46 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/10 14:13:53 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//done
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-void free_char_array(char **array)
+void	free_char_array(char **array)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	if (array == NULL)
 		return ;
@@ -29,7 +28,7 @@ void free_char_array(char **array)
 	free(array);
 }
 
-void free_env_node(t_env *node)
+void	free_env_node(t_env *node)
 {
 	if (node)
 	{
@@ -39,34 +38,37 @@ void free_env_node(t_env *node)
 	}
 }
 
-void free_paths(char **paths)
+void	free_paths(char **paths)
 {
-	int i;
-	
+	int	i;
+
 	if (!paths)
-		return;
+		return ;
 	i = 0;
 	while (paths[i])
 		free(paths[i++]);
 	free(paths);
 }
 
-void remove_redirection_symbols(char **args, int index)
+void	remove_redirection_symbols(char **args, int index)
 {
-	int j;
+	int	j;
 
+	free(args[index]);
+	free(args[index + 1]);
 	j = index;
 	while (args[j] != NULL)
 	{
 		args[j] = args[j + 2];
 		j++;
 	}
+	args[j] = NULL;
 }
 
-void free_env_list(t_env *head)
+void	free_env_list(t_env *head)
 {
-	t_env *current;
-	t_env *next;
+	t_env	*current;
+	t_env	*next;
 
 	current = head;
 	while (current != NULL)

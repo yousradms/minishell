@@ -6,17 +6,16 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:05:13 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/25 21:04:19 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/10 17:53:16 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//done
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-void handle_redirect_in(t_command *cmd, char *filename)
+void	handle_redirect_in(t_command *cmd, char *filename)
 {
-	int fd;
+	int	fd;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
@@ -34,35 +33,34 @@ void handle_redirect_in(t_command *cmd, char *filename)
 	close(fd);
 }
 
-void handle_redirect_out(t_command *cmd, char *filename, int append)
+void	handle_redirect_out(t_command *cmd, char *filename, int append)
 {
-	int flags;
-	int fd;
+	int	flags;
+	int	fd;
 
 	if (append)
 		flags = O_WRONLY | O_CREAT | O_APPEND;
-	else 
+	else
 		flags = O_WRONLY | O_CREAT | O_TRUNC;
 	fd = open(filename, flags, 0644);
 	if (fd == -1)
 	{
 		perror("open");
-		return;
+		return ;
 	}
 	if (dup2(fd, STDOUT_FILENO) == -1)
 	{
 		perror("dup2");
 		close(fd);
-		return;
+		return ;
 	}
 	cmd->out = fd;
-	// free(filename);//hada
 	close(fd);
 }
 
-void handle_redirections(t_command *cmd)
+void	handle_redirections(t_command *cmd)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cmd->arg[i] != NULL)
@@ -73,7 +71,7 @@ void handle_redirections(t_command *cmd)
 			handle_append_redirection(cmd, &i);
 		else if (ft_strcmp(cmd->arg[i], "<" ) == 0)
 			handle_input_redirection(cmd, &i);
-		else if (ft_strcmp(cmd->arg[i], "<<" ) == 0)                                                                                                                                                                                        
+		else if (ft_strcmp(cmd->arg[i], "<<") == 0)
 			handle_heredoc_redirection(cmd, &i);
 		i++;
 	}

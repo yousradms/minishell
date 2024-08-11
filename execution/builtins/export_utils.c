@@ -6,18 +6,17 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:22:45 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/28 20:18:38 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/10 13:00:05 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//done
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-void update_existing_env(t_env *env, char *arg, char *value)
+void	update_existing_env(t_env *env, char *arg, char *value)
 {
-	char *new_value;
-	
+	char	*new_value;
+
 	if (ft_strchr(arg, '+') && ft_strchr(arg, '='))
 	{
 		new_value = ft_strjoin(env->value, value);
@@ -31,14 +30,14 @@ void update_existing_env(t_env *env, char *arg, char *value)
 	}
 }
 
-int is_valid(char c)
+int	is_valid(char c)
 {
 	return (ft_isalnum(c) || c == '_');
 }
 
-int check_arg(char *var)
+int	check_arg(char *var)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!(ft_isalpha(var[i]) || var[i] == '_'))
@@ -54,12 +53,12 @@ int check_arg(char *var)
 	return (1);
 }
 
-char *extract_var(char *line)
+char	*extract_var(char *line)
 {
-	int i;
-	int key_len;
-	char *key;
-	int j;
+	int		i;
+	int		key_len;
+	char	*key;
+	int		j;
 
 	i = 0;
 	key_len = 0;
@@ -79,10 +78,10 @@ char *extract_var(char *line)
 	return (key);
 }
 
-char *extract_value(char *line)
+char	*extract_value(char *line)
 {
-	int i;
-	char *value;
+	int		i;
+	char	*value;
 
 	i = 0;
 	while (line[i] && line[i] != '=')

@@ -6,19 +6,18 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:14:03 by ksellami          #+#    #+#             */
-/*   Updated: 2024/07/25 21:06:09 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/10 17:16:22 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//done
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-void free_commands(t_command *commands)
+void	free_commands(t_command *commands)
 {
-	t_command *temp;
-	int i;
-	
+	t_command	*temp;
+	int			i;
+
 	while (commands != NULL)
 	{
 		temp = commands;
@@ -38,9 +37,9 @@ void free_commands(t_command *commands)
 	}
 }
 
-void free_arg(char **result)
+void	free_arg(char **result)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (result)
