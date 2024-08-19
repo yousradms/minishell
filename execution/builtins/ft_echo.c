@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:51:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/11 18:46:55 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/19 12:34:46 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,5 @@ void	ft_echo(t_command **cmd)//yousra
 	}
 	if (!n_option)
 		printf("\n");
+	exit_s(0, 1);
 }

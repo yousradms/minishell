@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 09:11:12 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 18:56:12 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/19 12:46:54 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ char	**handle_one_command(t_command **commande, char **env)
 		return (env);
 	if (is_builtin((*commande)->arg[0]))
 	{
+		handle_redirections(*commande);
 		env = execute_builtin(commande, env);
-		exit_s(0, 1);
 		return (env);
 	}
 	pid = fork_process();

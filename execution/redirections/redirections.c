@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:05:13 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 17:53:16 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/17 20:40:10 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	handle_redirect_in(t_command *cmd, char *filename)
 	if (fd == -1)
 	{
 		perror("open");
-		return ;
+		exit(EXIT_FAILURE);
 	}
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
@@ -46,7 +46,7 @@ void	handle_redirect_out(t_command *cmd, char *filename, int append)
 	if (fd == -1)
 	{
 		perror("open");
-		return ;
+		exit(EXIT_FAILURE);
 	}
 	if (dup2(fd, STDOUT_FILENO) == -1)
 	{

@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/11 18:33:10 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/19 12:48:11 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,9 +197,9 @@ t_env		*create_env_node(char *var, char *value);
 void		append_env_node(t_env **head, t_env **last, t_env *new_env);
 void		add_new_env(t_env **envp, char *key, char *value);
 void		env_list(t_env **env, char **envp);
-void		cd_previous(t_env **envp);
-void		cd_to_dir(const char *dir);
-void		cd_home(const char *home);
+int			cd_previous(t_env **envp);
+int			cd_to_dir(const char *dir);
+int			cd_home(const char *home);
 int			get_current_directory(char *dir, size_t size);
 void		update_existing_env(t_env *env, char *arg, char *value);
 int			is_valid(char c);

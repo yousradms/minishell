@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:54:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 13:01:03 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/19 12:46:06 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,16 @@ static void	process_argument(t_env **envp, char *arg)
 void	ft_export(t_command **command, t_env **envp)
 {
 	int	i;
+	int	status;
 
 	if ((*command)->arg[1] == NULL)
 	{
 		get_expoted(envp);
+		exit_s(1, 0);
 		return ;
 	}
 	i = 1;
+	status = 0;
 	while ((*command)->arg[i] != NULL)
 	{
 		if (!check_arg((*command)->arg[i]))
@@ -73,9 +76,13 @@ void	ft_export(t_command **command, t_env **envp)
 			write(2, "Minishell: `", 12);
 			write(2, (*command)->arg[i], ft_strlen((*command)->arg[i]));
 			write(2, "': not a valid identifier\n", 27);
+			status = 1;
 		}
 		else
+		{
 			process_argument(envp, (*command)->arg[i]);
+		}	
 		i++;
 	}
+	exit_s(status, 1);
 }

@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:09:19 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/11 18:55:02 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:31:41 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int *i, int j, char *value)
 void	expand_variable(t_node *current, char **env)
 {
 	char	*str;
-	char	*temp;
+	//char	*temp;
 
 	if (!current || !env)
 		return ;
@@ -82,9 +82,9 @@ void	expand_variable(t_node *current, char **env)
 	}
 	else if (current->state == 3)
 	{
-		temp = remove_squotes(current->content);
-		free(current->content);
-		current->content = temp;
+		str = ft_strdup(current->content);
+		// free(current->content);
+		// current->content = temp;
 		return ;
 	}
 	if (str)

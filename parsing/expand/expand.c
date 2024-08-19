@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:18:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/11 18:13:23 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:32:06 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	remove_dollor_quotes(t_node **list)
 		if (ft_strcmp(current->content, "$") == 0 \
 		&& current->next && current->next->content[0] \
 		&& (current->next->content[0] == '\"' \
-		|| current->next->content[0] == '\''))
+		|| current->next->content[0] == '\'') && current->state == GENERAL && (current->next->state == DQ || current->next->state == SQ))
 			current->content = ft_strdup("");
 		else
 			current = current->next;

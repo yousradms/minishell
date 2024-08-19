@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:03:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/11 18:47:24 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/19 12:46:36 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,21 @@ static void	remove_env_node(t_env **envp, char *var_name)//yousra
 void	ft_unset(char *var_names[], int num_vars, t_env **envp)//yousra
 {
 	int	i;
+	int status = 0;
 
 	i = 0;
 	while (i < num_vars)
 	{
-		remove_env_node(envp, var_names[i]);
+		if (!check_arg(var_names[i]))
+		{
+			write(2, "Minishell: `", 12);
+			write(2, var_names[i], ft_strlen(var_names[i]));
+			write(2, "': not a valid identifier\n", 27);
+			status = 1;	
+		}
+		else
+			remove_env_node(envp, var_names[i]);
 		i++;
 	}
+	exit_s(status, 1);
 }

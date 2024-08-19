@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/08/11 18:48:26 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/19 12:47:06 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static char	**execute_command(t_command *cmd, char **env)//uousra
 	if (is_builtin(cmd->arg[0]))
 	{
 		execute_builtin(&cmd, env);
-		exit_s(0, 1);
 		return (env);
 	}
 	if (!cmd || cmd->arg[0] == NULL)

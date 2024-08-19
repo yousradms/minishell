@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:53:54 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/11 18:47:03 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/08/19 12:34:59 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,5 @@ void	ft_env(t_env **envp)//yousra
 			printf("%s=%s\n", env->var, env->value);
 		env = env->next;
 	}
+	exit_s(0, 1);
 }
