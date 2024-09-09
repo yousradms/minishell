@@ -1,4 +1,0 @@
-git clone https://github.com/Asalek/cub3D.git
-cd cub3D
-make
-./cub3d mandatory/maps/map.cub || ./cub3d mandatory/maps/man.cub
