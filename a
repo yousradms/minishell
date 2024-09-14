@@ -1,0 +1,30 @@
+Command: echo -n hi  >>  a
+Arguments are :
+echo
+Arguments are :
+-n
+Arguments are :
+hi
+Command: echo -n hi  >>  a
+Arguments are :
+echo
+Arguments are :
+-n
+Arguments are :
+hi
+Command: echo hi  >>  a
+Arguments are :
+echo
+Arguments are :
+hi
+hi
+Command: echo -n hi  >>  a
+Arguments are :
+echo
+Arguments are :
+-n
+Arguments are :
+hi
+hi
+Enter here
+Enter here

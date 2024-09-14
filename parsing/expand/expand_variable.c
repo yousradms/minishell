@@ -6,13 +6,13 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:09:19 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/25 15:49:09 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/12 20:49:21 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../../libft/libft.h"
-
+//if var name give me empty string do not pass to set_value
 void	process_variable(char **expanded, int *i, int *j, char **env)
 {
 	int					k;
@@ -25,6 +25,14 @@ void	process_variable(char **expanded, int *i, int *j, char **env)
 		k++;
 	*j = k;
 	var_name = extract_variable_name(*expanded, *i, *j);
+	if (var_name == NULL || ft_strlen(var_name) == 0)//aded this
+	{
+		// If var_name is empty, skip past the $ symbol and move forward
+		*i += 1;  // Move the index to skip over the empty $
+		free(var_name);
+		return;  // Exit the function early if no valid variable name
+	}
+
 	data.i = i;
 	data.j = j;
 	data.var_name = &var_name;
@@ -68,6 +76,8 @@ int *i, int j, char *value)
 
 void	expand_variable(t_node *current, char **env)
 {
+	// printf("current->content=====>>%s\n",current->content);
+	// exit(1);
 	char	*str;
 
 	if (!current || !env)
@@ -87,6 +97,7 @@ void	expand_variable(t_node *current, char **env)
 	if (str)
 	{
 		set_expanded(&(str), &(current->content), env);
+		// printf("str is====>>>%s\n", str);
 		free(str);
 	}
 }

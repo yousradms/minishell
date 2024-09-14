@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:22:45 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 13:00:05 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/10 17:15:32 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	check_arg(char *var)
 			return (0);
 		i++;
 	}
+	if(var[i] && var[i] == '+' && (!var[i + 1] || var[i + 1] != '='))
+		return (0);
 	if (var[i] && var[i] != '+' && var[i] != '=')
 		return (0);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 18:16:04 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/11 18:51:00 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:47:39 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	del_without_quotes(char *s)
 	return (0);
 }
 
-int	setup_temp_files(int *temp_fd)//yousra
+int	setup_temp_files(int *temp_fd)
 {
 	unlink("temp.txt");
 	temp_fd[0] = open("temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -31,13 +31,13 @@ int	setup_temp_files(int *temp_fd)//yousra
 	return (0);
 }
 
-int	is_end_of_heredoc(char *line, char *s)//yousra
+int	is_end_of_heredoc(char *line, char *s)
 {
 	return (ft_strncmp(line, s, ft_strlen(s)) == 0 \
 	&& line[ft_strlen(s)] == '\0');
 }
 
-void	process_heredoc_input(int fd, char *s, int flag, char **env)//yousra
+void	process_heredoc_input(int fd, char *s, int flag, char **env)
 {
 	char	*line;
 	char	*str;

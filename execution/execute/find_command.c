@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 13:41:44 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 13:17:01 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:46:16 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,38 @@ static int	is_absolute_or_relative_path(char *cmd)
 	return (cmd[0] == '/' || cmd[0] == '.');
 }
 
+// static char	**get_paths_from_env(char **envp)
+// {
+// 	int	i;
+// 	char **error = NULL;
+
+// 	if (!envp || !(*envp))
+// 		return (NULL);
+// 	*error = "3";
+// 	i = 0;
+// 	while (envp[i] && ft_strnstr(envp[i], "PATH", 4) == NULL)
+// 		i++;
+// 	if (!envp[i])
+// 		return (error);
+// 	return (ft_split4(envp[i] + 5, ':'));
+// }
+
 static char	**get_paths_from_env(char **envp)
 {
-	int	i;
+	int		i;
 
 	if (!envp || !(*envp))
-		return (NULL);
+		return (NULL);  // If envp is NULL or empty, return NULL
+
 	i = 0;
 	while (envp[i] && ft_strnstr(envp[i], "PATH", 4) == NULL)
-		i++;
+		i++;  // Look for the PATH variable in envp
 	if (!envp[i])
-		return (NULL);
-	return (ft_split4(envp[i] + 5, ':'));
+		return (NULL);  // If no PATH is found, return NULL
+
+	return (ft_split4(envp[i] + 5, ':'));  // Split the PATH string
 }
+
 
 static char	*build_full_path(char *dir, char *cmd)
 {
@@ -66,29 +85,144 @@ static char	*build_full_path(char *dir, char *cmd)
 	return (full_path);
 }
 
+
+#include <sys/stat.h>
+// char	*find_commande(char *cmd, char **envp)
+// {
+// 	int		i;
+// 	char	**paths;
+// 	char	*path;
+// 	struct stat filestat;
+
+// 	if (!cmd || ft_strcmp(cmd, "") == 0)
+// 		return (NULL);
+	
+// 	if (is_absolute_or_relative_path(cmd))
+// 	{
+// 		if(cmd[0] == '/')
+// 		{
+// 			if(stat(cmd, &filestat) == 0)
+// 			{
+// 				if(S_ISDIR(filestat.st_mode))
+// 				{
+// 					fprintf(stderr, "minishell: %s: is a directory\n", cmd);
+// 					cmd = "1";
+// 					return(cmd);
+// 				}
+// 				if(access(cmd, X_OK) == 0)
+// 					return (cmd);
+// 				else
+// 				{
+// 					fprintf(stderr, "minishell: %s: No such file or directory\n", cmd);
+// 					cmd = "2";
+// 					return(cmd);
+// 				}
+				
+// 			}
+// 			else
+// 			{
+// 				fprintf(stderr, "minishell: %s: No such file or directory\n", cmd);
+// 				cmd = "2";
+// 				return(cmd);
+// 			}
+			
+// 		}
+// 		else
+// 		{
+// 			return(cmd);
+// 		}
+// 	}
+// 	paths = get_paths_from_env(envp);
+// 	if (!paths)
+// 		return (NULL);
+// 	if(ft_strcmp(*paths, "3") == 0)
+// 	{
+// 		// fprintf(stderr, "minishell: No such file or directory\n");
+// 		return("3");
+// 	}
+// 	i = 0;
+// 	while (paths[i])
+// 	{
+// 		path = build_full_path(paths[i], cmd);
+// 		if (!path)
+// 			return (free_paths(paths), NULL);
+// 		if (access(path, F_OK) == 0)
+// 			return (free_paths(paths), path);
+// 		free(path);
+// 		i++;
+// 	}
+// 	return (free_paths(paths), NULL);
+// }
+
 char	*find_commande(char *cmd, char **envp)
 {
 	int		i;
 	char	**paths;
 	char	*path;
+	struct stat filestat;
 
 	if (!cmd || ft_strcmp(cmd, "") == 0)
 		return (NULL);
+
 	if (is_absolute_or_relative_path(cmd))
-		return (cmd);
+	{
+		if (cmd[0] == '/')
+		{
+			if (stat(cmd, &filestat) == 0)
+			{
+				if (S_ISDIR(filestat.st_mode))
+				{
+					fprintf(stderr, "minishell: %s: is a directory\n", cmd);
+					return ("1");  // Indicate that the command is a directory
+				}
+				if (access(cmd, X_OK) == 0)
+					return (cmd);  // Command is executable
+				else
+				{
+					fprintf(stderr, "minishell: %s: No such file or directory\n", cmd);
+					return ("2");  // Command file not found or not accessible
+				}
+			}
+			else
+			{
+				fprintf(stderr, "minishell: %s: No such file or directory\n", cmd);
+				return ("2");  // Command file does not exist
+			}
+		}
+		else
+		{
+			return (cmd);  // Handle relative path
+		}
+	}
+
+	// Get the paths from environment variables
 	paths = get_paths_from_env(envp);
 	if (!paths)
-		return (NULL);
+	{
+		// fprintf(stderr, "minishell: No such file or directory\n");
+		return ("3");  // Handle the case where PATH is not found
+	}
+
+	// Iterate through paths and check for command existence
 	i = 0;
 	while (paths[i])
 	{
 		path = build_full_path(paths[i], cmd);
 		if (!path)
-			return (free_paths(paths), NULL);
+		{
+			free_paths(paths);
+			return (NULL);  // Memory allocation failed
+		}
 		if (access(path, F_OK) == 0)
-			return (free_paths(paths), path);
+		{
+			free_paths(paths);
+			return (path);  // Command found
+		}
 		free(path);
 		i++;
 	}
-	return (free_paths(paths), NULL);
+
+	free_paths(paths);
+	return (NULL);  // Command not found
 }
+

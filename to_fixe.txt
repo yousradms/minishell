@@ -1,0 +1,11 @@
+cat << mm$USER'll' ==>> done
+
+ls | ls ....  ==>> message error ==>> still
+
+echo -n hi >> a
+
+call directory also in pipe
+
+add modifiactions yousra
+
+export a="'"

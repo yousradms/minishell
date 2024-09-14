@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:21:42 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/07 12:09:23 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/14 14:11:43 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,83 @@ static void	free_resources(char **result, t_node *head, char *s)
 	free(s);
 }
 
-void	export_expand(t_node **head)
-{
-	t_node	*current;
+// void	export_expand(t_node **head)
+// {
+// 	t_node	*current;
 
-	current = *head;
-	while (current != NULL)
+// 	current = *head;
+// 	while (current != NULL)
+// 	{
+// 		if (current->content && \
+// 		contain_env(current->content) && current->state == 1)
+// 		{
+// 			if (current->prev && current->prev->type == 9)
+// 			{
+// 				while (current && current->prev && current->prev->type == 1)
+// 					current = current->prev;
+// 				if (current)
+// 				{
+// 					current->content = ft_strjoin("\"", current->content);
+// 					current->content = ft_strjoin(current->content, "\"");
+// 				}
+// 			}
+// 		}
+// 		current = current->next;
+// 	}
+// }
+void export_expand(t_node **head)
+{
+    t_node *current;
+    char *new_content;
+
+    current = *head;
+    while (current != NULL)
+    {
+        if (current->content && contain_env(current->content) && current->state == 1)
+        {
+            if (current->prev && current->prev->type == 9)
+            {
+                while (current && current->prev && current->prev->type == 1)
+                    current = current->prev;
+                if (current)
+                {
+                    new_content = ft_strjoin("\"", current->content);
+                    if (!new_content)
+                        return; // Handle memory allocation failure
+
+                    char *temp_content = new_content;
+                    new_content = ft_strjoin(temp_content, "\"");
+                    free(temp_content);
+
+                    if (!new_content)
+                        return; // Handle memory allocation failure
+
+                    free(current->content);
+                    current->content = new_content;
+                }
+            }
+        }
+        current = current->next;
+    }
+}
+
+void add_limiter_type(t_node **head)
+{
+	t_node *curr = *head;
+	while (curr)
 	{
-		if (current->content && \
-		contain_env(current->content) && current->state == 1)
+		if (curr->type == 6 && curr->next)
 		{
-			if (current->prev && current->prev->type == 9)
-			{
-				while (current && current->prev && current->prev->type == 1)
-					current = current->prev;
-				if (current)
-				{
-					current->content = ft_strjoin("\"", current->content);
-					current->content = ft_strjoin(current->content, "\"");
-				}
-			}
+			// printf("before content===>>%s\n",curr->content);
+			if(curr && curr->next)
+				curr = curr->next;
+			while (curr && curr->type == 1 && curr->next)
+				curr = curr->next;
+			// printf("after content===>>%s\n",curr->content);
+			if (curr && curr->type != 7)
+				curr->type = 10;
 		}
-		current = current->next;
+		curr = curr->next;
 	}
 }
 
@@ -88,12 +143,14 @@ char	**parsing_execute_command(char **line, char **env)
 		return (free(s), env);
 	head = NULL;
 	tokenize_line(&head, result);
-	
+	add_limiter_type(&head);
 	if (parsing(head, env) == -1)
 		return (free_resources(result, head, s), env);
 	export_expand(&head);
 	expanding(head, env);
+	// print_list(head);
 	commands = ft_split2(&head);
+	// print_list2(commands);
 	handle_herddoce(&commands, env);
 	handle_quotes_ex(&commands);
 	env = execute(&commands, env);

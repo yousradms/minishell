@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:40:50 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 18:57:47 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:44:22 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,15 @@ void	execute_one_command(t_command **commande, char **env)
 		}
 		exit(127);
 	}
+	if (full_command[0] == '1' || full_command[0] == '2')
+		return ;
+	if(full_command[0] == '3')
+	{
+		fprintf(stderr, "minishell: %s: no such file or directory\n", (*commande)->arg[0]);
+		return ;
+	}
 	name = getenv("HOME");
-	check_if_directory((*commande)->arg[0], name);
+	// check_if_directory((*commande)->arg[0], name);
 	if (execve(full_command, (*commande)->arg, env) == -1)
 	{
 		perror("execve");

@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:57:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/25 15:48:08 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/10 17:12:22 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static int	error_red(t_node *token, char **env)
 			tmp = tmp->next;
 			while (tmp->type == 1 && tmp->next != NULL)
 				tmp = tmp->next;
-			if (tmp->type != 9)
+			if (tmp->type != 9 && tmp->type != 7 && tmp->type != 10)
 				return (open_here(token, tmp, env), \
 				ft_handl_error(NAME, ERR_FILE, tmp->content), -1);
 		}

@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/08/19 12:47:06 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/14 12:31:32 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,11 @@ static char	**execute_command(t_command *cmd, char **env)//uousra
 
 static void	setup_child_process(int input_fd, int fd[2], t_command *cmd)//yousra
 {
-	dup2(input_fd, STDIN_FILENO);
+	//fd[0] ==>> lire a partir du pipe
+	//fd[1] ==>> ecrire dans le pipe
+	dup2(input_fd, STDIN_FILENO);//
 	if (cmd->next)
-		dup2(fd[1], STDOUT_FILENO);
+		dup2(fd[1], STDOUT_FILENO);//la sortie de process sera ecrite dans la pipe pour etre lue par la prochaine commande dans le pipeline
 	close(fd[0]);
 	if (input_fd != 0)
 		close(input_fd);
@@ -56,9 +58,13 @@ static void	setup_parent_process(int *input_fd, int fd[2])//yousra
 	close(fd[1]);
 	if (*input_fd != 0)
 		close(*input_fd);
-	*input_fd = fd[0];
+	*input_fd = fd[0];//
 }
+/*dup2(input_fd, STDIN_FILENO) :
 
+Ce premier appel redirige l'entrée standard (stdin) du processus enfant vers le descripteur input_fd.
+Cela signifie que le processus enfant lira son entrée depuis ce descripteur au lieu du clavier. Si input_fd est 0, il n'y a pas de redirection, et il lira l'entrée standard normale (par défaut).
+Si ce n'est pas le cas (c'est-à-dire que ce processus est au milieu ou à la fin du pipeline), l'entrée vient d'un pipe.*/
 static char	**process_pipe(t_command *cmd, char **env, pid_t *pids)//yousra
 {
 	int	fd[2];
@@ -69,19 +75,19 @@ static char	**process_pipe(t_command *cmd, char **env, pid_t *pids)//yousra
 	i = 0;
 	while (cmd)
 	{
-		if (cmd->next != NULL && pipe(fd) == -1)
+		if (cmd->next != NULL && pipe(fd) == -1)//le parent cree un pipe
 			return (free(pids), env);
 		pids[i] = fork();
 		if (pids[i] == -1)
 			return (free(pids), NULL);
-		else if (pids[i] == 0)
+		else if (pids[i] == 0)//sortie ==>> pipe(si necessaire) et la commande est executee
 		{
 			setup_child_process(input_fd, fd, cmd);
 			env = execute_command(cmd, env);
 			exit(0);
 		}
 		else
-			setup_parent_process(&input_fd, fd);
+			setup_parent_process(&input_fd, fd);//entree ==>> pipe
 		cmd = cmd->next;
 		i++;
 	}

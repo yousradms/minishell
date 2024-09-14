@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/19 12:48:11 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/13 18:23:05 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <signal.h>
 # include <stdbool.h>
 # include <errno.h>
+// # define malloc(x) NULL
 # define W_COUNT 1000
 # define L_COUNT 1000
 # define MAX_WORDS 1000
@@ -44,6 +45,7 @@ typedef enum s_type
 	HEREDOC = 6,
 	SIGN = 7,
 	WORD = 9,
+	DELIMITER = 10,
 }	t_type;
 
 typedef enum s_state
@@ -228,5 +230,6 @@ int			is_whitespace(char c);
 void		free_tab(char **tab, int size);
 void		handle_double_quote(char *str, char **tab, t_args1 *a);
 void		handle_single_quote(char *str, char **tab, t_args1 *a);
+void add_limiter_type(t_node **head);
 
 #endif

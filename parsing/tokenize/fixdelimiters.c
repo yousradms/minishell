@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 16:45:33 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 17:13:00 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/13 18:21:11 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static int	calculate_new_length(char *s)
 
 static char	*allocate_new_string(int new_len)
 {
+	(void)new_len;
 	char	*new_s;
 
 	new_s = (char *)malloc(new_len + 1);
@@ -50,6 +51,35 @@ static char	*allocate_new_string(int new_len)
 		return (NULL);
 	return (new_s);
 }
+
+// static void	process_characters(char *s, char *new_s, int len)
+// {
+// 	int	i;
+// 	int	j;
+
+// 	i = 0;
+// 	j = 0;
+// 	while (i < len)
+// 	{
+// 		if (s[i] == '\'')
+// 			add_single_quote_delimiters(s, new_s, &i, &j);
+// 		else if (s[i] == '\"')
+// 			add_double_quote_delimiters(s, new_s, &i, &j);
+// 		else if ((s[i] == '>' && i + 1 < len && s[i + 1] == '>') \
+// 		|| (s[i] == '<' && i + 1 < len && s[i + 1] == '<'))
+// 		{
+			
+// 			add_double_delimiters(new_s, &i, &j, s[i]);
+// 		}
+// 		else if (s[i] == '|' || s[i] == '<' || s[i] == '>')
+// 			add_one_delimiters(new_s, &i, &j, s[i]);
+// 		else if (s[i] == '$')
+// 			add_one_delimiters_before(new_s, &i, &j, s[i]);
+// 		else
+// 			new_s[j++] = s[i++];
+// 	}
+// 	new_s[j] = '\0';
+// }
 
 static void	process_characters(char *s, char *new_s, int len)
 {
@@ -66,7 +96,13 @@ static void	process_characters(char *s, char *new_s, int len)
 			add_double_quote_delimiters(s, new_s, &i, &j);
 		else if ((s[i] == '>' && i + 1 < len && s[i + 1] == '>') \
 		|| (s[i] == '<' && i + 1 < len && s[i + 1] == '<'))
+		{
 			add_double_delimiters(new_s, &i, &j, s[i]);
+			while(s[i] && s[i] == ' ')
+				new_s[j++] = s[i++];
+			while(s[i] && s[i] != ' '  && s[i] != '<' && s[i] != '>' && s[i] != '|')
+				new_s[j++] = s[i++];
+		}
 		else if (s[i] == '|' || s[i] == '<' || s[i] == '>')
 			add_one_delimiters(new_s, &i, &j, s[i]);
 		else if (s[i] == '$')
@@ -86,6 +122,8 @@ char	*add_delimiter(char *s)
 	len = ft_strlen(s);
 	new_len = calculate_new_length(s);
 	new_s = allocate_new_string(new_len);
+	if (!new_s)//added malloc NULL
+		return (NULL);
 	process_characters(s, new_s, len);
 	if (!new_s)
 		return (NULL);

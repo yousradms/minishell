@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:45:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/06 09:55:51 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/13 18:29:57 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ static void	execute_commandb(t_command **command, t_env **env)
 	int	num_args;
 
 	if (ft_strcmp((*command)->arg[0], "echo") == 0)
+	{
+		// printf("Enter here\n");
+		// exit(1);
 		ft_echo(command);
+	}
 	else if (ft_strcmp((*command)->arg[0], "cd") == 0)
 		ft_cd(command, env);
 	else if (ft_strcmp((*command)->arg[0], "pwd") == 0)
