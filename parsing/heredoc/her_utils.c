@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   her_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 18:16:04 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/12 18:47:39 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/14 19:51:29 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,15 @@ int	setup_temp_files(int *temp_fd)
 	return (0);
 }
 
-int	is_end_of_heredoc(char *line, char *s)
+int	is_end_of_heredoc(char *line, char *s)//yousra
 {
+	if (!line)
+		return (1);
 	return (ft_strncmp(line, s, ft_strlen(s)) == 0 \
 	&& line[ft_strlen(s)] == '\0');
 }
 
-void	process_heredoc_input(int fd, char *s, int flag, char **env)
+void	process_heredoc_input(int fd, char *s, int flag, char **env)//yousra
 {
 	char	*line;
 	char	*str;
@@ -46,7 +48,10 @@ void	process_heredoc_input(int fd, char *s, int flag, char **env)
 	{
 		line = readline(">");
 		if (is_end_of_heredoc(line, s))
+		{
+			close(fd);
 			break ;
+		}
 		if (flag && contain_env(line))
 		{
 			str = ft_strdup(line);
@@ -62,6 +67,7 @@ void	process_heredoc_input(int fd, char *s, int flag, char **env)
 		}
 		free(line);
 	}
+	close(fd);
 	free(line);
 	exit(0);
 }

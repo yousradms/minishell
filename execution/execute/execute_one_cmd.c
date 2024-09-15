@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_one_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 09:11:12 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/13 18:29:05 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/14 19:46:03 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,20 @@ char	**handle_one_command(t_command **commande, char **env)
 		return (env);
 	else if (pid == 0)
 	{
+		if (global != 0)
+		{
+			close((*commande)->my_fd);
+			exit(0);
+		}
 		handle_redirections(*commande);
 		execute_one_command(commande, env);
 		exit(0);
 	}
 	else
+	{
+		close((*commande)->my_fd);
 		wait_for_child_process(pid);
+	}
 	return (env);
 }
 

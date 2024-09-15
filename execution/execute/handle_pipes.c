@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/09/14 12:31:32 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:21:50 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ static void	setup_child_process(int input_fd, int fd[2], t_command *cmd)//yousra
 {
 	//fd[0] ==>> lire a partir du pipe
 	//fd[1] ==>> ecrire dans le pipe
+	if (global != 0)
+	{
+			close((cmd)->my_fd);
+			exit(0);
+	}
 	dup2(input_fd, STDIN_FILENO);//
 	if (cmd->next)
 		dup2(fd[1], STDOUT_FILENO);//la sortie de process sera ecrite dans la pipe pour etre lue par la prochaine commande dans le pipeline
@@ -53,8 +58,9 @@ static void	setup_child_process(int input_fd, int fd[2], t_command *cmd)//yousra
 		return ;
 }
 
-static void	setup_parent_process(int *input_fd, int fd[2])//yousra
+static void	setup_parent_process(int *input_fd, int fd[2], int fd3)//yousra
 {
+	close(fd3);
 	close(fd[1]);
 	if (*input_fd != 0)
 		close(*input_fd);
@@ -78,8 +84,15 @@ static char	**process_pipe(t_command *cmd, char **env, pid_t *pids)//yousra
 		if (cmd->next != NULL && pipe(fd) == -1)//le parent cree un pipe
 			return (free(pids), env);
 		pids[i] = fork();
-		if (pids[i] == -1)
-			return (free(pids), NULL);
+		if (pids[i] < 0)
+		{
+			close(fd[0]);
+			close(fd[1]);
+			perror("minishell:fork");
+			exit (1);
+			// return (free(pids), NULL);
+		}
+			
 		else if (pids[i] == 0)//sortie ==>> pipe(si necessaire) et la commande est executee
 		{
 			setup_child_process(input_fd, fd, cmd);
@@ -87,7 +100,7 @@ static char	**process_pipe(t_command *cmd, char **env, pid_t *pids)//yousra
 			exit(0);
 		}
 		else
-			setup_parent_process(&input_fd, fd);//entree ==>> pipe
+			setup_parent_process(&input_fd, fd,cmd->my_fd);//entree ==>> pipe
 		cmd = cmd->next;
 		i++;
 	}

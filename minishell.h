@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/13 18:23:05 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/14 19:53:43 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define ERR_PIPE "syntax error near unexpected token `|'\n"
 # define ERR_FILE "syntax error near unexpected token `'\n"
 # define BUFFER_SIZE 1024
-
+int global;
 typedef enum s_type
 {
 	WSPACE = 1,

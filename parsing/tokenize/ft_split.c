@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:05:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/11 18:52:48 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:39:06 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static void	skip_delimiters(char *str, char **tab, t_args1 *a)//yousra
 		|| str[a->i] == '\n') && str[a->i] != '\0')
 		{
 			tab[a->i2] = malloc(sizeof(char) * 2);
+
 			if (!tab[a->i2])
 				return ;
 			if (tab[a->i2] == NULL)
@@ -64,6 +65,7 @@ static void	skip_delimiters(char *str, char **tab, t_args1 *a)//yousra
 			(a->i)++;
 		}
 	}
+	return ;
 }
 
 static void	handle_word(char *str, char **tab, t_args1 *a)//yousra
@@ -102,6 +104,8 @@ char	**ft_split(char *str)//yousra
 			skip_delimiters(str, tab, a);
 		else
 			a->i++;
+		if (a->i == 1000)
+			break ;
 	}
 	return (tab[a->i2] = NULL, free(a), tab);
 }

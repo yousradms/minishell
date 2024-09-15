@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ex.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:40:50 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/12 18:44:22 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:03:25 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	check_if_directory(char *cmd, char *name)
 {
 	if (!strncmp(cmd, name, strlen(name)))
 	{
-		write(2, "Minishell: ", 11);
-		write(2, cmd, strlen(cmd));
-		write(2, ": is a directory\n", 18);
+		// write(2, "Minishell: ", 11);
+		// write(2, cmd, strlen(cmd));
+		// write(2, ": is a directory\n", 18);
 		exit(126);
 	}
 }
@@ -44,7 +44,7 @@ void	execute_one_command(t_command **commande, char **env)
 		return ;
 	if(full_command[0] == '3')
 	{
-		fprintf(stderr, "minishell: %s: no such file or directory\n", (*commande)->arg[0]);
+		fprintf(stderr, "minishell: %s: No such file or directory\n", (*commande)->arg[0]);
 		return ;
 	}
 	name = getenv("HOME");

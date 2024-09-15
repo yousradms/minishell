@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:18 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/11 18:51:14 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/14 19:52:19 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,15 @@ int	handle_herdoc(char *delimiter, char **env)//yousra
 	s = remove_quotes(delimiter);
 	if (setup_temp_files(temp_fd) == -1)
 		return (free(s), -1);
+	rl_catch_signals = 1;
 	signal(SIGINT, sigint_handler_herdoc);
 	signal(SIGQUIT, SIG_IGN);
-	rl_catch_signals = 1;
 	pid = fork();
 	if (pid == 0)
 		process_heredoc_input(temp_fd[0], s, flag, env);
 	else
 	{
+		close(temp_fd[0]);
 		waitpid(pid, 0, 0);
 		rl_catch_signals = 0;
 		signal(SIGINT, sigint_handler);
@@ -44,9 +45,9 @@ void	handle_herddoce(t_command **command, char **env)//yousra
 {
 	t_command	*first;
 	int			i;
-
+	global = 0;
 	first = *command;
-	while (first != NULL)
+	while (first != NULL )
 	{
 		i = 0;
 		while (first->arg[i])
