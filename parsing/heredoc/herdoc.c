@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:18 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/14 19:52:19 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/18 17:51:32 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	handle_herddoce(t_command **command, char **env)//yousra
 		i = 0;
 		while (first->arg[i])
 		{
-			if (ft_strcmp(first->arg[i], "<<") == 0)
+			if (ft_strcmp(first->arg[i], "<<") == 0 && global == 0)
 			{
 				if (first->arg[i + 1])
 					first->my_fd = handle_herdoc(first->arg[i + 1], env);

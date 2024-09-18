@@ -6,7 +6,7 @@
 /*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/14 19:53:43 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/15 21:31:59 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <signal.h>
 # include <stdbool.h>
 # include <errno.h>
+#include <termios.h>
 // # define malloc(x) NULL
 # define W_COUNT 1000
 # define L_COUNT 1000

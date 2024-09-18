@@ -1,1 +1,4 @@
 pipe()
+
+exit without arguments ===> prev status
+

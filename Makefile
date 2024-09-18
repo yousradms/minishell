@@ -6,7 +6,7 @@
 #    By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/08 13:48:45 by ksellami          #+#    #+#              #
-#    Updated: 2024/09/14 20:23:18 by ydoumas          ###   ########.fr        #
+#    Updated: 2024/09/15 18:12:05 by ydoumas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 OBJS = ${FILES:%.c=%.o}
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+# CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror
 
 
 all : $(NAME)
