@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/09/18 21:26:37 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:50:11 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 static char	**execute_command(t_command *cmd, char **env)
 {
 	char	*full_command;
-	char	*name;
 
 	if (is_builtin(cmd->arg[0]))
 	{
@@ -27,9 +26,27 @@ static char	**execute_command(t_command *cmd, char **env)
 		return (env);
 	full_command = find_commande(cmd->arg[0], env);
 	if (full_command == NULL)
+	{
 		print_cmd_not_found(cmd->arg[0]);
-	name = getenv("HOME");
-	check_if_directory(cmd->arg[0], name);
+	}
+	if (cmd->arg[0] && access(full_command, F_OK) == 0 && opendir(full_command) != NULL)
+    {
+        fprintf(stderr, "Minishell: %s: is a directory\n", cmd->arg[0]);
+        exit(126);
+    }
+    if (cmd->arg[0] && access(full_command, X_OK) != 0)
+    {
+        if (access(full_command, F_OK) == 0)
+        {
+            fprintf(stderr, "Minishell: %s: Permission denied\n", cmd->arg[0]);
+            exit(126);
+        }
+        else
+        {
+            fprintf(stderr, "Minishell: %s: No such file or directory\n", cmd->arg[0]);
+            exit(127);
+        }
+    }
 	if (execve(full_command, cmd->arg, env) == -1)
 	{
 		perror("execve");
@@ -62,7 +79,7 @@ static void	setup_parent_process(int *input_fd, int fd[2], int fd3)
 	close(fd[1]);
 	if (*input_fd != 0)
 		close(*input_fd);
-	*input_fd = fd[0];//
+	*input_fd = fd[0];
 }
 
 static char	**process_pipe(t_command *cmd, char **env, pid_t *pids)

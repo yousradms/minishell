@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   her_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 18:16:04 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 18:34:49 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:43:39 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,48 @@ int	del_without_quotes(char *s)
 	return (0);
 }
 
+void init_data(int *i, char **file_name, char **str)
+{
+	*i = 0;
+	*file_name = ft_strdup("/tmp/");
+	*str = NULL;
+}
+
+char	*create_heredoc_file()
+{
+	int		fd;
+	char	*file_name;
+	char	*str;
+	int		i;
+	char	fm[2];
+
+	init_data(&i, &file_name, &str);
+	fd = open("/dev/urandom", O_RDONLY);
+	if (fd == -1)
+		return (free(file_name), NULL);
+	while (i < 20)
+	{
+		read(fd, fm, 1);
+		fm[1] = '\0';
+		if (!ft_isalpha(fm[0]))
+			continue ;
+		str = file_name;
+		file_name = ft_strjoin(str, fm);
+		free(str);
+		i++;
+	}
+	return (close(fd), file_name);
+}
+
 int	setup_temp_files(int *temp_fd)
 {
-	unlink("temp.txt");
-	temp_fd[0] = open("temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	temp_fd[1] = open("temp.txt", O_RDONLY | O_TRUNC, 0644);
+	char *file_name;
+
+	file_name = create_heredoc_file();
+	temp_fd[0] = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	temp_fd[1] = open(file_name, O_RDONLY | O_TRUNC, 0644);
 	if (temp_fd[0] == -1 || temp_fd[1] == -1)
 		return (-1);
-	unlink("temp.txt");
 	return (0);
 }
 
