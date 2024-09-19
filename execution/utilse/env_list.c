@@ -6,14 +6,14 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:11:16 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/25 15:15:40 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/18 21:28:28 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-static void	extract_var_value(char *envp_str, char **var, char **value)//yousra
+static void	extract_var_value(char *envp_str, char **var, char **value)
 {
 	char	*equal_sign;
 
@@ -39,7 +39,7 @@ static void	extract_var_value(char *envp_str, char **var, char **value)//yousra
 }
 
 static int	process_envp_entry(char *envp_str, \
-t_env **head, t_env **last)//yousra
+t_env **head, t_env **last)
 {
 	char	*var;
 	char	*value;
@@ -65,7 +65,7 @@ t_env **head, t_env **last)//yousra
 	return (0);
 }
 
-void	env_list(t_env **env, char **envp)//yousra
+void	env_list(t_env **env, char **envp)
 {
 	t_env	*head;
 	t_env	*last;

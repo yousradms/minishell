@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:14:22 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/12 19:02:30 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/15 19:16:31 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,5 @@ void	handle_special_cases(char **expanded, int *i, int *j, char **env)
 	(*expanded)[*i + 1] <= '9' && (*expanded)[*i + 2])
 		replace_numeric_variable(expanded, i, *j);
 	else
-	{
-		// exit(33);
 		process_variable(expanded, i, j, env);
-	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/15 21:02:36 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/18 21:30:06 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*read_input(void)
 {
 	char	*line;
 
-	line = readline("minishell->");
+	line = readline("minishell🥶😁");
 	if (!line)
 	{
 		write(2, "exit\n", 6);
@@ -46,31 +46,32 @@ void	restore_io(int stdin_backup, int stdout_backup)
 		;
 }
 
-void    run_shell_loop(char **envp)
+void	run_shell_loop(char **envp)
 {
-    char    *line;
-    int        stdin_backup;
-    int        stdout_backup;
-    struct termios termios_p;
-    tcgetattr(0, &termios_p);
-    while (1)
-    {
-        line = read_input();
-        if (line[0] == '\0' || just_spaces(line))
-        {
-            free(line);
-            continue ;
-        }
-        add_history(line);
-        stdin_backup = dup(STDIN_FILENO);
-        stdout_backup = dup(STDOUT_FILENO);
-        if (stdin_backup == -1 || stdout_backup == -1)
-            perror("dup");
-        envp = parsing_execute_command(&line, envp);
-        restore_io(stdin_backup, stdout_backup);
-        free(line);
-        tcsetattr(0,0,&termios_p);
-    }
+	char	*line;
+	int		stdin_backup;
+	int		stdout_backup;
+	struct	termios termios_p;
+
+	tcgetattr(0, &termios_p);
+	while (1)
+	{
+		line = read_input();
+		if (line[0] == '\0' || just_spaces(line))
+		{
+			free(line);
+			continue ;
+		}
+		add_history(line);
+		stdin_backup = dup(STDIN_FILENO);
+		stdout_backup = dup(STDOUT_FILENO);
+		if (stdin_backup == -1 || stdout_backup == -1)
+			perror("dup");
+		envp = parsing_execute_command(&line, envp);
+		restore_io(stdin_backup, stdout_backup);
+		free(line);
+		tcsetattr(0, 0, &termios_p);
+	}
 }
 
 int	main(int ac, char **av, char **env)

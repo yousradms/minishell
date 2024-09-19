@@ -6,14 +6,14 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:51:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/19 12:34:46 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/18 21:23:19 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-int	check_n(char *s)//yousra
+int	check_n(char *s)
 {
 	if (*s == '-')
 		s++;
@@ -24,7 +24,7 @@ int	check_n(char *s)//yousra
 	return (*s == '\0');
 }
 
-void	ft_echo(t_command **cmd)//yousra
+void	ft_echo(t_command **cmd)
 {
 	int	i;
 	int	n_option;
@@ -38,12 +38,12 @@ void	ft_echo(t_command **cmd)//yousra
 	}
 	while ((*cmd)->arg[i] != NULL)
 	{
-		printf("%s", (*cmd)->arg[i]);
+		ft_putstr_fd((*cmd)->arg[i], 1);
 		if ((*cmd)->arg[i + 1] != NULL)
-			printf(" ");
+			write(1, " ", 1);
 		i++;
 	}
 	if (!n_option)
-		printf("\n");
+		write(1, "\n", 1);
 	exit_s(0, 1);
 }

@@ -6,14 +6,14 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 12:04:15 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 14:07:37 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/18 21:27:01 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-static char	*clean_argument(char *arg)
+char	*clean_argument(char *arg)
 {
 	int		len;
 	char	*result;
@@ -28,6 +28,12 @@ static char	*clean_argument(char *arg)
 	k = 0;
 	single_quote_open = 0;
 	double_quote_open = 0;
+	if ((ft_strlen(arg) == 1 && (*arg == '\'' || *arg == '\"')))
+	{
+		result[0] = *arg;
+		result[1] = '\0';
+		return (result);
+	}
 	while (*arg)
 	{
 		if (*arg == '\'' && !double_quote_open)
@@ -41,6 +47,7 @@ static char	*clean_argument(char *arg)
 	result[k] = '\0';
 	return (result);
 }
+
 
 static void	clean_command_arguments(t_command *cmd)
 {

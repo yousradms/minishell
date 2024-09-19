@@ -6,14 +6,14 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:03:10 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/11 18:49:23 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/18 21:28:14 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-static int	count_env_vars(t_env *env)//yousra
+static int	count_env_vars(t_env *env)
 {
 	int		count;
 	t_env	*current;
@@ -28,7 +28,7 @@ static int	count_env_vars(t_env *env)//yousra
 	return (count);
 }
 
-static char	*create_env_var_str(char *var, char *value)//yousra
+static char	*create_env_var_str(char *var, char *value)
 {
 	int		var_len;
 	int		value_len;
@@ -54,7 +54,7 @@ static char	*create_env_var_str(char *var, char *value)//yousra
 	return (env_var_str);
 }
 
-static void	copy_env_vars(t_env *env, char **envp)//yousra
+static void	copy_env_vars(t_env *env, char **envp)
 {
 	t_env	*current;
 	int		i;
@@ -72,7 +72,7 @@ static void	copy_env_vars(t_env *env, char **envp)//yousra
 	envp[i] = NULL;
 }
 
-char	**env_to_char_array(t_env *env)//yousra
+char	**env_to_char_array(t_env *env)
 {
 	int		count;
 	char	**envp;

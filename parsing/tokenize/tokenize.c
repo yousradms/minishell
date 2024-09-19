@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:49 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 17:07:52 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/18 18:24:02 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	tokenize(char *s, t_node **head, t_state state)
 		add_node(head, create_node(s, APPEND, state));
 	else if (ft_strcmp(s, "<<") == 0)
 		add_node(head, create_node(s, HEREDOC, state));
+		else if (ft_strcmp(s, "$$") == 0)
+		add_node(head, create_node(s, D_DOLLAR, state));
 	else if (ft_strcmp(s, "$") == 0)
 		add_node(head, create_node(s, SIGN, state));
 	else if (s && *s)

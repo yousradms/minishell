@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:59:43 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/12 19:09:17 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/15 19:16:47 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 void	set_value(t_expansion_data *data, char **env)
 {
-	// printf("data expanded is:%s\n",*(data->expanded));
 	char	*value;
 	char	*new_expanded;
 
@@ -31,8 +30,6 @@ void	set_value(t_expansion_data *data, char **env)
 	}
 	else
 	{
-		// if(ft_strcmp(*(data->expanded),"$") == 0)
-		// 	value = "$";
 		new_expanded = replace_variable(*(data->expanded), \
 		"", *(data->i), *(data->j));
 		free(*(data->expanded));

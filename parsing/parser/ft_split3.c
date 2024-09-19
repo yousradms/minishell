@@ -6,14 +6,14 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:06 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/11 18:51:41 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/18 21:21:33 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-static void	handle_quotation(char *str, t_args *a)//yousra
+static void	handle_quotation(char *str, t_args *a)
 {
 	if (!a->quoat && (str[a->i] == '\'' || str[a->i] == '"'))
 		a->quoat = str[a->i];
@@ -21,7 +21,7 @@ static void	handle_quotation(char *str, t_args *a)//yousra
 		a->quoat = 0;
 }
 
-static void	fill_word(char *str, char *word, t_args *a)//yousra
+static void	fill_word(char *str, char *word, t_args *a)
 {
 	while (str[a->i] && (!is_whitespace(str[a->i]) || a->quoat))
 	{
@@ -32,13 +32,13 @@ static void	fill_word(char *str, char *word, t_args *a)//yousra
 	word[a->i3] = '\0';
 }
 
-static void	skip_initial_whitespaces(char *str, t_args *a)//yousra
+static void	skip_initial_whitespaces(char *str, t_args *a)
 {
 	while (is_whitespace(str[a->i]))
 		(a->i)++;
 }
 
-static t_args	*init_args(void)//yousra
+static t_args	*init_args(void)
 {
 	t_args	*a;
 
@@ -53,7 +53,7 @@ static t_args	*init_args(void)//yousra
 	return (a);
 }
 
-char	**ft_split3(char *str)//yousra
+char	**ft_split3(char *str)
 {
 	char	**tab;
 	t_args	*a;

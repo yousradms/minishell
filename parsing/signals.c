@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 09:44:58 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 12:21:45 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/18 18:35:16 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "../libft/libft.h"
 
-void	sigint_handler(int signo)//yousra
+void	sigint_handler(int signo)
 {
 	int	i;
 
@@ -41,7 +41,7 @@ void	sigint_handler(int signo)//yousra
 	}
 }
 
-void	handle_exit_status(int status)//yousra
+void	handle_exit_status(int status)
 {
 	int	signal_number;
 
@@ -56,7 +56,7 @@ void	handle_exit_status(int status)//yousra
 	}
 }
 
-void	sigint_handler_herdoc(int signo)//yousra
+void	sigint_handler_herdoc(int signo)
 {
 	if (signo == SIGINT)
 	{

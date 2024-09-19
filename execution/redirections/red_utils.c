@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 13:49:49 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/11 18:48:56 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/18 21:27:58 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	handle_input_redirection(t_command *cmd, int *index)
 	(*index)--;
 }
 
-void	handle_heredoc_redirection(t_command *cmd, int *index)//yousra
+void	handle_heredoc_redirection(t_command *cmd, int *index)
 {
 	dup2(cmd->my_fd, STDIN_FILENO);
 	close(cmd->my_fd);

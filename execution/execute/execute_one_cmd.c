@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_one_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 09:11:12 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/14 19:46:03 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/18 21:23:50 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,7 @@ char	**handle_one_command(t_command **commande, char **env)
 		return (env);
 	if (is_builtin((*commande)->arg[0]))
 	{
-		// print_list2(*commande);
 		handle_redirections(*commande);
-		// exit(1);
 		env = execute_builtin(commande, env);
 		return (env);
 	}

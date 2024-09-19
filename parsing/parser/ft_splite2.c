@@ -6,14 +6,14 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 13:32:32 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/11 18:52:11 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/18 21:21:51 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-static char	*concatenate_line_content(char *line, char *content)//yousra
+static char	*concatenate_line_content(char *line, char *content)
 {
 	char	*temp;
 
@@ -24,19 +24,19 @@ static char	*concatenate_line_content(char *line, char *content)//yousra
 }
 
 static void	initialize_split(t_node **current_node, \
-t_command **result, t_node *head)//yousra
+t_command **result, t_node *head)
 {
 	*current_node = head;
 	*result = NULL;
 }
 
-static void	initialize_split1(t_command **new_command, char **line)//yousra
+static void	initialize_split1(t_command **new_command, char **line)
 {
 	*new_command = NULL;
 	*line = initialize_command_line();
 }
 
-int	finalize_command(t_command **result, char *line)//yousra
+int	finalize_command(t_command **result, char *line)
 {
 	t_command	*new_command;
 
@@ -52,7 +52,7 @@ int	finalize_command(t_command **result, char *line)//yousra
 	return (1);
 }
 
-t_command	*ft_split2(t_node **head)//yousra
+t_command	*ft_split2(t_node **head)
 {
 	t_node		*current_node;
 	t_command	*result;

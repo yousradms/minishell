@@ -6,14 +6,14 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:58:11 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/11 18:50:02 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/18 21:28:37 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-t_env	*create_env_node(char *var, char *value)//yousra
+t_env	*create_env_node(char *var, char *value)
 {
 	t_env	*new_env;
 
@@ -28,7 +28,7 @@ t_env	*create_env_node(char *var, char *value)//yousra
 	return (new_env);
 }
 
-void	append_env_node(t_env **head, t_env **last, t_env *new_env)//yousra
+void	append_env_node(t_env **head, t_env **last, t_env *new_env)
 {
 	if (*head == NULL)
 		*head = new_env;
@@ -40,7 +40,7 @@ void	append_env_node(t_env **head, t_env **last, t_env *new_env)//yousra
 	*last = new_env;
 }
 
-void	add_new_env(t_env **envp, char *key, char *value)//yousra
+void	add_new_env(t_env **envp, char *key, char *value)
 {
 	t_env	*new_env;
 

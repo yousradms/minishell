@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:05:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/14 20:39:06 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/18 21:21:00 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-static void	handle_character(char *str, char **tab, t_args1 *a)//yousra
+static void	handle_character(char *str, char **tab, t_args1 *a)
 {
 	tab[a->i2][(a->i3)++] = str[(a->i)++];
 }
 
-static void	handle_quotes(char *str, char **tab, t_args1 *a)//yousra
+static void	handle_quotes(char *str, char **tab, t_args1 *a)
 {
 	while ((str[a->i] > 32 || a->quote) && str[a->i] != '\0')
 	{
@@ -41,7 +41,7 @@ static void	handle_quotes(char *str, char **tab, t_args1 *a)//yousra
 	}
 }
 
-static void	skip_delimiters(char *str, char **tab, t_args1 *a)//yousra
+static void	skip_delimiters(char *str, char **tab, t_args1 *a)
 {
 	if (a->i > 0 && str[a->i - 1] == '\x1F')
 		(a->i)++;
@@ -68,7 +68,7 @@ static void	skip_delimiters(char *str, char **tab, t_args1 *a)//yousra
 	return ;
 }
 
-static void	handle_word(char *str, char **tab, t_args1 *a)//yousra
+static void	handle_word(char *str, char **tab, t_args1 *a)
 {
 	a->i3 = 0;
 	tab[a->i2] = malloc(sizeof(char) * L_COUNT);
@@ -82,7 +82,7 @@ static void	handle_word(char *str, char **tab, t_args1 *a)//yousra
 	a->i2++;
 }
 
-char	**ft_split(char *str)//yousra
+char	**ft_split(char *str)
 {
 	t_args1	*a;
 	char	**tab;

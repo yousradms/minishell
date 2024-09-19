@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:18:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/14 14:13:45 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/18 18:34:40 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,108 +23,56 @@ static void	handle_heredoc_expand(t_node **current, int *in_herdoc)
 	}
 }
 
-// static void	remove_dollor_quotes(t_node **list)
-// {
-// 	t_node	*current;
-
-// 	if (!list || !*list)
-// 		return ;
-// 	current = *list;
-// 	while (current != NULL && current->next != NULL)
-// 	{
-// 		if (ft_strcmp(current->content, "$") == 0 \
-// 		&& current->next && current->next->content[0] \
-// 		&& (current->next->content[0] == '\"' \
-// 		|| current->next->content[0] == '\'') && current->state == GENERAL \
-// 		&& (current->next->state == DQ || current->next->state == SQ))
-// 			current->content = ft_strdup("");
-// 		else
-// 			current = current->next;
-// 	}
-// }
-
-// static void remove_dollor_quotes(t_node **list)
-// {
-//     // print_list(*list);
-//     t_node *current = *list;
-//     while (current) // Check for NULL at each iteration
-//     {
-//         if (current->type == 7)
-//         {
-// 			if(!current->next)
-// 				break;
-//             // printf("Enter here\n");
-// 			// printf("the current content=====>>%s\n",current->content);
-// 			current->content = ft_strdup("");
-//             // Perform the necessary operations here, like modifying the node
-//             // If you remove the node, you need to update the list pointer
-//             // and the current pointer accordingly
-//         }
-//         // Move to the next node
-//         current = current->next;
-//     }
-// }
-
-// static void remove_dollor_quotes(t_node **list)
-// {
-//     // print_list(*list);
-//     t_node *current = *list;
-//     while (current) // Check for NULL at each iteration
-//     {
-//         if (current->type == 7)
-//         {
-// 			if(!current->next || current->next->type == 7)
-// 				break;
-//             // printf("Enter here\n");
-// 			// printf("the current content=====>>%s\n",current->content);
-// 			if (current->next && (current->next->content[0] = '\"' || current->next->content[0] == '\"'))
-// 				current->content = ft_strdup("");
-//             // Perform the necessary operations here, like modifying the node
-//             // If you remove the node, you need to update the list pointer
-//             // and the current pointer accordingly
-//         }
-//         // Move to the next node
-//         current = current->next;
-//     }
-// }
-static void remove_dollor_quotes(t_node **list)
+static void	remove_dollor_quotes(t_node **list)
 {
-    t_node *current = *list;
-    t_node *next_node;
+	t_node	*current;
 
-    while (current) // Check for NULL at each iteration
-    {
-        if (current->type == 7)
-        {
-            if (!current->next || current->next->type == 7)
-                break;
-
-            // Check if the next node's content starts and ends with quotes
-            if (current->next && current->next->content[0] == '\"')
-            {
-                // Free the old content and set it to an empty string
-                free(current->content);
-                current->content = ft_strdup("");
-
-                // Ensure ft_strdup returns a non-null pointer
-                if (!current->content)
-                {
-                    // Handle memory allocation failure (optional)
-                    return; // or handle error as needed
-                }
-
-                // Optional: Remove the next node if needed and adjust the list
-                next_node = current->next;
-                current->next = next_node->next;
-                free(next_node->content);
-                free(next_node);
-            }
-        }
-        // Move to the next node
-        current = current->next;
-    }
+	if (!list || !*list)
+		return ;
+	current = *list;
+	while (current != NULL && current->next != NULL)
+	{
+		if (current->type == 7 && current->state == 1 \
+		&& current->next && current->next->content[0] \
+		&& (current->next->content[0] == '\"' \
+		|| current->next->content[0] == '\''))
+			current->content = ft_strdup("");
+			current = current->next;
+	}
 }
 
+void	remove_dollor_quotes_delimiter(t_node **list)
+{
+	t_node	*current;
+	int		i;
+	char	*temp;
+	
+	if (!list || !*list)
+		return ;
+	current = *list;
+	while (current != NULL)
+	{
+		if (current->type == 10)
+		{
+			
+			i = 0;
+			while (current->content[i])
+			{
+	
+				if (current->content[i] && current->content[i + 1] && current->content[i] == '$' && ( i== 0 || (current->content[i - 1] != '\"' && current->content[i - 1] != '\'')) && (current->content[i + 1] == '\"' || current->content[i + 1] == '\''))
+				{
+					temp = ft_strjoin(ft_substr(current->content, 0, i), ft_strdup(current->content + i + 1));
+					if (!temp)
+						return;
+					free(current->content);
+					current->content = temp;
+				}
+				i++;
+			}
+		}
+		current = current->next;
+	}
+}
 
 t_node	*process_current_node(t_node *current, char **env, int *in_herdoc)
 {
@@ -182,11 +130,7 @@ void	expanding(t_node *list, char **env)
 
 	if (!list)
 		return ;
-	// printf("====>>[%s]\n", list->content);
-	// exit(1);
 	remove_dollor_quotes(&list);
-	// "$USER$"
-
 	in_herdoc = 0;
 	current = list;
 	while (current != NULL)

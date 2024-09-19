@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   her_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 18:16:04 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 17:50:08 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/18 18:34:49 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	del_without_quotes(char *s)
 {
-	if (s[0] != '\"' && s[0] != '\'')
+	if (ft_strchr(s,'\"') == NULL && ft_strchr(s,'\'') == NULL)
 		return (1);
 	return (0);
 }
@@ -31,7 +31,7 @@ int	setup_temp_files(int *temp_fd)
 	return (0);
 }
 
-int	is_end_of_heredoc(char *line, char *s)//yousra
+int	is_end_of_heredoc(char *line, char *s)
 {
 	if (!line)
 		return (1);
@@ -39,7 +39,7 @@ int	is_end_of_heredoc(char *line, char *s)//yousra
 	&& line[ft_strlen(s)] == '\0');
 }
 
-void	process_heredoc_input(int fd, char *s, int flag, char **env)//yousra
+void	process_heredoc_input(int fd, char *s, int flag, char **env)
 {
 	char	*line;
 	char	*str;
