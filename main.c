@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 21:30:06 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:41:16 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ void	restore_io(int stdin_backup, int stdout_backup)
 
 void	run_shell_loop(char **envp)
 {
-	char	*line;
-	int		stdin_backup;
-	int		stdout_backup;
-	struct	termios termios_p;
+	char			*line;
+	int				stdin_backup;
+	int				stdout_backup;
+	struct termios	termios_p;
 
 	tcgetattr(0, &termios_p);
 	while (1)

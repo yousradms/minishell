@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/19 17:52:10 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/20 15:01:52 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ typedef enum s_type
 	SIGN = 7,
 	WORD = 9,
 	DELIMITER = 10,
-	D_DOLLAR,
+	D_DOLLAR = 11,
+	Ambigiuos = 12,
 }	t_type;
 
 typedef enum s_state
@@ -241,5 +242,6 @@ void add_limiter_type(t_node **head);
 void add_double_dollar_delimiters(char *new_s, int *i, int *j);
 void	remove_dollor_quotes_delimiter(t_node **list);
 char	*clean_argument(char *arg);
+void	check_access_errors(t_command *cmd, const char *full_command);
 
 #endif

@@ -6,52 +6,72 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 16:45:33 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 21:20:42 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:33:42 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-static int	calculate_new_length(char *s)
+static int get_length_adjustment(char c, char next_char)
 {
-	int	len;
-	int	new_len;
-	int	i;
+    if (c == '\'' || c == '\"')
+        return (4);
+    if ((c == '>' && next_char == '>') || (c == '<' && next_char == '<'))
+        return (2);
+    if (c == '$' && next_char == '$')
+        return (4);
+    if (c == '|' || c == '<' || c == '>')
+        return (2);
+    if (c == '$')
+        return (2);
+    return (0);
+}
 
-	len = ft_strlen(s);
-	new_len = len;
+static int calculate_new_length(char *s)
+{
+	int len;
+	int new_len;
+	int i;
+	int adjustment;
+
+    len = ft_strlen(s);
+    new_len = len;
 	i = 0;
-	while (i < len)
+    while (i < len)
 	{
-		if (s[i] == '\'' || s[i] == '\"')
-			new_len += 4;
-		else if ((s[i] == '>' && i + 1 < len && s[i + 1] == '>')
-			|| (s[i] == '<' && i + 1 < len && s[i + 1] == '<'))
+        adjustment = get_length_adjustment(s[i], (i + 1 < len) ? s[i + 1] : '\0');
+        new_len += adjustment;
+        if ((s[i] == '>') || (s[i] == '<'))
 		{
-			new_len += 2;
-			i++;
-		}
-		else if (s[i] == '$' && i + 1 < len && s[i + 1] == '$')
-			new_len += 4;
-		else if (s[i] == '|' || s[i] == '<' || s[i] == '>')
-			new_len += 2;
-		else if (s[i] == '$')
-			new_len += 2;
+            if (s[i] == '>' && s[i + 1] == '>')
+                i++;
+            else if (s[i] == '<' && s[i + 1] == '<')
+                i++;
+        }
 		i++;
-	}
-	return (new_len);
+    }
+    return (new_len);
 }
 
 static char	*allocate_new_string(int new_len)
 {
-	(void)new_len;
 	char	*new_s;
 
 	new_s = (char *)malloc(new_len + 1);
 	if (!new_s)
 		return (NULL);
 	return (new_s);
+}
+
+static void process_double_redirect(char *s, char *new_s, int *i, int *j)
+{
+    add_double_delimiters(new_s, i, j, s[*i]);
+    while (s[*i] && s[*i] == ' ')
+        new_s[(*j)++] = s[(*i)++];
+    while (s[*i] && s[*i] != ' ' && s[*i] != '<' && s[*i] != '>' \
+	&& s[*i] != '|' && s[*i] != '\'' && s[*i] != '\"')
+        new_s[(*j)++] = s[(*i)++];
 }
 
 static void	process_characters(char *s, char *new_s, int len)
@@ -69,17 +89,9 @@ static void	process_characters(char *s, char *new_s, int len)
 			add_double_quote_delimiters(s, new_s, &i, &j);
 		else if ((s[i] == '>' && i + 1 < len && s[i + 1] == '>') \
 		|| (s[i] == '<' && i + 1 < len && s[i + 1] == '<'))
-		{
-			add_double_delimiters(new_s, &i, &j, s[i]);
-			while(s[i] && s[i] == ' ')
-				new_s[j++] = s[i++];
-			while(s[i] && s[i] != ' '  && s[i] != '<' && s[i] != '>' && s[i] != '|' && s[i] != '\'' && s[i] != '\'')
-				new_s[j++] = s[i++];
-		}
+			process_double_redirect(s, new_s, &i, &j);
 		else if (s[i] == '$' && i + 1 < len && s[i+1] == '$')
-		{
 			add_double_dollar_delimiters(new_s, &i, &j);
-		}
 		else if (s[i] == '|' || s[i] == '<' || s[i] == '>')
 			add_one_delimiters(new_s, &i, &j, s[i]);
 		else if (s[i] == '$')

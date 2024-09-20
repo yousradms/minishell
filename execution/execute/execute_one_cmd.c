@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 09:11:12 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 21:23:50 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/20 13:12:39 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,28 @@ static void	wait_for_child_process(pid_t pid)
 	handle_exit_status(status);
 }
 
+static char	**handle_builtin_command(t_command **commande, char **env)
+{
+	handle_redirections(*commande);
+	if ((*commande)->in == -1 || (*commande)->out == -1)
+		return (env);
+	return (execute_builtin(commande, env));
+}
+
+static void	handle_child_process(t_command **commande, char **env)
+{
+	if (global != 0)
+	{
+		close((*commande)->my_fd);
+		exit(0);
+	}
+	handle_redirections(*commande);
+	if ((*commande)->in == -1 || (*commande)->out == -1)
+		exit(0);
+	execute_one_command(commande, env);
+	exit(0);
+}
+
 char	**handle_one_command(t_command **commande, char **env)
 {
 	pid_t	pid;
@@ -44,25 +66,12 @@ char	**handle_one_command(t_command **commande, char **env)
 	if (!commande || !(*commande) || (*commande)->arg[0] == NULL)
 		return (env);
 	if (is_builtin((*commande)->arg[0]))
-	{
-		handle_redirections(*commande);
-		env = execute_builtin(commande, env);
-		return (env);
-	}
+		return (handle_builtin_command(commande, env));
 	pid = fork_process();
 	if (pid == -1)
 		return (env);
 	else if (pid == 0)
-	{
-		if (global != 0)
-		{
-			close((*commande)->my_fd);
-			exit(0);
-		}
-		handle_redirections(*commande);
-		execute_one_command(commande, env);
-		exit(0);
-	}
+		handle_child_process(commande, env);
 	else
 	{
 		close((*commande)->my_fd);

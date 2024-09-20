@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:18 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/19 17:42:30 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/20 13:20:23 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	handle_herddoce(t_command **command, char **env)
 	int			i;
 	global = 0;
 	first = *command;
-	while (first != NULL )
+	while (first != NULL)
 	{
 		i = 0;
 		while (first->arg[i])

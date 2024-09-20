@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ex.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:40:50 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/19 17:52:19 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/20 15:10:48 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,32 +27,10 @@ void execute_one_command(t_command **commande, char **env)
     if (full_command == NULL)
     {
         if ((*commande)->arg[0] != NULL)
-        {
-            write(2, "Minishell: ", 12);
-            write(2, (*commande)->arg[0], ft_strlen((*commande)->arg[0]));
-            write(2, ": command not found\n", 21);
-            exit(127);
-        }
+            print_cmd_not_found((*commande)->arg[0]);
         return ;
     }
-    if ((*commande)->arg[0] && access(full_command, F_OK) == 0 && opendir(full_command) != NULL)
-    {
-        fprintf(stderr, "Minishell: %s: is a directory\n", (*commande)->arg[0]);
-        exit(126);
-    }
-    if ((*commande)->arg[0] && access(full_command, X_OK) != 0)
-    {
-        if (access(full_command, F_OK) == 0)
-        {
-            fprintf(stderr, "Minishell: %s: Permission denied\n", (*commande)->arg[0]);
-            exit(126);
-        }
-        else
-        {
-            fprintf(stderr, "Minishell: %s: No such file or directory\n", (*commande)->arg[0]);
-            exit(127);
-        }
-    }
+    check_access_errors(*commande, full_command);
     if (execve(full_command, (*commande)->arg, env) == -1)
     {
         perror("Minishell: execve");

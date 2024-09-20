@@ -6,34 +6,40 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 12:04:15 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 21:27:01 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/20 14:57:50 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
+static char *handle_single_quote_arg(char *arg)
+{
+	char *result;
+
+    result = (char *)malloc(2);
+    if (!result)
+        return (NULL);
+    result[0] = *arg;
+    result[1] = '\0';
+    return (result);
+}
+
 char	*clean_argument(char *arg)
 {
-	int		len;
 	char	*result;
 	int		k;
 	int		single_quote_open;
 	int		double_quote_open;
 
-	len = ft_strlen(arg);
-	result = (char *)malloc(len + 1);
+	result = (char *)malloc(ft_strlen(arg) + 1);
 	if (!result)
 		return (NULL);
 	k = 0;
 	single_quote_open = 0;
 	double_quote_open = 0;
 	if ((ft_strlen(arg) == 1 && (*arg == '\'' || *arg == '\"')))
-	{
-		result[0] = *arg;
-		result[1] = '\0';
-		return (result);
-	}
+		return (handle_single_quote_arg(arg));
 	while (*arg)
 	{
 		if (*arg == '\'' && !double_quote_open)
@@ -47,7 +53,6 @@ char	*clean_argument(char *arg)
 	result[k] = '\0';
 	return (result);
 }
-
 
 static void	clean_command_arguments(t_command *cmd)
 {

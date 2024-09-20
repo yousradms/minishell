@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:18:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/19 17:53:08 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/20 15:12:28 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,26 @@ static void	remove_dollor_quotes(t_node **list)
 	}
 }
 
+static void process_node(t_node *current)
+{
+    int i = 0;
+	char *temp;
+	while (current->content[i])
+	{
+		if (current->content[i] && current->content[i + 1] && current->content[i] == '$' && ( i== 0 || (current->content[i - 1] != '\"' && current->content[i - 1] != '\'')) && (current->content[i + 1] == '\"' || current->content[i + 1] == '\''))
+		{
+			temp = ft_strjoin(ft_substr(current->content, 0, i), ft_strdup(current->content + i + 1));
+			if (!temp)
+				return;
+			free(current->content);
+			current->content = temp;
+		}
+		i++;
+	}
+}
 void	remove_dollor_quotes_delimiter(t_node **list)
 {
 	t_node	*current;
-	int		i;
-	char	*temp;
 	
 	if (!list || !*list)
 		return ;
@@ -53,22 +68,7 @@ void	remove_dollor_quotes_delimiter(t_node **list)
 	while (current != NULL)
 	{
 		if (current->type == 10)
-		{
-			i = 0;
-			while (current->content[i])
-			{
-	
-				if (current->content[i] && current->content[i + 1] && current->content[i] == '$' && ( i== 0 || (current->content[i - 1] != '\"' && current->content[i - 1] != '\'')) && (current->content[i + 1] == '\"' || current->content[i + 1] == '\''))
-				{
-					temp = ft_strjoin(ft_substr(current->content, 0, i), ft_strdup(current->content + i + 1));
-					if (!temp)
-						return;
-					free(current->content);
-					current->content = temp;
-				}
-				i++;
-			}
-		}
+			process_node(current);
 		current = current->next;
 	}
 }

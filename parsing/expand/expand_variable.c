@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:09:19 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 21:22:35 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:05:03 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	process_variable(char **expanded, int *i, int *j, char **env)
 		free(var_name);
 		return ;
 	}
-
 	data.i = i;
 	data.j = j;
 	data.var_name = &var_name;
@@ -94,6 +93,10 @@ void	expand_variable(t_node *current, char **env)
 	if (str)
 	{
 		set_expanded(&(str), &(current->content), env);
+		if (current->content[0] == '\0')
+		{
+			current->type = 12;
+		}
 		free(str);
 	}
 }
