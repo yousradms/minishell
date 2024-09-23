@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:54:41 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/25 15:45:29 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:58:41 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,18 @@ static void	handle_exit(char *arg)
 	exit(exit_status);
 }
 
+static void	num_arg(char *s)
+{
+	ft_putstr_fd("exit\nMinishell: exit: ", 2);
+	ft_putstr_fd(s, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
+}
+
 void	ft_exit(t_command **command)
 {
 	if ((*command)->arg[1] && ft_strlen((*command)->arg[1]) == 0)
 	{
-		fprintf(stderr, "exit\nMinishell: exit: %s: numeric \
-		argument required\n", (*command)->arg[1]);
+		num_arg((*command)->arg[1]);
 		exit(255);
 	}
 	else if (!((*command)->arg[1]))
@@ -82,13 +88,12 @@ void	ft_exit(t_command **command)
 	}
 	else if ((*command)->arg[1] && !ft_is_number((*command)->arg[1]))
 	{
-		fprintf(stderr, "exit\nMinishell: exit: %s: numeric \
-		argument required\n", (*command)->arg[1]);
+		num_arg((*command)->arg[1]);
 		exit(255);
 	}
 	else if ((*command)->arg[1] && (*command)->arg[2])
 	{
-		fprintf(stderr, "exit\nMinishell: exit: too many arguments\n");
+		ft_putstr_fd("exit\nMinishell: exit: too many arguments\n", 2);
 		exit_s(1, 1);
 		return ;
 	}

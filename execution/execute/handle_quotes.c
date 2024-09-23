@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   handle_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 12:04:15 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/20 14:57:50 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:59:40 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-static char *handle_single_quote_arg(char *arg)
+static char	*handle_single_quote_arg(char *arg)
 {
-	char *result;
+	char	*result;
 
-    result = (char *)malloc(2);
-    if (!result)
-        return (NULL);
-    result[0] = *arg;
-    result[1] = '\0';
-    return (result);
+	result = (char *)malloc(2);
+	if (!result)
+		return (NULL);
+	result[0] = *arg;
+	result[1] = '\0';
+	return (result);
 }
 
 char	*clean_argument(char *arg)

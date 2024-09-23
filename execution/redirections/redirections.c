@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:05:13 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/19 21:00:24 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/20 16:19:30 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,20 @@ void	handle_redirect_in(t_command *cmd, char *filename)
 	if (fd == -1)
 	{
 		ft_putstr_fd("NO such file or directory\n", 2);
-		exit_s(1,1);
-		cmd->in = -1; // Indicate failure
-		return ;      // Stop further processing
+		exit_s(1, 1);
+		cmd->in = -1;
+		return ;
 	}
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
 		perror("dup2");
 		close(fd);
-		cmd->in = -1; // Indicate failure
+		cmd->in = -1;
 		return ;
 	}
 	cmd->in = fd;
 	close(fd);
 }
-
 
 void	handle_redirect_out(t_command *cmd, char *filename, int append)
 {
@@ -50,9 +49,9 @@ void	handle_redirect_out(t_command *cmd, char *filename, int append)
 	if (fd == -1)
 	{
 		ft_putstr_fd("NO such file or directory\n", 2);
-		exit_s(1,1);
-		cmd->in = -1; // Indicate failure
-		return ;      // Stop further processing
+		exit_s(1, 1);
+		cmd->in = -1;
+		return ;
 	}
 	if (dup2(fd, STDOUT_FILENO) == -1)
 	{
@@ -79,9 +78,8 @@ void	handle_redirections(t_command *cmd)
 			handle_input_redirection(cmd, &i);
 		else if (ft_strcmp(cmd->arg[i], "<<") == 0)
 			handle_heredoc_redirection(cmd, &i);
-		if (cmd->in == -1 || cmd->out == -1) // Check if redirection failed
-			return ; // Stop if redirection failed
+		if (cmd->in == -1 || cmd->out == -1)
+			return ;
 		i++;
 	}
 }
-

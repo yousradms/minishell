@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:18:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/20 15:12:28 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:22:33 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-static void	handle_heredoc_expand(t_node **current, int *in_herdoc)
+void	handle_heredoc_expand(t_node **current, int *in_herdoc)
 {
 	if ((*current)->type == 6)
 	{
@@ -23,7 +23,7 @@ static void	handle_heredoc_expand(t_node **current, int *in_herdoc)
 	}
 }
 
-static void	remove_dollor_quotes(t_node **list)
+void	remove_dollor_quotes(t_node **list)
 {
 	t_node	*current;
 
@@ -37,31 +37,39 @@ static void	remove_dollor_quotes(t_node **list)
 		&& (current->next->content[0] == '\"' \
 		|| current->next->content[0] == '\''))
 			current->content = ft_strdup("");
-			current = current->next;
+		current = current->next;
 	}
 }
 
-static void process_node(t_node *current)
+static void	process_node(t_node *current)
 {
-    int i = 0;
-	char *temp;
+	int		i;
+	char	*temp;
+
+	i = 0;
 	while (current->content[i])
 	{
-		if (current->content[i] && current->content[i + 1] && current->content[i] == '$' && ( i== 0 || (current->content[i - 1] != '\"' && current->content[i - 1] != '\'')) && (current->content[i + 1] == '\"' || current->content[i + 1] == '\''))
+		if (current->content[i] && current->content[i + 1] \
+		&& current->content[i] == '$' && \
+		(i == 0 || (current->content[i - 1] != '\"' \
+		&& current->content[i - 1] != '\'')) && \
+		(current->content[i + 1] == '\"' || current->content[i + 1] == '\''))
 		{
-			temp = ft_strjoin(ft_substr(current->content, 0, i), ft_strdup(current->content + i + 1));
+			temp = ft_strjoin(ft_substr(current->content, 0, i), \
+			ft_strdup(current->content + i + 1));
 			if (!temp)
-				return;
+				return ;
 			free(current->content);
 			current->content = temp;
 		}
 		i++;
 	}
 }
+
 void	remove_dollor_quotes_delimiter(t_node **list)
 {
 	t_node	*current;
-	
+
 	if (!list || !*list)
 		return ;
 	current = *list;
@@ -91,55 +99,4 @@ t_node	*process_current_node(t_node *current, char **env, int *in_herdoc)
 	contain_home1(current->content) && !(*in_herdoc))
 		expand_home_directory(current);
 	return (current);
-}
-
-void	set_expanded(char **str, char **content, char **env)
-{
-	char	*expanded;
-	int		i;
-	int		j;
-
-	if (!str || !*str || !content || !env)
-		return ;
-	expanded = ft_strdup(*str);
-	if (!expanded)
-		return ;
-	i = 0;
-	while (expanded[i])
-	{
-		if (expanded[i] == '$')
-		{
-			j = i + 1;
-			handle_special_cases(&expanded, &i, &j, env);
-			if (ft_strchr(expanded, '$') == NULL \
-			|| ft_strcmp(expanded, "") == 0)
-				break ;
-		}
-		else
-			i++;
-	}
-	free(*content);
-	*content = expanded;
-}
-
-void	expanding(t_node *list, char **env)
-{
-	t_node	*current;
-	int		in_herdoc;
-
-	if (!list)
-		return ;
-	remove_dollor_quotes(&list);
-	in_herdoc = 0;
-	current = list;
-	while (current != NULL)
-	{
-		handle_heredoc_expand(&current, &in_herdoc);
-		if (current == NULL)
-			break ;
-		current = process_current_node(current, env, &in_herdoc);
-		if (current != NULL)
-			current = current->next;
-		in_herdoc = 0;
-	}
 }

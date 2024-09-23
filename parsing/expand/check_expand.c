@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_expand.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:14:22 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/15 19:16:31 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:31:47 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	handle_special_cases(char **expanded, int *i, int *j, char **env)
 	if (!validate_inputs(expanded, i, j, env))
 		return ;
 	value = handle_specific_cases((*expanded)[*i + 1]);
-	if (value)
+	if (value != NULL)
 		replace_special_variable(expanded, i, *j, value);
 	else if ((*expanded)[*i + 1] > '0' && \
 	(*expanded)[*i + 1] <= '9' && (*expanded)[*i + 2])

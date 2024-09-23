@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/20 15:01:52 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/20 16:35:28 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@
 # include <limits.h>
 # include <signal.h>
 # include <stdbool.h>
-#include <termios.h>
+# include <termios.h>
 # include <errno.h>
 # include <sys/stat.h>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <dirent.h>
+# include <dirent.h>
+# include <sys/stat.h>
+# include <dirent.h>
 
 // # define malloc(x) NULL
 # define W_COUNT 1000
@@ -40,7 +40,9 @@
 # define ERR_PIPE "syntax error near unexpected token `|'\n"
 # define ERR_FILE "syntax error near unexpected token `'\n"
 # define BUFFER_SIZE 1024
-int global;
+
+int	g_global;
+
 typedef enum s_type
 {
 	WSPACE = 1,
@@ -238,10 +240,23 @@ int			is_whitespace(char c);
 void		free_tab(char **tab, int size);
 void		handle_double_quote(char *str, char **tab, t_args1 *a);
 void		handle_single_quote(char *str, char **tab, t_args1 *a);
-void add_limiter_type(t_node **head);
-void add_double_dollar_delimiters(char *new_s, int *i, int *j);
-void	remove_dollor_quotes_delimiter(t_node **list);
-char	*clean_argument(char *arg);
-void	check_access_errors(t_command *cmd, const char *full_command);
+void		add_limiter_type(t_node **head);
+void		add_double_dollar_delimiters(char *new_s, int *i, int *j);
+void		remove_dollor_quotes_delimiter(t_node **list);
+char		*clean_argument(char *arg);
+void		check_access_errors(t_command *cmd, const char *full_command);
+void		wait_for_child_process(pid_t pid);
+char		**handle_builtin_command(t_command **commande, char **env);
+void		handle_child_process(t_command **commande, char **env);
+char		**process_pipe(t_command *cmd, char **env, pid_t *pids);
+char		**execute_command(t_command *cmd, char **env);
+char		*prepare_line(char **line);
+void		tokenize_line(t_node **head, char **result);
+void		free_resources(char **result, t_node *head, char *s);
+int			is_ambiguous(t_node *head);
+void		handle_heredoc_expand(t_node **current, int *in_herdoc);
+void		remove_dollor_quotes(t_node **list);
+t_node		*process_current_node(t_node *current, char **env, int *in_herdoc);
+char		*allocate_new_string(int new_len);
 
 #endif

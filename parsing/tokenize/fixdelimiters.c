@@ -3,75 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   fixdelimiters.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 16:45:33 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/20 15:33:42 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/20 16:41:59 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include "../../libft/libft.h"
 
-static int get_length_adjustment(char c, char next_char)
+static int	get_length_adjustment(char c, char next_char)
 {
-    if (c == '\'' || c == '\"')
-        return (4);
-    if ((c == '>' && next_char == '>') || (c == '<' && next_char == '<'))
-        return (2);
-    if (c == '$' && next_char == '$')
-        return (4);
-    if (c == '|' || c == '<' || c == '>')
-        return (2);
-    if (c == '$')
-        return (2);
-    return (0);
+	if (c == '\'' || c == '\"')
+		return (4);
+	if ((c == '>' && next_char == '>') || (c == '<' && next_char == '<'))
+		return (2);
+	if (c == '$' && next_char == '$')
+		return (4);
+	if (c == '|' || c == '<' || c == '>')
+		return (2);
+	if (c == '$')
+		return (2);
+	return (0);
 }
 
-static int calculate_new_length(char *s)
+static int	calculate_new_length(char *s)
 {
-	int len;
-	int new_len;
-	int i;
-	int adjustment;
+	int		len;
+	int		new_len;
+	int		i;
+	char	next_char;
 
-    len = ft_strlen(s);
-    new_len = len;
 	i = 0;
-    while (i < len)
+	len = ft_strlen(s);
+	new_len = len;
+	while (i < len)
 	{
-        adjustment = get_length_adjustment(s[i], (i + 1 < len) ? s[i + 1] : '\0');
-        new_len += adjustment;
-        if ((s[i] == '>') || (s[i] == '<'))
+		if (i + 1 < len)
+			next_char = s[i + 1];
+		else
+			next_char = '\0';
+		new_len += get_length_adjustment(s[i], next_char);
+		if ((s[i] == '>') || (s[i] == '<'))
 		{
-            if (s[i] == '>' && s[i + 1] == '>')
-                i++;
-            else if (s[i] == '<' && s[i + 1] == '<')
-                i++;
-        }
+			if ((s[i] == '>' && s[i + 1] == '>') \
+			|| (s[i] == '<' && s[i + 1] == '<'))
+				i++;
+		}
 		i++;
-    }
-    return (new_len);
+	}
+	return (new_len);
 }
 
-static char	*allocate_new_string(int new_len)
+static void	process_double_redirect(char *s, char *new_s, int *i, int *j)
 {
-	char	*new_s;
-
-	new_s = (char *)malloc(new_len + 1);
-	if (!new_s)
-		return (NULL);
-	return (new_s);
-}
-
-static void process_double_redirect(char *s, char *new_s, int *i, int *j)
-{
-    add_double_delimiters(new_s, i, j, s[*i]);
-    while (s[*i] && s[*i] == ' ')
-        new_s[(*j)++] = s[(*i)++];
-    while (s[*i] && s[*i] != ' ' && s[*i] != '<' && s[*i] != '>' \
+	add_double_delimiters(new_s, i, j, s[*i]);
+	while (s[*i] && s[*i] == ' ')
+		new_s[(*j)++] = s[(*i)++];
+	while (s[*i] && s[*i] != ' ' && s[*i] != '<' && s[*i] != '>' \
 	&& s[*i] != '|' && s[*i] != '\'' && s[*i] != '\"')
-        new_s[(*j)++] = s[(*i)++];
+		new_s[(*j)++] = s[(*i)++];
 }
 
 static void	process_characters(char *s, char *new_s, int len)
@@ -90,7 +82,7 @@ static void	process_characters(char *s, char *new_s, int len)
 		else if ((s[i] == '>' && i + 1 < len && s[i + 1] == '>') \
 		|| (s[i] == '<' && i + 1 < len && s[i + 1] == '<'))
 			process_double_redirect(s, new_s, &i, &j);
-		else if (s[i] == '$' && i + 1 < len && s[i+1] == '$')
+		else if (s[i] == '$' && i + 1 < len && s[i + 1] == '$')
 			add_double_dollar_delimiters(new_s, &i, &j);
 		else if (s[i] == '|' || s[i] == '<' || s[i] == '>')
 			add_one_delimiters(new_s, &i, &j, s[i]);

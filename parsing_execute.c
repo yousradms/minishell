@@ -3,142 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_execute.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:21:42 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/20 12:56:04 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/20 20:48:08 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft/libft.h"
-
-static char	*prepare_line(char **line)
-{
-	char	*new_line;
-	char	*s;
-
-	new_line = add_delimiter(*line);
-	if (!new_line)
-		return (NULL);
-	s = ft_strtrim(new_line, " ");
-	if (!s)
-		return (NULL);
-	free(new_line);
-	return (s);
-}
-
-static void	tokenize_line(t_node **head, char **result)
-{
-	int	i;
-
-	i = 0;
-	while (result[i])
-	{
-		tokenize(result[i], head, get_state(result[i]));
-		i++;
-	}
-}
-
-static void	free_resources(char **result, t_node *head, char *s)
-{
-	free(result);
-	free_precedent_nodes(head);
-	free(s);
-}
-
-static t_node	*move_to_previous_node(t_node *node)
-{
-	while (node && node->prev && node->prev->type == 1)
-		node = node->prev;
-	return (node);
-}
-
-static char	*add_quotes_to_content(char *content)
-{
-	char	*new_content;
-	char	*temp_content;
-
-	new_content = ft_strjoin("\"", content);
-	if (!new_content)
-		return (NULL);
-	temp_content = new_content;
-	new_content = ft_strjoin(temp_content, "\"");
-	free(temp_content);
-	return (new_content);
-}
-
-void	export_expand(t_node **head)
-{
-	t_node	*current;
-	char	*new_content;
-
-	current = *head;
-	while (current != NULL)
-	{
-		if (current->content && \
-		contain_env(current->content) && current->state == 1)
-		{
-			if (current->prev && current->prev->type == 9)
-			{
-				current = move_to_previous_node(current);
-				if (current)
-				{
-					new_content = add_quotes_to_content(current->content);
-					if (!new_content)
-						return ;
-					free(current->content);
-					current->content = new_content;
-				}
-			}
-		}
-		current = current->next;
-	}
-}
-
-void	add_limiter_type(t_node **head)
-{
-	t_node	*curr;
-
-	curr = *head;
-	while (curr)
-	{
-		if (curr->type == 6 && curr->next)
-		{
-			if (curr && curr->next)
-				curr = curr->next;
-			while (curr && curr->type == 1 && curr->next)
-				curr = curr->next;
-			if (curr && curr->type != 7)
-				curr->type = 10;
-		}
-		curr = curr->next;
-	}
-}
-
-static int	is_ambiguous(t_node *head)
-{
-	t_node	*current;
-
-	current = head;
-	while (current != NULL)
-	{
-		if (current->type == 3 || current->type == 4 || current->type == 5)
-		{
-			if (!current->next)
-				return (0);
-			current = current->next;
-			while (current && current->type == 1)
-				current = current->next;
-			if (!current)
-				return (0);
-			if (current->type == 12)
-				return (1);
-		}
-		current = current->next;
-	}
-	return (0);
-}
 
 static t_node	*tokenize_and_add_limiter(char **result)
 {

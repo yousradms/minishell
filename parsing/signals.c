@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 09:44:58 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 18:35:16 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/20 16:08:37 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	sigint_handler_herdoc(int signo)
 		if (waitpid(-1, 0, WNOHANG) == 0)
 		{
 			printf("\n");
-			global = 1;
+			g_global = 1;
 			return ;
 		}
 		else
