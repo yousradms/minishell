@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/25 16:00:33 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/25 18:49:04 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,9 @@ void	run_shell_loop(char **envp)
 	char			*line;
 	int				stdin_backup;
 	int				stdout_backup;
-	struct termios	termios_p;//une structure qui contient des paramètres de configuration pour le terminal, utilisée ici pour sauvegarder l'état du terminal
+	struct termios	termios_p;
 
-	tcgetattr(0, &termios_p);//Cette fonction récupère les paramètres 
-	//actuels du terminal associé à l'entrée standard (0 pour STDIN_FILENO) 
-	//et les stocke dans termios_p
+	tcgetattr(0, &termios_p);
 	while (1)
 	{
 		line = read_input();
@@ -65,9 +63,6 @@ void	run_shell_loop(char **envp)
 			continue ;
 		}
 		add_history(line);
-		//varaibles utilisees pour stocker les copies des descripteurs de fichiers
-		//d'entree et de sortie standard
-		//ceci permet de restaurer l'etat initial apres l'execution d'une commande
 		stdin_backup = dup(STDIN_FILENO);
 		stdout_backup = dup(STDOUT_FILENO);
 		if (stdin_backup == -1 || stdout_backup == -1)
@@ -75,7 +70,7 @@ void	run_shell_loop(char **envp)
 		envp = parsing_execute_command(&line, envp);
 		restore_io(stdin_backup, stdout_backup);
 		free(line);
-		tcsetattr(0, 0, &termios_p);//Après chaque exécution de commande, les paramètres du terminal sont restaurés à l'état précédemment sauvegardé avec tcsetattr
+		tcsetattr(0, 0, &termios_p);
 	}
 }
 

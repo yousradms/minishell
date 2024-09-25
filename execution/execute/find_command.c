@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 13:41:44 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/24 10:52:05 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/25 18:54:10 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,19 @@ static char	*build_full_path(char *dir, char *cmd)
 
 	if (!dir || !cmd)
 		return (NULL);
-	part_path = strjoin(dir, "/");//ft_strjoin
+	part_path = strjoin(dir, "/");
 	if (!part_path)
 		return (NULL);
 	full_path = strjoin(part_path, cmd);
 	free(part_path);
 	return (full_path);
+}
+
+void	print_no_such_f_d(char *s)
+{
+	ft_putstr_fd("Minishell: ", 2);
+	ft_putstr_fd(s, 2);
+	ft_putstr_fd(" : No such file or directory\n", 2);
 }
 
 char	*find_commande(char *cmd, char **envp)
@@ -79,13 +86,11 @@ char	*find_commande(char *cmd, char **envp)
 	paths = get_paths_from_env(envp);
 	if (!paths || !(*paths))
 	{
-		exit_s(127, 1);
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(" : No such file or directory\n", 2);
+		print_no_such_f_d(cmd);
 		exit(127);
 	}
-	i = 0;
-	while (paths[i])
+	i = -1;
+	while (paths[++i])
 	{
 		path = build_full_path(paths[i], cmd);
 		if (!path)
@@ -93,7 +98,6 @@ char	*find_commande(char *cmd, char **envp)
 		if (access(path, F_OK) == 0)
 			return (free_paths(paths), path);
 		free(path);
-		i++;
 	}
 	return (free_paths(paths), NULL);
 }
