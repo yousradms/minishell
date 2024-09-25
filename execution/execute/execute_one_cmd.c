@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_one_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 09:11:12 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/20 16:08:28 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/24 13:44:49 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	**handle_builtin_command(t_command **commande, char **env)
 {
 	handle_redirections(*commande);
 	if ((*commande)->in == -1 || (*commande)->out == -1)
-		return (env);
+		return (exit_s(1, 1), env);
 	return (execute_builtin(commande, env));
 }
 
@@ -54,7 +54,7 @@ void	handle_child_process(t_command **commande, char **env)
 	}
 	handle_redirections(*commande);
 	if ((*commande)->in == -1 || (*commande)->out == -1)
-		exit(0);
+		exit(1);
 	execute_one_command(commande, env);
 	exit(0);
 }

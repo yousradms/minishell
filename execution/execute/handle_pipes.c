@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/09/21 14:51:39 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/24 14:23:06 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ char	**execute_command(t_command *cmd, char **env)
 	if (full_command == NULL)
 		print_cmd_not_found(cmd->arg[0]);
 	check_access_errors(cmd, full_command);
-	// printf("Was there\n");
 	if (execve(full_command, cmd->arg, env) == -1)
 	{
 		perror("Minishell: execve");

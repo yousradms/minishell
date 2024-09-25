@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ex.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:40:50 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/20 16:00:25 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/24 14:21:56 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ char	**handle_one_command(t_command **commande, char **env)
 		return (env);
 	if (is_builtin((*commande)->arg[0]))
 		return (handle_builtin_command(commande, env));
-	pid = fork_process();
+	pid = fork();
 	if (pid == -1)
-		return (env);
+		return (perror("Minishell : fork"), env);
 	else if (pid == 0)
 		handle_child_process(commande, env);
 	else

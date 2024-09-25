@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 13:41:44 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 21:25:43 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/24 10:52:05 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static char	*build_full_path(char *dir, char *cmd)
 
 	if (!dir || !cmd)
 		return (NULL);
-	part_path = strjoin(dir, "/");
+	part_path = strjoin(dir, "/");//ft_strjoin
 	if (!part_path)
 		return (NULL);
 	full_path = strjoin(part_path, cmd);
@@ -77,6 +77,13 @@ char	*find_commande(char *cmd, char **envp)
 	if (is_absolute_or_relative_path(cmd))
 		return (cmd);
 	paths = get_paths_from_env(envp);
+	if (!paths || !(*paths))
+	{
+		exit_s(127, 1);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(" : No such file or directory\n", 2);
+		exit(127);
+	}
 	i = 0;
 	while (paths[i])
 	{

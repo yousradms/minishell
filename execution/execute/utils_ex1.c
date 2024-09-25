@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ex1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 16:03:21 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/09/21 14:42:36 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/24 18:30:26 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ void	check_access_errors(t_command *cmd, const char *full_command)
 			ft_putstr_fd("Minishell: ", 2);
 			ft_putstr_fd(cmd->arg[0], 2);
 			ft_putstr_fd(": No such file or directory\n", 2);
-			// exit(127);
-			// exit_s(1, 1);
 			exit(1);
 		}
 	}
@@ -85,7 +83,7 @@ static void	handle_fork_error(int *fd)
 char	**process_pipe(t_command *cmd, char **env, pid_t *pids)
 {
 	int	fd[2];
-	int	input_fd;
+	int	input_fd;//transferer la sortie d'une commande a la suiv
 	int	i;
 
 	input_fd = 0;
@@ -104,6 +102,7 @@ char	**process_pipe(t_command *cmd, char **env, pid_t *pids)
 			exit(0);
 		}
 		else
+		//preparer input fd pur la cmd suiv
 			setup_parent_process(&input_fd, fd, cmd->my_fd);
 		cmd = cmd->next;
 		i++;
