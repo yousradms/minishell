@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:21:42 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/23 20:49:19 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:09:36 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "libft/libft.h"
 
 static t_node	*tokenize_and_add_limiter(char **result)
 {

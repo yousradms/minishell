@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:55:25 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 13:17:27 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:05:20 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 static int	count_words(const char *s, char c)
 {

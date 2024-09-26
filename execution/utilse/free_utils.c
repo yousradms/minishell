@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:51:31 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 14:13:53 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:06:13 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 void	free_char_array(char **array)
 {

@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 18:50:16 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 17:15:34 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:07:58 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 void	add_back(t_command **head, t_command *new_node)
 {

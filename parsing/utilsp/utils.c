@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:26:44 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 17:24:49 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:08:18 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 int	just_spaces(char *s)
 {

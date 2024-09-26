@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:51:25 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/25 15:22:58 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:04:14 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 void	update_oldpwd(t_env **envp, char *oldpwd)
 {

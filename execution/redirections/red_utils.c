@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   red_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 13:49:49 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/25 18:55:22 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/26 12:05:48 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 void	handle_output_redirection(t_command *cmd, int *index)
 {

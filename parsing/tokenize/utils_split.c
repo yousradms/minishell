@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 18:27:10 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 18:24:24 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:07:50 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 void	free_tab(char **tab, int size)
 {

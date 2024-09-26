@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 12:04:15 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/20 15:59:40 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/26 12:05:32 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 static char	*handle_single_quote_arg(char *arg)
 {

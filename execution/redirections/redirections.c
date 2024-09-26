@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:05:13 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/20 16:19:30 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/26 12:05:56 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 void	handle_redirect_in(t_command *cmd, char *filename)
 {
@@ -29,7 +28,6 @@ void	handle_redirect_in(t_command *cmd, char *filename)
 	{
 		perror("dup2");
 		close(fd);
-		cmd->in = -1;
 		return ;
 	}
 	cmd->in = fd;
@@ -50,7 +48,7 @@ void	handle_redirect_out(t_command *cmd, char *filename, int append)
 	{
 		ft_putstr_fd("NO such file or directory\n", 2);
 		exit_s(1, 1);
-		cmd->in = -1;
+		cmd->out = -1;
 		return ;
 	}
 	if (dup2(fd, STDOUT_FILENO) == -1)

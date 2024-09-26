@@ -6,18 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:40:50 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/24 14:21:56 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:05:36 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
-
-void	check_if_directory(char *cmd, char *name)
-{
-	if (!strncmp(cmd, name, strlen(name)))
-		exit(126);
-}
 
 void	execute_one_command(t_command **commande, char **env)
 {

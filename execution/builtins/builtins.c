@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:45:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 18:35:33 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:04:03 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 int	is_builtin(char *cmd)
 {

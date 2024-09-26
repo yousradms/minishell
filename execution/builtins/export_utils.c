@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:22:45 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/20 12:57:25 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:04:10 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 void	update_existing_env(t_env *env, char *arg, char *value)
 {

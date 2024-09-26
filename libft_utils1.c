@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   libft_utils1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/18 12:45:08 by ksellami          #+#    #+#             */
-/*   Updated: 2023/12/04 19:06:28 by ksellami         ###   ########.fr       */
+/*   Created: 2024/09/26 11:40:29 by ksellami          #+#    #+#             */
+/*   Updated: 2024/09/26 12:08:27 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
 int	ft_atoi(const char *str)
 {
@@ -39,4 +39,40 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return (num * ne);
+}
+
+int	ft_isalnum(int c)
+{
+	if (ft_isalpha(c) || ft_isdigit(c))
+		return (1);
+	return (0);
+}
+
+int	ft_isalpha(int c)
+{
+	if ((c >= 97 && c <= 122) || (c >= 65 && c <= 90))
+		return (1);
+	return (0);
+}
+
+int	ft_isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if (fd >= 0)
+		{
+			write (fd, &s[i], 1);
+			i++;
+		}
+	}
 }

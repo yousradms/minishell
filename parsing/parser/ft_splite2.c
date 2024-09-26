@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 13:32:32 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 21:21:51 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:07:20 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 static char	*concatenate_line_content(char *line, char *content)
 {

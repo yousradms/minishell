@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:17:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/25 16:14:56 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:06:33 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 void	expand_home_directory(t_node *current)
 {
@@ -82,21 +81,15 @@ void	set_expanded(char **str, char **content, char **env)
 void	expanding(t_node *list, char **env)
 {
 	t_node	*current;
-	int		in_herdoc;
 
 	if (!list)
 		return ;
 	remove_dollor_quotes(&list);
-	in_herdoc = 0;
 	current = list;
 	while (current != NULL)
 	{
-		handle_heredoc_expand(&current, &in_herdoc);
-		if (current == NULL)
-			break ;
-		current = process_current_node(current, env, &in_herdoc);
+		current = process_current_node(current, env);
 		if (current != NULL)
 			current = current->next;
-		in_herdoc = 0;
 	}
 }

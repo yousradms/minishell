@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   her_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 18:16:04 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/20 16:07:50 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/26 12:07:01 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 int	del_without_quotes(char *s)
 {

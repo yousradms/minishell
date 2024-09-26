@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   quote_delimiters.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 16:37:17 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/20 16:34:54 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/26 12:07:37 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 void	add_single_quote_delimiters(char *s, char *new_s, int *i, int *j)
 {

@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   fixdelimiters.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 16:45:33 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/20 16:41:59 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/26 12:07:29 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 static int	get_length_adjustment(char c, char next_char)
 {

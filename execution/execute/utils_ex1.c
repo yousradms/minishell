@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ex1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 16:03:21 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/09/25 18:50:05 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/26 12:05:40 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 void	check_access_errors(t_command *cmd, const char *full_command)
 {

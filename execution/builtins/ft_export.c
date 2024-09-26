@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:54:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/25 15:46:11 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:04:38 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 static void	get_expoted(t_env **envp)
 {

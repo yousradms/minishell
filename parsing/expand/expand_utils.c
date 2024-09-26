@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:59:43 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/15 19:16:47 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:06:40 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 void	set_value(t_expansion_data *data, char **env)
 {

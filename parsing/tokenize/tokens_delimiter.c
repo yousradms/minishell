@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 16:40:01 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 18:24:12 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:07:45 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 void	add_one_delimiters(char *new_s, int *i, int *j, char c)
 {

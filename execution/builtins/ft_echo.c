@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:51:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/24 14:28:22 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:04:18 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 int	check_n(char *s)
 {

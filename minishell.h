@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/20 16:35:28 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/26 12:09:26 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,8 @@
 # define MINISHELL_H
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <sys/types.h>
-# include <sys/wait.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <string.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -26,12 +23,8 @@
 # include <stdbool.h>
 # include <termios.h>
 # include <errno.h>
-# include <sys/stat.h>
-# include <dirent.h>
-# include <sys/stat.h>
 # include <dirent.h>
 
-// # define malloc(x) NULL
 # define W_COUNT 1000
 # define L_COUNT 1000
 # define MAX_WORDS 1000
@@ -39,7 +32,6 @@
 # define NAME "minishell: "
 # define ERR_PIPE "syntax error near unexpected token `|'\n"
 # define ERR_FILE "syntax error near unexpected token `'\n"
-# define BUFFER_SIZE 1024
 
 int	g_global;
 
@@ -55,7 +47,6 @@ typedef enum s_type
 	WORD = 9,
 	DELIMITER = 10,
 	D_DOLLAR = 11,
-	Ambigiuos = 12,
 }	t_type;
 
 typedef enum s_state
@@ -154,8 +145,6 @@ void		free_commands(t_command *commands);
 void		free_arg(char **result);
 int			check_quot(char *line, char a, char b);
 char		*remove_quotes(char *s);
-char		*remove_dquotes(char *s);
-char		*remove_squotes(char *s);
 t_node		*create_node(char *content, int type, int state);
 void		add_node(t_node **head, t_node *node);
 void		free_precedent_nodes(t_node *head);
@@ -164,9 +153,6 @@ int			just_spaces(char *s);
 t_state		get_state(char *s);
 char		**env_to_char_array(t_env *env);
 int			count_nbr_commands(t_command *cmd);
-void		print_list(t_node *head);
-void		print_list2(t_command *command);
-void		print_darg(char **s);
 char		*ft_strjoin(char *s1, char	*s2);
 char		*ft_strtrim(char *s1, char *set);
 void		sigint_handler(int signo);
@@ -186,10 +172,8 @@ char		*strndup1( char *s, size_t n);
 char		*find_commande(char *cmd, char **envp);
 char		**execute(t_command **commande, char **env);
 char		**handle_one_command(t_command **commande, char **env);
-pid_t		fork_process(void);
 void		handle_quotes_ex(t_command **cmd);
 void		execute_one_command(t_command **commande, char **env);
-void		check_if_directory(char *cmd, char *name);
 void		handle_redirect_in(t_command *cmd, char *filename);
 void		handle_redirect_out(t_command *cmd, char *filename, int append);
 void		handle_redirections(t_command *cmd);
@@ -253,10 +237,28 @@ char		**execute_command(t_command *cmd, char **env);
 char		*prepare_line(char **line);
 void		tokenize_line(t_node **head, char **result);
 void		free_resources(char **result, t_node *head, char *s);
-int			is_ambiguous(t_node *head);
-void		handle_heredoc_expand(t_node **current, int *in_herdoc);
 void		remove_dollor_quotes(t_node **list);
-t_node		*process_current_node(t_node *current, char **env, int *in_herdoc);
+t_node		*process_current_node(t_node *current, char **env);
 char		*allocate_new_string(int new_len);
+int			ft_atoi(const char *str);
+int			ft_isalnum(int c);
+int			ft_isalpha(int c);
+int			ft_isdigit(int c);
+void		ft_putstr_fd(char *s, int fd);
+char		*ft_itoa(int n);
+void		ft_putendl_fd(char *s, int fd);
+char		*ft_strchr(const char *string, int searchedChar);
+int			ft_strcmp(char *s1, char *s2);
+char		*ft_strcpy(char *dest, char *src);
+char		*ft_strcat(char *dest, char *src);
+char		*ft_strdup(char *src);
+char		*ft_strjoin(char *s1, char *s2);
+int			ft_strlcpy(char *dest, const char *src, int size);
+size_t		ft_strlen(const char *str);
+int			ft_strncmp(char *s1, char *s2, size_t n);
+char		*ft_strncpy(char *dest, char *src, int n);
+char		*ft_strnstr(const char *str, const char *to_find, size_t n);
+char		*ft_strtrim(char *s1, char *set);
+char		*ft_substr(char const *s, unsigned int start, size_t len);
 
 #endif

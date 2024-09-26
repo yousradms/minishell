@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:57:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/10 17:12:22 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:06:20 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 static void	ft_handl_error(char *s1, char *s2, char *s3)
 {

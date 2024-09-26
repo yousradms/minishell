@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:09:19 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/20 15:05:03 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:06:45 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 void	process_variable(char **expanded, int *i, int *j, char **env)
 {

@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:14:03 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 17:16:22 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:08:02 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 void	free_commands(t_command *commands)
 {

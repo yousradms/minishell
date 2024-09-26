@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:03:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/25 15:47:41 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:05:04 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 static void	remove_env_node(t_env **envp, char *var_name)
 {

@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:58:11 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 21:28:37 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:06:09 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 t_env	*create_env_node(char *var, char *value)
 {

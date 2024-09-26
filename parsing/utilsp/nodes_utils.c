@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 17:23:57 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:08:10 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 t_node	*create_node(char *content, int type, int state)
 {

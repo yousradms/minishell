@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 18:22:12 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 21:21:59 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:07:24 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 int	is_whitespace(char c)
 {

@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:14 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/10 17:18:41 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:08:06 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 int	check_quot(char *line, char a, char b)
 {
@@ -54,58 +53,4 @@ char	*remove_quotes(char *s)
 	}
 	token[j] = '\0';
 	return (token);
-}
-
-char	*remove_dquotes(char *str)
-{
-	int		len;
-	char	*result;
-	int		j;
-	int		k;
-	int		double_quote_open;
-
-	len = ft_strlen(str);
-	result = (char *)malloc(len + 1);
-	if (!result)
-		return (NULL);
-	j = 0;
-	k = 0;
-	double_quote_open = 0;
-	while (str[j])
-	{
-		if (str[j] == '\"')
-			double_quote_open = !double_quote_open;
-		else
-			result[k++] = str[j];
-		j++;
-	}
-	result[k] = '\0';
-	return (result);
-}
-
-char	*remove_squotes(char *str)
-{
-	int		len;
-	char	*result;
-	int		j;
-	int		k;
-	int		single_quote_open;
-
-	len = ft_strlen(str);
-	result = (char *)malloc(len + 1);
-	if (!result)
-		return (NULL);
-	j = 0;
-	k = 0;
-	single_quote_open = 0;
-	while (str[j])
-	{
-		if (str[j] == '\'')
-			single_quote_open = !single_quote_open;
-		else
-			result[k++] = str[j];
-		j++;
-	}
-	result[k] = '\0';
-	return (result);
 }

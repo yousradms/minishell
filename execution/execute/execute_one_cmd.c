@@ -6,22 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 09:11:12 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/24 13:44:49 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:05:10 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
-
-pid_t	fork_process(void)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-		perror("fork");
-	return (pid);
-}
 
 void	wait_for_child_process(pid_t pid)
 {

@@ -3,32 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   find_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 13:41:44 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/25 18:54:10 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/26 12:05:14 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
-
-char	*strjoin(char *str1, char *str2)
-{
-	int		len1;
-	int		len2;
-	char	*result;
-
-	len1 = ft_strlen(str1);
-	len2 = ft_strlen(str2);
-	result = malloc(len1 + len2 + 2);
-	if (!result)
-		return (NULL);
-	ft_strcpy(result, str1);
-	result[len1] = '/';
-	ft_strcpy(result + len1 + 1, str2);
-	return (result);
-}
 
 static int	is_absolute_or_relative_path(char *cmd)
 {
@@ -58,10 +40,10 @@ static char	*build_full_path(char *dir, char *cmd)
 
 	if (!dir || !cmd)
 		return (NULL);
-	part_path = strjoin(dir, "/");
+	part_path = ft_strjoin(dir, "/");
 	if (!part_path)
 		return (NULL);
-	full_path = strjoin(part_path, cmd);
+	full_path = ft_strjoin(part_path, cmd);
 	free(part_path);
 	return (full_path);
 }

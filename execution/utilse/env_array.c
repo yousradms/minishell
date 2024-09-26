@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:03:10 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/18 21:28:14 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:06:01 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 static int	count_env_vars(t_env *env)
 {

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   libft_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 21:15:29 by ksellami          #+#    #+#             */
-/*   Updated: 2023/12/04 19:12:25 by ksellami         ###   ########.fr       */
+/*   Created: 2024/09/26 11:48:20 by ksellami          #+#    #+#             */
+/*   Updated: 2024/09/26 12:08:32 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
 static long	puissance(int nb, int p)
 {
@@ -87,4 +87,15 @@ char	*ft_itoa(int n)
 	}
 	str = nbr_to_str(nb);
 	return (str);
+}
+
+void	ft_putendl_fd(char *s, int fd)
+{
+	if (s == NULL)
+		return ;
+	if (fd >= 0)
+	{
+		ft_putstr_fd(s, fd);
+		write(fd, "\n", 1);
+	}
 }

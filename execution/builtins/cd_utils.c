@@ -6,12 +6,11 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:16:59 by ksellami          #+#    #+#             */
-/*   Updated: 2024/08/25 15:03:47 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:04:07 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include "../../libft/libft.h"
 
 int	change_directory(char *prev_dir)
 {

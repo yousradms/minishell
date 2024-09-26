@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 09:44:58 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/25 18:00:24 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/09/26 12:08:22 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include "../libft/libft.h"
 
 void	sigint_handler(int signo)
 {
