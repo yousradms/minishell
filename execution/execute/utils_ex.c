@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:40:50 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/26 12:05:36 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/02 21:05:45 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	print_cmd_not_found(char *s)
 	write(2, "Minishell: ", 12);
 	write(2, s, ft_strlen(s));
 	write(2, ": command not found\n", 21);
-	exit(127);
+	// exit(127);
+	exit_s(127, 1);
 }
 
 void	wait_for_all_processes(pid_t *pids, int cmd_count)

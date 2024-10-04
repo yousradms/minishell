@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/26 12:08:50 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/04 10:38:44 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*read_input(void)
 {
 	char	*line;
 
-	line = readline("minishell🥶😁");
+	line = readline("minishell~>");
 	if (!line)
 	{
 		write(2, "exit\n", 6);
@@ -41,8 +41,6 @@ void	restore_io(int stdin_backup, int stdout_backup)
 		perror("dup2");
 	close(stdin_backup);
 	close(stdout_backup);
-	while (wait(NULL) != -1)
-		;
 }
 
 void	run_shell_loop(char **envp)
