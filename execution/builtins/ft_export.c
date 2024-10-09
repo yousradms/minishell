@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:54:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 11:44:39 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 12:45:07 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,10 @@ static void	get_expoted(t_env **envp)
 	}
 }
 
-static void	process_argument(t_env **envp, char *arg)
+static char	*get_value_from_arg(char *arg)
 {
-	char	*key;
 	char	*value;
-	t_env	*tmp;
-	int		found;
 
-	key = extract_var(arg);
 	if (ft_strchr(arg, '=') != NULL)
 	{
 		value = extract_value(arg);
@@ -44,6 +40,26 @@ static void	process_argument(t_env **envp, char *arg)
 	}
 	else
 		value = NULL;
+	return (value);
+}
+
+static void	process_argument(t_env **envp, char *arg)
+{
+	char	*key;
+	char	*value;
+	t_env	*tmp;
+	int		found;
+
+	key = extract_var(arg);
+	// if (ft_strchr(arg, '=') != NULL)
+	// {
+	// 	value = extract_value(arg);
+	// 	if (!value)
+	// 		value = ft_strdup("");
+	// }
+	// else
+	// 	value = NULL;
+	value = get_value_from_arg(arg);
 	tmp = *envp;
 	found = 0;
 	while (tmp)

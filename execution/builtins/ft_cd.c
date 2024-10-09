@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:51:25 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 10:04:38 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 12:08:33 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,15 @@ int	handle_cd_arguments(t_command **command, t_env **envp, int *status)
 		return (0);
 	if (!(*command)->arg[1])
 	{
-        if (home)
-            return (cd_home(home));
-        else
+		if (home)
+			return (cd_home(home));
+		else
 		{
 			ft_putstr_fd("Minishell: cd: HOME not set\n", 2);
 			*status = 1;
-            return (1);
-        }
-    }
+			return (1);
+		}
+	}
 	else if (ft_strcmp((*command)->arg[1], "-") == 0)
 		*status = cd_previous(envp);
 	else
@@ -71,18 +71,18 @@ int	handle_cd_arguments(t_command **command, t_env **envp, int *status)
 	return (1);
 }
 
-char *get_home_from_env(t_env **envp)
+char	*get_home_from_env(t_env **envp)
 {
-    t_env *current;
+	t_env	*current;
 
 	current = *envp;
-    while (current)
+	while (current)
 	{
-        if (strcmp(current->var, "HOME") == 0)
-            return (current->value);
-        current = current->next;
-    }
-    return (NULL);
+		if (strcmp(current->var, "HOME") == 0)
+			return (current->value);
+		current = current->next;
+	}
+	return (NULL);
 }
 
 void	ft_cd(t_command **command, t_env **envp)

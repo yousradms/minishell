@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:05:13 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 10:13:20 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 12:06:12 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static int	determine_flags(int append)
 	else
 		return (O_WRONLY | O_CREAT | O_TRUNC);
 }
-
 
 void	handle_redirect_out(t_command *cmd, char *filename, int append)
 {

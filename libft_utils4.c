@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_utils4.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 11:57:12 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 11:30:39 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 19:33:46 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ size_t	ft_strlen(const char *str)
 	size_t	count;
 
 	count = 0;
-	if(!str)
-		return(0);
 	while (*str != '\0')
 	{
 		count += 1;
