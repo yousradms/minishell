@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:11:16 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/26 12:06:05 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:52:07 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,11 @@ void	env_list(t_env **env, char **envp)
 
 	if (!env || !envp)
 		return ;
+	if (!*envp)
+	{
+		envp = get_env();
+		
+	}
 	head = NULL;
 	last = NULL;
 	i = 0;
@@ -82,4 +87,5 @@ void	env_list(t_env **env, char **envp)
 		i++;
 	}
 	*env = head;
+	// free_char_array(envp);
 }

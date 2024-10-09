@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:54:41 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/26 12:04:32 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 09:18:06 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ static void	num_arg(char *s)
 
 void	ft_exit(t_command **command)
 {
+	char	*ex;
+
 	if ((*command)->arg[1] && ft_strlen((*command)->arg[1]) == 0)
 	{
 		num_arg((*command)->arg[1]);
@@ -93,7 +95,8 @@ void	ft_exit(t_command **command)
 	else if ((*command)->arg[1] && (*command)->arg[2])
 	{
 		ft_putstr_fd("exit\nMinishell: exit: too many arguments\n", 2);
-		exit_s(1, 1);
+		ex = exit_s(1, 1);
+		free(ex);
 		return ;
 	}
 	else

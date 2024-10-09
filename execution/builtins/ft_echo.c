@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:51:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/26 12:04:18 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 09:17:03 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	ft_echo(t_command **cmd)
 {
 	int	i;
 	int	n_option;
+	char	*ex;
 
 	i = 1;
 	n_option = 0;
@@ -44,5 +45,6 @@ void	ft_echo(t_command **cmd)
 	}
 	if (!n_option)
 		write(1, "\n", 1);
-	exit_s(0, 1);
+	ex = exit_s(0, 1);
+	free(ex);
 }

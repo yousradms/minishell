@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 09:44:58 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/04 10:38:36 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 09:23:46 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	sigint_handler(int signo)
 {
 	int	i;
+	char	*ex;
 
 	if (signo == SIGINT)
 	{
@@ -25,12 +26,14 @@ void	sigint_handler(int signo)
 			rl_on_new_line();
 			rl_replace_line("", 0);
 			rl_redisplay();
-			exit_s(1, 1);
+			ex = exit_s(1, 1);
+			free(ex);
 		}
 		else
 		{
 			printf("\n");
-			exit_s(128 + signo, 1);
+			ex = exit_s(128 + signo, 1);
+			free(ex);
 		}
 	}
 	else if (signo == SIGQUIT)
@@ -43,15 +46,18 @@ void	sigint_handler(int signo)
 void	handle_exit_status(int status)
 {
 	int	signal_number;
+	char	*ex;
 
 	if (WIFEXITED(status))
 	{
-		exit_s(WEXITSTATUS(status), 1);
+		ex = exit_s(WEXITSTATUS(status), 1);
+		free(ex);
 	}
 	else if (WIFSIGNALED(status))
 	{
 		signal_number = WTERMSIG(status);
-		exit_s(128 + signal_number, 1);
+		ex = exit_s(128 + signal_number, 1);
+		free(ex);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:36 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/04 10:38:44 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/07 21:00:00 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,17 @@ void	restore_io(int stdin_backup, int stdout_backup)
 {
 	dup2(stdout_backup, STDOUT_FILENO);
 	dup2(stdin_backup, STDIN_FILENO);
-	if (dup2(stdout_backup, STDOUT_FILENO) == -1 || \
-	dup2(stdin_backup, STDIN_FILENO) == -1)
-		perror("dup2");
+	// if (dup2(stdout_backup, STDOUT_FILENO) == -1 || \
+	// dup2(stdin_backup, STDIN_FILENO) == -1)
+	// 	perror("Minihell : dup2");
+	// if (dup2(stdout_backup, STDOUT_FILENO) == -1)
+    //     perror("Minihell : dup2 stdout");
+    // if (dup2(stdin_backup, STDIN_FILENO) == -1)
+    //     perror("Minihell : dup2 stdin");
 	close(stdin_backup);
 	close(stdout_backup);
+	// while (wait(NULL) != -1)
+	// 	;
 }
 
 void	run_shell_loop(char **envp)

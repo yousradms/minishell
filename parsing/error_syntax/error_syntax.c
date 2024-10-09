@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:57:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/26 12:06:20 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 09:24:40 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,19 @@ static int	error_red(t_node *token, char **env)
 
 int	parsing(t_node *head, char **env)
 {
+	char	*ex;
+
 	if (error_pipe(head, env) == -1)
-		return (exit_s(258, 1), -1);
+	{
+		ex = exit_s(258, 1);
+		free(ex);
+		return (-1);
+	}
 	if (error_red(head, env) == -1)
-		return (exit_s(258, 1), -1);
+	{
+		ex = exit_s(258, 1);
+		free(ex);
+		return (-1);
+	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 16:03:21 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/09/26 12:05:40 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/05 18:05:04 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	check_access_errors(t_command *cmd, const char *full_command)
 			ft_putstr_fd("Minishell: ", 2);
 			ft_putstr_fd(cmd->arg[0], 2);
 			ft_putstr_fd(": No such file or directory\n", 2);
-			exit(1);
+			exit(127);
 		}
 	}
 }

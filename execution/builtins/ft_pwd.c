@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:55:02 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/26 12:04:43 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 09:18:46 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	ft_pwd(void)
 {
+	char	*ex;
 	int		status;
 	char	cwd[4096];
 
@@ -25,5 +26,6 @@ void	ft_pwd(void)
 		perror("getcwd() error");
 		status = 1;
 	}
-	exit_s(status, 1);
+	ex = exit_s(status, 1);
+	free(ex);
 }

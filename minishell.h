@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/26 12:09:26 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/08 19:08:16 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,15 @@
 # include <errno.h>
 # include <dirent.h>
 
-# define W_COUNT 1000
-# define L_COUNT 1000
+# define W_COUNT 5000
+# define L_COUNT 5000
 # define MAX_WORDS 1000
 # define MAX_LENGTH 1000
 # define NAME "minishell: "
-# define ERR_PIPE "syntax error near unexpected token `|'\n"
-# define ERR_FILE "syntax error near unexpected token `'\n"
+# define ERR_PIPE "syntax error near unexpected token `|'"
+# define ERR_FILE "syntax error near unexpected token `'"
+
+// # define malloc(x) NULL
 
 int	g_global;
 
@@ -260,5 +262,8 @@ char		*ft_strncpy(char *dest, char *src, int n);
 char		*ft_strnstr(const char *str, const char *to_find, size_t n);
 char		*ft_strtrim(char *s1, char *set);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
+int			symbol_redirect_bef(t_node *current, char **env);
+char    **get_env(void);
+char *get_home_from_env(t_env **envp);
 
 #endif

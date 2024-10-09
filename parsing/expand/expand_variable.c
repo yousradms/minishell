@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:09:19 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/04 10:58:23 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/05 20:48:09 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,10 @@ void	expand_variable(t_node *current, char **env)
 	if (str)
 	{
 		set_expanded(&(str), &(current->content), env);
+		// if (current->content[0] == '\0')
+		// {
+		// 	current->type = 12;
+		// }
 		free(str);
 	}
 }

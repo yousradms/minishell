@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:03:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/26 12:05:04 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 09:19:08 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	ft_unset(char *var_names[], int num_vars, t_env **envp)
 {
 	int	i;
 	int	status;
+	char	*ex;
 
 	i = 0;
 	status = 0;
@@ -55,5 +56,6 @@ void	ft_unset(char *var_names[], int num_vars, t_env **envp)
 			remove_env_node(envp, var_names[i]);
 		i++;
 	}
-	exit_s(status, 1);
+	ex = exit_s(status, 1);
+	free(ex);
 }

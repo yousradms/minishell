@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 09:11:12 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/02 21:04:50 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 09:19:59 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,15 @@ void	wait_for_child_process(pid_t pid)
 
 char	**handle_builtin_command(t_command **commande, char **env)
 {
+	char	*ex;
+
 	handle_redirections(*commande);
 	if ((*commande)->in == -1 || (*commande)->out == -1)
-		return (exit_s(1, 1), env);
+	{
+		ex = exit_s(1, 1);
+		free(ex);
+		return (env);
+	}
 	return (execute_builtin(commande, env));
 }
 

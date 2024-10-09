@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:54:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/26 12:04:38 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 09:18:25 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,13 @@ void	ft_export(t_command **command, t_env **envp)
 {
 	int	i;
 	int	status;
+	char	*ex;
 
 	if ((*command)->arg[1] == NULL)
 	{
 		get_expoted(envp);
-		exit_s(1, 0);
+		ex = exit_s(1, 0);
+		free(ex);
 		return ;
 	}
 	i = 1;
@@ -81,5 +83,6 @@ void	ft_export(t_command **command, t_env **envp)
 			process_argument(envp, (*command)->arg[i]);
 		i++;
 	}
-	exit_s(status, 1);
+	ex = exit_s(status, 1);
+	free(ex);
 }

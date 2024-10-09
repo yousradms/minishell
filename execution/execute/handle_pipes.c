@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:56:00 by ydoumas           #+#    #+#             */
-/*   Updated: 2024/10/02 21:07:43 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/05 18:05:35 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ char	**execute_command(t_command *cmd, char **env)
 		return (env);
 	full_command = find_commande(cmd->arg[0], env);
 	if (full_command == NULL)
-		return (print_cmd_not_found(cmd->arg[0]), env);
+	{
+		print_cmd_not_found(cmd->arg[0]);
+		return (env);
+	}
 	check_access_errors(cmd, full_command);
 	if (execve(full_command, cmd->arg, env) == -1)
 	{
