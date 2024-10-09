@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:51:31 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/26 12:06:13 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 10:26:28 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_char_array(char **array)
 	int	i;
 
 	i = 0;
-	if (array == NULL)
+	if (array == NULL || array[0] == NULL)
 		return ;
 	while (array[i] != NULL)
 	{

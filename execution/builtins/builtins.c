@@ -6,11 +6,19 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:45:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/05 17:44:36 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 10:03:38 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+void	handle_cd_error(int status)
+{
+	char *ex;
+
+	ex = exit_s(status, 1);
+	free(ex);
+}
 
 int	is_builtin(char *cmd)
 {

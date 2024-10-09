@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:51:25 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 09:16:41 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 10:04:38 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,23 +50,18 @@ int	handle_cd_arguments(t_command **command, t_env **envp, int *status)
 {
 	char	*home;
 
-	// home = getenv("HOME");
 	home = get_home_from_env(envp);
 	if ((*command)->arg[1] && ft_strlen((*command)->arg[1]) == 0)
 		return (0);
-	// if (!(*command)->arg[1])
-	// {
-	// 	cd_home(home);
-	// 	return (1);
-	// }
-	    if (!(*command)->arg[1]) {
-        if (home) {
-            return cd_home(home);
-        } else {
-            // fprintf(stderr, "bash: cd: HOME not set\n");
+	if (!(*command)->arg[1])
+	{
+        if (home)
+            return (cd_home(home));
+        else
+		{
 			ft_putstr_fd("Minishell: cd: HOME not set\n", 2);
 			*status = 1;
-            return 1; // Error code for HOME not set
+            return (1);
         }
     }
 	else if (ft_strcmp((*command)->arg[1], "-") == 0)
@@ -78,16 +73,18 @@ int	handle_cd_arguments(t_command **command, t_env **envp, int *status)
 
 char *get_home_from_env(t_env **envp)
 {
-    t_env *current = *envp;
+    t_env *current;
 
-    while (current) {
-        if (strcmp(current->var, "HOME") == 0) {
-            return current->value; // Return the value of HOME
-        }
+	current = *envp;
+    while (current)
+	{
+        if (strcmp(current->var, "HOME") == 0)
+            return (current->value);
         current = current->next;
     }
-    return NULL; // HOME not found
+    return (NULL);
 }
+
 void	ft_cd(t_command **command, t_env **envp)
 {
 	char	cwd[1024];
@@ -98,8 +95,7 @@ void	ft_cd(t_command **command, t_env **envp)
 	status = 0;
 	if (get_current_directory(oldpwd, sizeof(oldpwd)) == -1)
 	{
-		ex = exit_s(1, 1);
-		free(ex);
+		handle_cd_error(1);
 		return ;
 	}
 	if (!handle_cd_arguments(command, envp, &status))
@@ -108,10 +104,7 @@ void	ft_cd(t_command **command, t_env **envp)
 		free(ex);
 	}
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
-	{
-		update_oldpwd(envp, oldpwd);
-		update_pwd(envp, cwd);
-	}
+		update_directories(envp, oldpwd, cwd);
 	else
 	{
 		perror("getcwd");

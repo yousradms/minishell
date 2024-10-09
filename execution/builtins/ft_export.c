@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:54:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 09:18:25 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 10:08:52 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,23 @@ static void	process_argument(t_env **envp, char *arg)
 	free(value);
 }
 
+int	validate_argument(char *arg)
+{
+	if (!check_arg(arg))
+	{
+		write(2, "Minishell: `", 12);
+		write(2, arg, ft_strlen(arg));
+		write(2, "': not a valid identifier\n", 27);
+		return (0);
+	}
+	return (1);
+}
+
+
 void	ft_export(t_command **command, t_env **envp)
 {
-	int	i;
-	int	status;
+	int		i;
+	int		status;
 	char	*ex;
 
 	if ((*command)->arg[1] == NULL)
@@ -72,13 +85,8 @@ void	ft_export(t_command **command, t_env **envp)
 	status = 0;
 	while ((*command)->arg[i] != NULL)
 	{
-		if (!check_arg((*command)->arg[i]))
-		{
-			write(2, "Minishell: `", 12);
-			write(2, (*command)->arg[i], ft_strlen((*command)->arg[i]));
-			write(2, "': not a valid identifier\n", 27);
+		if (!validate_argument((*command)->arg[i]))
 			status = 1;
-		}
 		else
 			process_argument(envp, (*command)->arg[i]);
 		i++;

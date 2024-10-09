@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:40:50 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 09:21:04 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 10:00:19 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,10 @@ char	**handle_one_command(t_command **commande, char **env)
 		wait_for_child_process(pid);
 	}
 	return (env);
+}
+
+void	update_directories(t_env **envp, char *oldpwd, char *cwd)
+{
+	update_oldpwd(envp, oldpwd);
+	update_pwd(envp, cwd);
 }

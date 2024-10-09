@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:18:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/07 19:22:15 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 10:15:32 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	remove_dollor_quotes_delimiter(t_node **list)
 		current = current->next;
 	}
 }
+
 static int empty_contain_space(t_node *current, char **env)
 {
 	char *str;
@@ -90,25 +91,17 @@ int symbol_redirect_bef(t_node *current, char **env)
 	t_node *curr;
 
 	curr = current;
-	// while (curr)
-	// {
 	if (curr->prev)
 		curr = curr->prev;
 	else
 		return (0);
 	while (curr && curr->type == 1)
 		curr = curr->prev;
-	// if (!curr || !curr->prev)
-	// 	return (0);
-	// printf("%s", curr->content);
-	// exit(1);
-		// printf("%s",curr->content);
-	if (curr && curr->type == REDIN)
+	if (curr && (curr->type == REDIN || curr->type == REDOUT || curr->type == APPEND))
 		return (empty_contain_space(current, env));
-	
-	// }
 	return (0);
 }
+
 t_node	*process_current_node(t_node *current, char **env)
 {
 	if (current->type == 9 && contain_env(current->content) && !symbol_redirect_bef(current, env))

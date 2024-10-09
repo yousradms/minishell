@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:45 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/07 19:00:13 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 10:27:40 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,15 @@
 char    **get_env(void)
 {
 	// printf("get this point\n");
-    static char    *envp[6];
+    // static char    *envp[6];
     char    *pwd;
+	char **envp;
     // int     i = 0;
 
     // Allocate space for 6 environment variables + NULL terminator
-    // envp = (char **)malloc(sizeof(char *) * 6);
-    // if (!envp)
-    //     return (NULL);  // Handle allocation failure
+    envp = (char **)malloc(sizeof(char *) * 6);
+    if (!envp)
+        return (NULL);  // Handle allocation failure
 
     pwd = getcwd(NULL, 0);
     if (!pwd)
@@ -86,8 +87,8 @@ char	**set_env(char **env)
 	int		num_strings;
 	char	**envp;
 
-	// if(!(*env))
-	// 	get_env();
+	// if(!env || !env[0])
+	// 	envp = get_env();
 	i = 0;
 	num_strings = 0;
 	while (env[num_strings] != NULL)

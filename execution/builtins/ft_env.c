@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:53:54 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 09:17:28 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 09:49:36 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,6 @@ void	ft_env(t_env **envp)
 	char	*ex;
 
 	env = *envp;
-	// if (env == NULL)
-	// {
-	// 	get_env();
-	// 	return ;
-		
-	// }
 	while (env != NULL)
 	{
 		if (env->var && env->value != NULL)
