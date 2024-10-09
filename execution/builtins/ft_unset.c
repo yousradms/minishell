@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:03:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 12:06:27 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/10/09 09:19:08 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ static void	remove_env_node(t_env **envp, char *var_name)
 
 void	ft_unset(char *var_names[], int num_vars, t_env **envp)
 {
-	int		i;
-	int		status;
+	int	i;
+	int	status;
 	char	*ex;
 
 	i = 0;

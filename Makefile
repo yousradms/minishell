@@ -6,7 +6,7 @@
 #    By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/08 13:48:45 by ksellami          #+#    #+#              #
-#    Updated: 2024/10/09 11:26:10 by ksellami         ###   ########.fr        #
+#    Updated: 2024/10/09 10:28:03 by ksellami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ execution/utilse/free_utils.c execution/utilse/env_utils.c execution/utilse/env_
 
 OBJS = ${FILES:%.c=%.o}
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
 
 all : $(NAME)
 

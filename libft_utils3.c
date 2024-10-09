@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 11:50:40 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 11:29:22 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:08:38 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ char	*ft_strcat(char *dest, char *src)
 	ptr = dest;
 	while (*ptr != '\0')
 		ptr++;
-	if (!src)
-		return (dest);
 	while (*src != '\0')
 		*ptr++ = *src++;
 	*ptr = '\0';

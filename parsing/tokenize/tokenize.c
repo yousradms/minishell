@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:06:49 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 12:00:48 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/10/08 18:41:11 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	tokenize(char *s, t_node **head, t_state state)
 
 char	*allocate_new_string(int new_len)
 {
+	// (void)new_len;
 	char	*new_s;
 
 	new_s = (char *)malloc(new_len + 1);

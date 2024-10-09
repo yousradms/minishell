@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_array.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:03:10 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 19:20:47 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/10/05 17:54:07 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,15 @@ static char	*create_env_var_str(char *var, char *value)
 		var_len = ft_strlen(var);
 	else
 		var_len = 0;
-	if (value != NULL) {
-    value_len = ft_strlen(value);
-} else {
-    // Gérer le cas où value est NULL
-    value_len = 0; // ou une autre valeur d'erreur
-}
-	
+	if (value)
+		value_len = ft_strlen(value);
+	else
+		value_len = 0;
 	env_var_str = (char *)malloc((var_len + value_len + 2) * sizeof(char));
 	if (!env_var_str)
 		return (NULL);
-	// printf("******%s\n", value);
 	ft_strcpy(env_var_str, var);
-	if (env_var_str && ft_strchr(env_var_str, '='))
-		ft_strcat(env_var_str, "=");
+	ft_strcat(env_var_str, "=");
 	if (value)
 		ft_strcat(env_var_str, value);
 	return (env_var_str);

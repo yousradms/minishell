@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:51:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 12:07:29 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/10/09 09:17:03 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	check_n(char *s)
 
 void	ft_echo(t_command **cmd)
 {
-	int		i;
-	int		n_option;
+	int	i;
+	int	n_option;
 	char	*ex;
 
 	i = 1;

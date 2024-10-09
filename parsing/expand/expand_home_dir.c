@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_home_dir.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:17:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 12:04:19 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/10/05 20:53:24 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,19 +92,4 @@ void	expanding(t_node *list, char **env)
 		if (current != NULL)
 			current = current->next;
 	}
-}
-
-t_node	*process_current_node(t_node *current, char **env)
-{
-	if (current->type == 9 && contain_env(current->content) \
-	&& !symbol_redirect_bef(current, env))
-		expand_variable(current, env);
-	else if (current->type == 9 && \
-	contain_home_after_quote(current->content) && \
-	(current->next == NULL || current->next->type == 1))
-		expand_home_directory(current);
-	else if (current->type == 9 && \
-	contain_home1(current->content))
-		expand_home_directory(current);
-	return (current);
 }
