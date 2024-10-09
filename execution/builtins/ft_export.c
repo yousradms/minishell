@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:54:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 10:08:52 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 11:44:39 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,14 @@ static void	process_argument(t_env **envp, char *arg)
 	int		found;
 
 	key = extract_var(arg);
-	value = extract_value(arg);
+	if (ft_strchr(arg, '=') != NULL)
+	{
+		value = extract_value(arg);
+		if (!value)
+			value = ft_strdup("");
+	}
+	else
+		value = NULL;
 	tmp = *envp;
 	found = 0;
 	while (tmp)
