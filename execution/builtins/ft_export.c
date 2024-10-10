@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:54:55 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 10:08:52 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 20:49:55 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int	validate_argument(char *arg)
 	}
 	return (1);
 }
-
 
 void	ft_export(t_command **command, t_env **envp)
 {

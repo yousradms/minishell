@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:48:20 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 10:08:25 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 20:57:10 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,5 +268,6 @@ char		*get_home_from_env(t_env **envp);
 void		update_directories(t_env **envp, char *oldpwd, char *cwd);
 void		handle_cd_error(int status);
 int			validate_argument(char *arg);
+int			empty_contain_space(t_node *current, char **env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:03:10 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/05 17:54:07 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 20:43:20 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	*create_env_var_str(char *var, char *value)
 		var_len = ft_strlen(var);
 	else
 		var_len = 0;
-	if (value)
+	if (value && value[0])
 		value_len = ft_strlen(value);
 	else
 		value_len = 0;
@@ -45,9 +45,11 @@ static char	*create_env_var_str(char *var, char *value)
 	if (!env_var_str)
 		return (NULL);
 	ft_strcpy(env_var_str, var);
-	ft_strcat(env_var_str, "=");
 	if (value)
+	{
+		ft_strcat(env_var_str, "=");
 		ft_strcat(env_var_str, value);
+	}
 	return (env_var_str);
 }
 

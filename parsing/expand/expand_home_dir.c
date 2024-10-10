@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:17:51 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/05 20:53:24 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 20:50:32 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,21 @@ void	expanding(t_node *list, char **env)
 		if (current != NULL)
 			current = current->next;
 	}
+}
+
+int	symbol_redirect_bef(t_node *current, char **env)
+{
+	t_node	*curr;
+
+	curr = current;
+	if (curr->prev)
+		curr = curr->prev;
+	else
+		return (0);
+	while (curr && curr->type == 1)
+		curr = curr->prev;
+	if (curr && (curr->type == REDIN || \
+	curr->type == REDOUT || curr->type == APPEND))
+		return (empty_contain_space(current, env));
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:22:45 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/26 12:04:10 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 20:39:03 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,16 @@ void	update_existing_env(t_env *env, char *arg, char *value)
 
 	if (ft_strchr(arg, '+') && ft_strchr(arg, '='))
 	{
-		new_value = ft_strjoin(env->value, value);
-		free(env->value);
-		env->value = new_value;
+		if (env->value == NULL)
+			env->value = ft_strdup(value);
+		else
+		{
+			new_value = ft_strjoin(env->value, value);
+			if (!new_value)
+				return ;
+			free(env->value);
+			env->value = new_value;
+		}
 	}
 	else if (ft_strchr(arg, '='))
 	{

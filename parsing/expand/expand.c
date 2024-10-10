@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:18:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 10:15:32 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/09 20:56:53 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,15 @@ void	remove_dollor_quotes_delimiter(t_node **list)
 	}
 }
 
-static int empty_contain_space(t_node *current, char **env)
+int	empty_contain_space(t_node *current, char **env)
 {
-	char *str;
-	char *content = ft_strdup(current->content);
-	
+	char	*str;
+	char	*content;
+
 	str = ft_strdup(current->content);
+	content = ft_strdup(current->content);
 	set_expanded(&str, &content, env);
-	if (ft_strcmp(content,"") == 0 || ft_strchr(content, ' ') != NULL)
+	if (ft_strcmp(content, "") == 0 || ft_strchr(content, ' ') != NULL)
 	{
 		free(content);
 		free(str);
@@ -86,25 +87,10 @@ static int empty_contain_space(t_node *current, char **env)
 	return (free(content), free(str), 0);
 }
 
-int symbol_redirect_bef(t_node *current, char **env)
-{
-	t_node *curr;
-
-	curr = current;
-	if (curr->prev)
-		curr = curr->prev;
-	else
-		return (0);
-	while (curr && curr->type == 1)
-		curr = curr->prev;
-	if (curr && (curr->type == REDIN || curr->type == REDOUT || curr->type == APPEND))
-		return (empty_contain_space(current, env));
-	return (0);
-}
-
 t_node	*process_current_node(t_node *current, char **env)
 {
-	if (current->type == 9 && contain_env(current->content) && !symbol_redirect_bef(current, env))
+	if (current->type == 9 && contain_env(current->content) \
+	&& !symbol_redirect_bef(current, env))
 		expand_variable(current, env);
 	else if (current->type == 9 && \
 	contain_home_after_quote(current->content) && \
