@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 09:44:58 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 20:53:40 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/10 20:12:29 by ydoumas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	handle_exit_status(int status)
 	int		signal_number;
 	char	*ex;
 
-	if (WIFEXITED(status))
+	if (WIFEXITED(status) && g_global != SIGINT)
 	{
 		ex = exit_s(WEXITSTATUS(status), 1);
 		free(ex);
@@ -68,7 +68,8 @@ void	sigint_handler_herdoc(int signo)
 		if (waitpid(-1, 0, WNOHANG) == 0)
 		{
 			printf("\n");
-			g_global = 1;
+			g_global = SIGINT;
+			exit_s(1, 1);
 			return ;
 		}
 		else
