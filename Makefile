@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+         #
+#    By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/08 13:48:45 by ksellami          #+#    #+#              #
-#    Updated: 2024/10/10 19:01:17 by ydoumas          ###   ########.fr        #
+#    Updated: 2024/10/10 21:28:36 by ksellami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ execution/utilse/free_utils.c execution/utilse/env_utils.c execution/utilse/env_
 
 OBJS = ${FILES:%.c=%.o}
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror
 
 all : $(NAME)
 

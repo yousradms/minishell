@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:18:26 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 20:56:53 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/10 20:28:39 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ void	remove_dollor_quotes(t_node **list)
 		&& current->next && current->next->content[0] \
 		&& (current->next->content[0] == '\"' \
 		|| current->next->content[0] == '\''))
+		{
+			free(current->content);
 			current->content = ft_strdup("");
+		}
 		current = current->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:54:41 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/09 10:05:51 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/10 21:30:09 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,28 +33,27 @@ int	ft_is_number(char *s)
 {
 	long	num;
 	int		sign;
+	char	*trimmed;
+	char	*original_trimmed;
 
-	s = ft_strtrim(s, " ");
-	if (*s == '\0')
+	trimmed = ft_strtrim(s, " ");
+	if (!trimmed)
 		return (0);
-	sign = 1;
-	if (*s == '+' || *s == '-')
-	{
-		if (*s == '-')
-			sign = -1;
-		s++;
-	}
-	if (*s == '\0')
-		return (0);
+	original_trimmed = trimmed;
+	if (*trimmed == '\0')
+		return (free(original_trimmed), 0);
+	sign = check_sign_and_skip(&trimmed);
+	if (*trimmed == '\0')
+		return (free(original_trimmed), 0);
 	num = 0;
-	while (*s)
+	while (*trimmed)
 	{
-		if (out_range(*s, sign, num))
-			return (0);
-		num = num * 10 + (*s - '0');
-		s++;
+		if (out_range(*trimmed, sign, num))
+			return (free(original_trimmed), 0);
+		num = num * 10 + (*trimmed - '0');
+		trimmed++;
 	}
-	return (1);
+	return (free(original_trimmed), 1);
 }
 
 static void	handle_exit(char *arg)

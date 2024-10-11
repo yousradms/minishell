@@ -6,7 +6,7 @@
 /*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 12:04:15 by ksellami          #+#    #+#             */
-/*   Updated: 2024/09/26 12:05:32 by ksellami         ###   ########.fr       */
+/*   Updated: 2024/10/10 21:39:10 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*clean_argument(char *arg)
 	single_quote_open = 0;
 	double_quote_open = 0;
 	if ((ft_strlen(arg) == 1 && (*arg == '\'' || *arg == '\"')))
-		return (handle_single_quote_arg(arg));
+		return (free(result), handle_single_quote_arg(arg));
 	while (*arg)
 	{
 		if (*arg == '\'' && !double_quote_open)

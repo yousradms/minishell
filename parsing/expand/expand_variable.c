@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ydoumas <ydoumas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ksellami <ksellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 18:09:19 by ksellami          #+#    #+#             */
-/*   Updated: 2024/10/10 19:41:20 by ydoumas          ###   ########.fr       */
+/*   Updated: 2024/10/10 21:10:07 by ksellami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ void	expand_variable(t_node *current, char **env)
 	else if (current->state == 3)
 	{
 		str = ft_strdup(current->content);
+		if (str)
+			free(str);
 		return ;
 	}
 	if (str)

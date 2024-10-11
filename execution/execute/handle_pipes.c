@@ -51,3 +51,17 @@ char	**handle_multiple_command(t_command **commande, char **env)
 	wait_for_all_processes(pids, cmd_count);
 	return (free(pids), env);
 }
+
+int	check_sign_and_skip(char **trimmed)
+{
+	int	sign;
+
+	sign = 1;
+	if (**trimmed == '+' || **trimmed == '-')
+	{
+		if (**trimmed == '-')
+			sign = -1;
+		(*trimmed)++;
+	}
+	return (sign);
+}

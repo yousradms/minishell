@@ -33,8 +33,6 @@
 # define ERR_PIPE "syntax error near unexpected token `|'"
 # define ERR_FILE "syntax error near unexpected token `'"
 
-// # define malloc(x) NULL
-
 int	g_global;
 
 typedef enum s_type
@@ -269,5 +267,6 @@ void		update_directories(t_env **envp, char *oldpwd, char *cwd);
 void		handle_cd_error(int status);
 int			validate_argument(char *arg);
 int			empty_contain_space(t_node *current, char **env);
+int			check_sign_and_skip(char **trimmed);
 
 #endif
